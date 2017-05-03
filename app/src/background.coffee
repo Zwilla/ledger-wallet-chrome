@@ -20,7 +20,7 @@ updateAvailable = no
         var app = apps[index];
         chrome.runtime.sendMessage(app.id, {request: "is_launched"},
             function (response) {
-              if (typeof response === "undefined" || !response.result)
+              if (typeof response == "undefined" || !response.result)
                 iterate(index + 1);
               else
                 callback(false, app);

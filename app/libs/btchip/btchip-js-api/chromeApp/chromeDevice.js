@@ -22,7 +22,7 @@ if (typeof chromeDevice == "undefined") {
     if (DEBUG) {
       //console.log(message);
     }
-    if (logger == null)
+    if (logger === null)
       logger = new ledger.utils.ApduLogger("APDU", DEBUG);
     logger.trace(message)
   }
@@ -43,7 +43,7 @@ if (typeof chromeDevice == "undefined") {
     var hexchars = '0123456789ABCDEFabcdef';
     var res = new Uint8Array(result);
     for (var i = 0; i < h.length; i += 2) {
-      if (hexchars.indexOf(h.substring(i, i + 1)) == -1) break;
+      if (hexchars.indexOf(h.substring(i, i + 1)) === -1) break;
       res[i / 2] = parseInt(h.substring(i, i + 2), 16);
     }
     return result;
@@ -56,23 +56,23 @@ if (typeof chromeDevice == "undefined") {
     this.device = hardwareId.device;
     // Mark claimed
     for (var i=0; i<winUSBDevice.unclaimedDevices.length; i++) {
-      if (winUSBDevice.unclaimedDevices.handle == this.device.handle) {
+      if (winUSBDevice.unclaimedDevices.handle === this.device.handle) {
         winUSBDevice.unclaimedDevices[i] = undefined;
         break;
       }
     }
     // Locate the interface to open, the in/out endpoints and their sizes
     for (var i=0; i<hardwareId.interfaces.length; i++) {
-      if (hardwareId.interfaces[i].interfaceClass == 0xff) {
+      if (hardwareId.interfaces[i].interfaceClass === 0xff) {
         this.interfaceId = i;
         var currentInterface = hardwareId.interfaces[i];
         for (var j=0; j<currentInterface.endpoints.length; j++) {
           var currentEndpoint = currentInterface.endpoints[j];
-          if (currentEndpoint.direction == "in") {
+          if (currentEndpoint.direction === "in") {
             this.inEndpoint = 0x80 + currentEndpoint.address;
           }
           else
-          if (currentEndpoint.direction == "out") {
+          if (currentEndpoint.direction === "out") {
             this.outEndpoint = currentEndpoint.address;
           }
         }
@@ -103,7 +103,7 @@ if (typeof chromeDevice == "undefined") {
         },
         function(result) {
           if (callback) {
-            var exception = (result.resultCode != 0 ? "error " + result.resultCode : undefined);
+            var exception = (result.resultCode !== 0 ? "error " + result.resultCode : undefined);
             callback({
               resultCode: result.resultCode,
               exception: exception
@@ -121,12 +121,12 @@ if (typeof chromeDevice == "undefined") {
         },
         function(result) {
           var data;
-          if (result.resultCode == 0) {
+          if (result.resultCode === 0) {
             data = dump(new Uint8Array(result.data));
           }
           debug("<= " + data);
           if (callback) {
-            var exception = (result.resultCode != 0 ? "error " + result.resultCode : undefined);
+            var exception = (result.resultCode !== 0 ? "error " + result.resultCode : undefined);
             callback({
               resultCode: result.resultCode,
               data: data,
@@ -166,7 +166,7 @@ if (typeof chromeDevice == "undefined") {
   winUSBDevice.enumerate = function(vid, pid, callback) {
     // First close all unclaimed devices to avoid leaking
     for (var i=0; i<winUSBDevice.unclaimedDevices.length; i++) {
-      if (typeof winUSBDevice.unclaimedDevices[i] != "undefined") {
+      if (typeof winUSBDevice.unclaimedDevices[i] !== "undefined") {
         debug("Closing");
         debug(winUSBDevice.unclaimedDevices[i]);
         chrome.usb.closeDevice(winUSBDevice.unclaimedDevices[i]);
@@ -183,7 +183,7 @@ if (typeof chromeDevice == "undefined") {
           var probedDevicesWithInterfaces = [];
           var probedDevices = 0;
 
-          if (devices.length == 0) {
+          if (devices.length === 0) {
             // No devices, answer immediately
             if (callback) callback([]);
           }
@@ -197,7 +197,7 @@ if (typeof chromeDevice == "undefined") {
                 // If the device has at least one WinUSB interface, it can be probed
                 var hasWinUSB = false;
                 for (var i=0; i<interfaceList.length; i++) {
-                  if (interfaceList[i].interfaceClass == 0xff) {
+                  if (interfaceList[i].interfaceClass === 0xff) {
                     hasWinUSB = true;
                     break;
                   }
@@ -215,7 +215,7 @@ if (typeof chromeDevice == "undefined") {
                   debug(devices[currentDevice]);
                   chrome.usb.closeDevice(devices[currentDevice]);
                 }
-                if (probedDevices == devices.length) {
+                if (probedDevices === devices.length) {
                   if (callback) callback(probedDevicesWithInterfaces);
                 }
               }); // chrome.usb.listInterfaces
@@ -250,7 +250,7 @@ if (typeof chromeDevice == "undefined") {
 
   hidDevice.prototype.send = function(data, callback) {
     debug("=> " + data);
-    if (typeof this.handle === "undefined" || this.handle === null) {
+    if (typeof this.handle == "undefined" || this.handle === null) {
       if (callback)
         callback({resultCode: 0, exception: new Error()});
       return;
@@ -323,7 +323,7 @@ if (typeof chromeDevice == "undefined") {
       return;
     }
 
-    if (typeof usagePage != 'undefined') {
+    if (typeof usagePage !== 'undefined') {
       try {
         // Chrome 39+ only
         chrome.hid.getDevices({filters: [{usagePage: usagePage}]}, enumerated);
@@ -372,11 +372,11 @@ if (typeof chromeDevice == "undefined") {
     var deferred = Q.defer();
     var parameters = msg.parameters;
     var device;
-    if (parameters.device.transport == 'winusb') {
+    if (parameters.device.transport === 'winusb') {
       device = new winUSBDevice(parameters.device);
     }
     else
-    if (parameters.device.transport == 'hid') {
+    if (parameters.device.transport === 'hid') {
       device = new hidDevice(parameters.device);
     }
     boundDevices.push(device);
@@ -444,7 +444,7 @@ if (typeof chromeDevice == "undefined") {
     var msg = {
       parameters: {
         vid: vid || 0x2581,
-        pid: (typeof pid != "undefined") ? pid : 0x1b7c
+        pid: (typeof pid !== "undefined") ? pid : 0x1b7c
       }
     };
 
@@ -453,10 +453,10 @@ if (typeof chromeDevice == "undefined") {
     var vid = 0x2581;
     var pid = 0x1808;
     var parameters = msg.parameters;
-    if (typeof parameters.vid != "undefined") {
+    if (typeof parameters.vid !== "undefined") {
       vid = parameters.vid;
     }
-    if (typeof parameters.pid != "undefined") {
+    if (typeof parameters.pid !== "undefined") {
       pid = parameters.pid;
     }
     var vidHid = 0x2581;
@@ -465,16 +465,16 @@ if (typeof chromeDevice == "undefined") {
     var pidHid3 = pidHid;
     var usagePage;
     // Probe automatically the associated transport supposing the client used the WinUSB transport
-    if (pid == 0x1808) {
+    if (pid === 0x1808) {
       pidHid = 0x1807;
     }
     else
-    if (pid == 0x1b7c) {
+    if (pid === 0x1b7c) {
       pidHid = 0x2b7c; // LW Legacy - old
       pidHid2 = 0x3b7c; // LW Legacy - Ledger Protocol
       pidHid3 = 0x4b7c; // LW Proton
     } else
-    if (vid == 0x2c97) {
+    if (vid === 0x2c97) {
       vidHid = vid
       pidHid = pid
     }
@@ -495,12 +495,12 @@ if (typeof chromeDevice == "undefined") {
             for (var i=0; i<devicesHID.length; i++) {
               devicesWinUSB.push(devicesHID[i]);
             }
-            if (pidHid2 != pidHid) {
+            if (pidHid2 !== pidHid) {
               for (var i=0; i<devicesHID2.length; i++) {
                 devicesWinUSB.push(devicesHID2[i]);
               }
             }
-            if (pidHid3 != pidHid) {
+            if (pidHid3 !== pidHid) {
               for (var i=0; i<devicesHID3.length; i++) {
                 devicesWinUSB.push(devicesHID3[i]);
               }

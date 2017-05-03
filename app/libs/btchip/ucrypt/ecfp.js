@@ -471,7 +471,7 @@ JSUCrypt.ECFp ||  (function (undefined) {
      * @class
      */
     ecfp.AffinePoint = function (x, y, curve) {
-        if ((curve != undefined) &&
+        if ((curve !== undefined) &&
             !(curve instanceof ecfp.EcFpCurve)) {
             throw new JSUCrypt.JSUCryptException("Invalid paramerter type");
         }
@@ -568,7 +568,7 @@ JSUCrypt.ECFp ||  (function (undefined) {
      * @class
      */
     ecfp.ProjectivePoint = function(x,y,z,curve) {
-        if ((curve != undefined) &&
+        if ((curve !== undefined) &&
             !(curve instanceof ecfp.EcFpCurve)) {
             throw new JSUCrypt.JSUCryptException("Invalid paramerter type");
         }
@@ -672,7 +672,7 @@ JSUCrypt.ECFp ||  (function (undefined) {
             var R0 = this;
             var R1 = this;
             var nbbit = k.bitLength()-1;
-            while(nbbit-- != 0) {
+            while(nbbit-- !== 0) {
                 R0 = R0.add(R0);
                 if (k.testBit(nbbit)) {
                     R0 = R0.add(R1);

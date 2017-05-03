@@ -128,7 +128,7 @@
 		for (i = 0; i < 256; i++) {
 			t = i;
 			for (j = 0; j < 8; j++)
-				if (t & 1)
+				if (t && 1)
 					t = (t >>> 1) ^ 0xEDB88320;
 				else
 					t = t >>> 1;

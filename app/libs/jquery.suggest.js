@@ -47,7 +47,7 @@
           // the tab/arrow right key will force the focus to the next input
           // already on keydown, let's prevent that
           // unless the alt key is pressed for convenience
-          if ((code == 9 && !e.altKey) || code == 39) {
+          if ((code === 9 && !e.altKey) || code === 39) {
             //e.preventDefault();
 
             if ($suggest.text().length > 0) {
@@ -61,22 +61,22 @@
 
           // let's prevent default enter behavior while a suggestion
           // is being accepted (e.g. while submitting a form)
-          } else if (code == 13) {
+          } else if (code === 13) {
             if (!$suggest.is(':empty')) {
               e.preventDefault();
             }
 
           // use arrow keys to cycle through suggestions
-          } else if (code == 38 || code == 40) {
+          } else if (code === 38 || code === 40) {
             e.preventDefault();
             var suggestions = $(this).data('suggestions');
 
             if (suggestions.all.length > 1) {
               // arrow down:
-              if (code == 40 && suggestions.index < suggestions.all.length - 1) {
+              if (code === 40 && suggestions.index < suggestions.all.length - 1) {
                 suggestions.suggest.html(suggestions.all[++suggestions.index]);
               // arrow up:
-              } else if (code == 38 && suggestions.index > 0) {
+              } else if (code === 38 && suggestions.index > 0) {
                 suggestions.suggest.html(suggestions.all[--suggestions.index]);
               }
               $(this).data('suggestions').index = suggestions.index;
@@ -88,7 +88,7 @@
           var code = (e.keyCode ? e.keyCode : e.which);
 
           // Have the arrow keys been pressed?
-          if (code == 38 || code == 40) {
+          if (code === 38 || code === 40) {
             return false;
           }
 
@@ -100,7 +100,7 @@
 
           // accept suggestion with 'enter' or 'tab'
           // if the suggestion hasn't been accepted yet
-          if (code == 9 || code == 13) {
+          if (code === 9 || code === 13) {
             // only accept if there's anything suggested
             if ($suggest.text().length > 0) {
               e.preventDefault();

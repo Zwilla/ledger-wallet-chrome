@@ -9,13 +9,13 @@ var dbits;
 
 // JavaScript engine analysis
 var canary = 0xdeadbeefcafe;
-var j_lm = ((canary&0xffffff)==0xefcafe);
+var j_lm = ((canary&0xffffff)===0xefcafe);
 
 // (public) Constructor
 function BigInteger(a,b,c) {
-  if(a != null)
-    if("number" == typeof a) this.fromNumber(a,b,c);
-    else if(b == null && "string" != typeof a) this.fromString(a,256);
+  if(a !== null)
+    if("number" === typeof a) this.fromNumber(a,b,c);
+    else if(b === null && "string" !== typeof a) this.fromString(a,256);
     else this.fromString(a,b);
 }
 
@@ -69,11 +69,11 @@ function am3(i,x,w,j,c,n) {
 }
 
 try {
-    if(j_lm && (navigator.appName == "Microsoft Internet Explorer")) {
+    if(j_lm && (navigator.appName === "Microsoft Internet Explorer")) {
         BigInteger.prototype.am = am2;
         dbits = 30;
     }
-    else if(j_lm && (navigator.appName != "Netscape")) {
+    else if(j_lm && (navigator.appName !== "Netscape")) {
         BigInteger.prototype.am = am1;
         dbits = 26;
     }
@@ -109,7 +109,7 @@ for(vv = 10; vv < 36; ++vv) BI_RC[rr++] = vv;
 function int2char(n) { return BI_RM.charAt(n); }
 function intAt(s,i) {
   var c = BI_RC[s.charCodeAt(i)];
-  return (c==null)?-1:c;
+  return (c===null)?-1:c;
 }
 
 // (protected) copy this to r
@@ -134,24 +134,24 @@ function nbv(i) { var r = nbi(); r.fromInt(i); return r; }
 // (protected) set from string and radix
 function bnpFromString(s,b) {
   var k;
-  if(b == 16) k = 4;
-  else if(b == 8) k = 3;
-  else if(b == 256) k = 8; // byte array
-  else if(b == 2) k = 1;
-  else if(b == 32) k = 5;
-  else if(b == 4) k = 2;
+  if(b === 16) k = 4;
+  else if(b === 8) k = 3;
+  else if(b === 256) k = 8; // byte array
+  else if(b === 2) k = 1;
+  else if(b === 32) k = 5;
+  else if(b === 4) k = 2;
   else { this.fromRadix(s,b); return; }
   this.t = 0;
   this.s = 0;
   var i = s.length, mi = false, sh = 0;
   while(--i >= 0) {
-    var x = (k==8)?s[i]&0xff:intAt(s,i);
+    var x = (k===8)?s[i]&0xff:intAt(s,i);
     if(x < 0) {
-      if(s.charAt(i) == "-") mi = true;
+      if(s.charAt(i) === "-") mi = true;
       continue;
     }
     mi = false;
-    if(sh == 0)
+    if(sh === 0)
       this[this.t++] = x;
     else if(sh+k > this.DB) {
       this[this.t-1] |= (x&((1<<(this.DB-sh))-1))<<sh;
@@ -162,7 +162,7 @@ function bnpFromString(s,b) {
     sh += k;
     if(sh >= this.DB) sh -= this.DB;
   }
-  if(k == 8 && (s[0]&0x80) != 0) {
+  if(k === 8 && (s[0]&0x80) !== 0) {
     this.s = -1;
     if(sh > 0) this[this.t-1] |= ((1<<(this.DB-sh))-1)<<sh;
   }
@@ -173,18 +173,18 @@ function bnpFromString(s,b) {
 // (protected) clamp off excess high words
 function bnpClamp() {
   var c = this.s&this.DM;
-  while(this.t > 0 && this[this.t-1] == c) --this.t;
+  while(this.t > 0 && this[this.t-1] === c) --this.t;
 }
 
 // (public) return string representation in given radix
 function bnToString(b) {
   if(this.s < 0) return "-"+this.negate().toString(b);
   var k;
-  if(b == 16) k = 4;
-  else if(b == 8) k = 3;
-  else if(b == 2) k = 1;
-  else if(b == 32) k = 5;
-  else if(b == 4) k = 2;
+  if(b === 16) k = 4;
+  else if(b === 8) k = 3;
+  else if(b === 2) k = 1;
+  else if(b === 32) k = 5;
+  else if(b === 4) k = 2;
   else return this.toRadix(b);
   var km = (1<<k)-1, d, m = false, r = "", i = this.t;
   var p = this.DB-(i*this.DB)%k;
@@ -215,22 +215,22 @@ function bnAbs() { return (this.s<0)?this.negate():this; }
 // (public) return + if this > a, - if this < a, 0 if equal
 function bnCompareTo(a) {
   var r = this.s-a.s;
-  if(r != 0) return r;
+  if(r !== 0) return r;
   var i = this.t;
   r = i-a.t;
-  if(r != 0) return (this.s<0)?-r:r;
-  while(--i >= 0) if((r=this[i]-a[i]) != 0) return r;
+  if(r !== 0) return (this.s<0)?-r:r;
+  while(--i >= 0) if((r=this[i]-a[i]) !== 0) return r;
   return 0;
 }
 
 // returns bit length of the integer x
 function nbits(x) {
   var r = 1, t;
-  if((t=x>>>16) != 0) { x = t; r += 16; }
-  if((t=x>>8) != 0) { x = t; r += 8; }
-  if((t=x>>4) != 0) { x = t; r += 4; }
-  if((t=x>>2) != 0) { x = t; r += 2; }
-  if((t=x>>1) != 0) { x = t; r += 1; }
+  if((t=x>>>16) !== 0) { x = t; r += 16; }
+  if((t=x>>8) !== 0) { x = t; r += 8; }
+  if((t=x>>4) !== 0) { x = t; r += 4; }
+  if((t=x>>2) !== 0) { x = t; r += 2; }
+  if((t=x>>1) !== 0) { x = t; r += 1; }
   return r;
 }
 
@@ -334,7 +334,7 @@ function bnpMultiplyTo(a,r) {
   for(i = 0; i < y.t; ++i) r[i+x.t] = x.am(0,y[i],r,i,0,x.t);
   r.s = 0;
   r.clamp();
-  if(this.s != a.s) BigInteger.ZERO.subTo(r,r);
+  if(this.s !== a.s) BigInteger.ZERO.subTo(r,r);
 }
 
 // (protected) r = this^2, r != this (HAC 14.16)
@@ -361,21 +361,21 @@ function bnpDivRemTo(m,q,r) {
   if(pm.t <= 0) return;
   var pt = this.abs();
   if(pt.t < pm.t) {
-    if(q != null) q.fromInt(0);
-    if(r != null) this.copyTo(r);
+    if(q !== null) q.fromInt(0);
+    if(r !== null) this.copyTo(r);
     return;
   }
-  if(r == null) r = nbi();
+  if(r === null) r = nbi();
   var y = nbi(), ts = this.s, ms = m.s;
   var nsh = this.DB-nbits(pm[pm.t-1]);	// normalize modulus
   if(nsh > 0) { pm.lShiftTo(nsh,y); pt.lShiftTo(nsh,r); }
   else { pm.copyTo(y); pt.copyTo(r); }
   var ys = y.t;
   var y0 = y[ys-1];
-  if(y0 == 0) return;
+  if(y0 === 0) return;
   var yt = y0*(1<<this.F1)+((ys>1)?y[ys-2]>>this.F2:0);
   var d1 = this.FV/yt, d2 = (1<<this.F1)/yt, e = 1<<this.F2;
-  var i = r.t, j = i-ys, t = (q==null)?nbi():q;
+  var i = r.t, j = i-ys, t = (q===null)?nbi():q;
   y.dlShiftTo(j,t);
   if(r.compareTo(t) >= 0) {
     r[r.t++] = 1;
@@ -386,16 +386,16 @@ function bnpDivRemTo(m,q,r) {
   while(y.t < ys) y[y.t++] = 0;
   while(--j >= 0) {
     // Estimate quotient digit
-    var qd = (r[--i]==y0)?this.DM:Math.floor(r[i]*d1+(r[i-1]+e)*d2);
+    var qd = (r[--i]===y0)?this.DM:Math.floor(r[i]*d1+(r[i-1]+e)*d2);
     if((r[i]+=y.am(0,qd,r,j,0,ys)) < qd) {	// Try it out
       y.dlShiftTo(j,t);
       r.subTo(t,r);
       while(r[i] < --qd) r.subTo(t,r);
     }
   }
-  if(q != null) {
+  if(q !== null) {
     r.drShiftTo(ys,q);
-    if(ts != ms) BigInteger.ZERO.subTo(q,q);
+    if(ts !== ms) BigInteger.ZERO.subTo(q,q);
   }
   r.t = ys;
   r.clamp();
@@ -441,7 +441,7 @@ Classic.prototype.sqrTo = cSqrTo;
 function bnpInvDigit() {
   if(this.t < 1) return 0;
   var x = this[0];
-  if((x&1) == 0) return 0;
+  if((x&1) === 0) return 0;
   var y = x&3;		// y == 1/x mod 2^2
   y = (y*(2-(x&0xf)*y))&0xf;	// y == 1/x mod 2^4
   y = (y*(2-(x&0xff)*y))&0xff;	// y == 1/x mod 2^8
@@ -512,7 +512,7 @@ Montgomery.prototype.mulTo = montMulTo;
 Montgomery.prototype.sqrTo = montSqrTo;
 
 // (protected) true iff this is even
-function bnpIsEven() { return ((this.t>0)?(this[0]&1):this.s) == 0; }
+function bnpIsEven() { return ((this.t>0)?(this[0]&1):this.s) === 0; }
 
 // (protected) this^e, e < 2^32, doing sqr and mul with "r" (HAC 14.79)
 function bnpExp(e,z) {

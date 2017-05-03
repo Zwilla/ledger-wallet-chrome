@@ -22,7 +22,7 @@ if (typeof WebKitMutationObserver !== 'undefined')
     MutationObserverCtor = WebKitMutationObserver;
 else
     MutationObserverCtor = MutationObserver;
-if (MutationObserverCtor === undefined) {
+if (MutationObserverCtor == undefined) {
     console.error('DOM Mutation Observers are required.');
     console.error('https://developer.mozilla.org/en-US/docs/DOM/MutationObserver');
     throw Error('DOM Mutation Observers are required');
@@ -240,7 +240,7 @@ var TreeChanges = (function (_super) {
             return false;
         this.reachableCache = this.reachableCache || new NodeMap();
         var isReachable = this.reachableCache.get(node);
-        if (isReachable === undefined) {
+        if (isReachable == undefined) {
             isReachable = this.getIsReachable(node.parentNode);
             this.reachableCache.set(node, isReachable);
         }
@@ -254,7 +254,7 @@ var TreeChanges = (function (_super) {
             return false;
         this.wasReachableCache = this.wasReachableCache || new NodeMap();
         var wasReachable = this.wasReachableCache.get(node);
-        if (wasReachable === undefined) {
+        if (wasReachable == undefined) {
             wasReachable = this.getWasReachable(this.getOldParent(node));
             this.wasReachableCache.set(node, wasReachable);
         }
@@ -305,7 +305,7 @@ var MutationProjection = (function () {
         var reachable = parentReachable;
         // node inherits its parent's reachability change unless
         // its parentNode was mutated.
-        if ((change && change.childList) || reachable == undefined)
+        if ((change && change.childList) || reachable === undefined)
             reachable = this.treeChanges.reachabilityChange(node);
         if (reachable === Movement.STAYED_OUT)
             return;
@@ -413,7 +413,7 @@ var MutationProjection = (function () {
         if (!change || !change.attributes)
             throw Error('getOldAttribute requested on invalid node.');
         var value = change.getAttributeOldValue(attrName);
-        if (value === undefined)
+        if (value == undefined)
             throw Error('getOldAttribute requested for unchanged attribute name.');
         return value;
     };
@@ -479,7 +479,7 @@ var MutationProjection = (function () {
                 continue;
             var change = this.treeChanges.get(target);
             if (!change.characterData ||
-                target.textContent == change.characterDataOldValue)
+                target.textContent === change.characterDataOldValue)
                 continue;
             result.push(target);
         }
@@ -492,7 +492,7 @@ var MutationProjection = (function () {
             this.matchCache[selector.uid] = new NodeMap();
         var cache = this.matchCache[selector.uid];
         var result = cache.get(el);
-        if (result === undefined) {
+        if (result == undefined) {
             result = selector.matchabilityChange(el, this.treeChanges.get(el));
             cache.set(el, result);
         }
@@ -559,7 +559,7 @@ var MutationProjection = (function () {
         this.childListChangeMap = new NodeMap();
         for (var i = 0; i < this.mutations.length; i++) {
             var mutation = this.mutations[i];
-            if (mutation.type != 'childList')
+            if (mutation.type !== 'childList')
                 continue;
             if (this.treeChanges.reachabilityChange(mutation.target) !== Movement.STAYED_IN &&
                 !this.calcOldPreviousSibling)
@@ -652,7 +652,7 @@ var MutationProjection = (function () {
                 (change.removed.has(oldPrevious) || isMoved(oldPrevious))) {
                 oldPrevious = getOldPrevious(oldPrevious);
             }
-            if (oldPrevious === undefined)
+            if (oldPrevious == undefined)
                 oldPrevious = node.previousSibling;
             oldPreviousCache.set(node, oldPrevious);
             return oldPrevious;
@@ -736,10 +736,10 @@ var Qualifier = (function () {
     Qualifier.prototype.matches = function (oldValue) {
         if (oldValue === null)
             return false;
-        if (this.attrValue === undefined)
+        if (this.attrValue == undefined)
             return true;
         if (!this.contains)
-            return this.attrValue == oldValue;
+            return this.attrValue === oldValue;
         var tokens = oldValue.split(' ');
         for (var i = 0; i < tokens.length; i++) {
             if (this.attrValue === tokens[i])
@@ -801,7 +801,7 @@ var Selector = (function () {
         for (var i = 0; i < this.qualifiers.length; i++) {
             var qualifier = this.qualifiers[i];
             var oldValue = attributeOldValues[i];
-            if (oldValue === undefined)
+            if (oldValue == undefined)
                 oldValue = el.getAttribute(qualifier.attrName);
             if (!qualifier.matches(oldValue))
                 return false;
@@ -863,13 +863,13 @@ var Selector = (function () {
                         state = TAG_NAME;
                         break;
                     }
-                    if (c == '*') {
+                    if (c === '*') {
                         newSelector();
                         currentSelector.tagName = '*';
                         state = QUALIFIER;
                         break;
                     }
-                    if (c == '.') {
+                    if (c === '.') {
                         newSelector();
                         newQualifier();
                         currentSelector.tagName = '*';
@@ -878,7 +878,7 @@ var Selector = (function () {
                         state = QUALIFIER_NAME_FIRST_CHAR;
                         break;
                     }
-                    if (c == '#') {
+                    if (c === '#') {
                         newSelector();
                         newQualifier();
                         currentSelector.tagName = '*';
@@ -886,7 +886,7 @@ var Selector = (function () {
                         state = QUALIFIER_NAME_FIRST_CHAR;
                         break;
                     }
-                    if (c == '[') {
+                    if (c === '[') {
                         newSelector();
                         newQualifier();
                         currentSelector.tagName = '*';
@@ -902,20 +902,20 @@ var Selector = (function () {
                         currentSelector.tagName += c;
                         break;
                     }
-                    if (c == '.') {
+                    if (c === '.') {
                         newQualifier();
                         currentQualifier.attrName = 'class';
                         currentQualifier.contains = true;
                         state = QUALIFIER_NAME_FIRST_CHAR;
                         break;
                     }
-                    if (c == '#') {
+                    if (c === '#') {
                         newQualifier();
                         currentQualifier.attrName = 'id';
                         state = QUALIFIER_NAME_FIRST_CHAR;
                         break;
                     }
-                    if (c == '[') {
+                    if (c === '[') {
                         newQualifier();
                         currentQualifier.attrName = '';
                         state = ATTR_NAME_FIRST_CHAR;
@@ -925,26 +925,26 @@ var Selector = (function () {
                         state = SELECTOR_SEPARATOR;
                         break;
                     }
-                    if (c == ',') {
+                    if (c === ',') {
                         state = SELECTOR;
                         break;
                     }
                     throw Error(SYNTAX_ERROR);
                 case QUALIFIER:
-                    if (c == '.') {
+                    if (c === '.') {
                         newQualifier();
                         currentQualifier.attrName = 'class';
                         currentQualifier.contains = true;
                         state = QUALIFIER_NAME_FIRST_CHAR;
                         break;
                     }
-                    if (c == '#') {
+                    if (c === '#') {
                         newQualifier();
                         currentQualifier.attrName = 'id';
                         state = QUALIFIER_NAME_FIRST_CHAR;
                         break;
                     }
-                    if (c == '[') {
+                    if (c === '[') {
                         newQualifier();
                         currentQualifier.attrName = '';
                         state = ATTR_NAME_FIRST_CHAR;
@@ -954,7 +954,7 @@ var Selector = (function () {
                         state = SELECTOR_SEPARATOR;
                         break;
                     }
-                    if (c == ',') {
+                    if (c === ',') {
                         state = SELECTOR;
                         break;
                     }
@@ -971,20 +971,20 @@ var Selector = (function () {
                         currentQualifier.attrValue += c;
                         break;
                     }
-                    if (c == '.') {
+                    if (c === '.') {
                         newQualifier();
                         currentQualifier.attrName = 'class';
                         currentQualifier.contains = true;
                         state = QUALIFIER_NAME_FIRST_CHAR;
                         break;
                     }
-                    if (c == '#') {
+                    if (c === '#') {
                         newQualifier();
                         currentQualifier.attrName = 'id';
                         state = QUALIFIER_NAME_FIRST_CHAR;
                         break;
                     }
-                    if (c == '[') {
+                    if (c === '[') {
                         newQualifier();
                         state = ATTR_NAME_FIRST_CHAR;
                         break;
@@ -993,7 +993,7 @@ var Selector = (function () {
                         state = SELECTOR_SEPARATOR;
                         break;
                     }
-                    if (c == ',') {
+                    if (c === ',') {
                         state = SELECTOR;
                         break;
                     }
@@ -1016,33 +1016,33 @@ var Selector = (function () {
                         state = EQUIV_OR_ATTR_QUAL_END;
                         break;
                     }
-                    if (c == '~') {
+                    if (c === '~') {
                         currentQualifier.contains = true;
                         state = EQUAL;
                         break;
                     }
-                    if (c == '=') {
+                    if (c === '=') {
                         currentQualifier.attrValue = '';
                         state = VALUE_FIRST_CHAR;
                         break;
                     }
-                    if (c == ']') {
+                    if (c === ']') {
                         state = QUALIFIER;
                         break;
                     }
                     throw Error(SYNTAX_ERROR);
                 case EQUIV_OR_ATTR_QUAL_END:
-                    if (c == '~') {
+                    if (c === '~') {
                         currentQualifier.contains = true;
                         state = EQUAL;
                         break;
                     }
-                    if (c == '=') {
+                    if (c === '=') {
                         currentQualifier.attrValue = '';
                         state = VALUE_FIRST_CHAR;
                         break;
                     }
-                    if (c == ']') {
+                    if (c === ']') {
                         state = QUALIFIER;
                         break;
                     }
@@ -1050,14 +1050,14 @@ var Selector = (function () {
                         break;
                     throw Error(SYNTAX_ERROR);
                 case EQUAL:
-                    if (c == '=') {
+                    if (c === '=') {
                         currentQualifier.attrValue = '';
                         state = VALUE_FIRST_CHAR;
                         break;
                     }
                     throw Error(SYNTAX_ERROR);
                 case ATTR_QUAL_END:
-                    if (c == ']') {
+                    if (c === ']') {
                         state = QUALIFIER;
                         break;
                     }
@@ -1067,7 +1067,7 @@ var Selector = (function () {
                 case VALUE_FIRST_CHAR:
                     if (c.match(WHITESPACE))
                         break;
-                    if (c == '"' || c == "'") {
+                    if (c === '"' || c === "'") {
                         valueQuoteChar = c;
                         state = QUOTED_VALUE;
                         break;
@@ -1080,16 +1080,16 @@ var Selector = (function () {
                         state = ATTR_QUAL_END;
                         break;
                     }
-                    if (c == ']') {
+                    if (c === ']') {
                         state = QUALIFIER;
                         break;
                     }
-                    if (c == "'" || c == '"')
+                    if (c === "'" || c === '"')
                         throw Error(SYNTAX_ERROR);
                     currentQualifier.attrValue += c;
                     break;
                 case QUOTED_VALUE:
-                    if (c == valueQuoteChar) {
+                    if (c === valueQuoteChar) {
                         state = ATTR_QUAL_END;
                         break;
                     }
@@ -1098,7 +1098,7 @@ var Selector = (function () {
                 case SELECTOR_SEPARATOR:
                     if (c.match(WHITESPACE))
                         break;
-                    if (c == ',') {
+                    if (c === ',') {
                         state = SELECTOR;
                         break;
                     }
@@ -1136,7 +1136,7 @@ var Selector = (function () {
 })();
 var attributeFilterPattern = /^([a-zA-Z:_]+[a-zA-Z0-9_\-:\.]*)$/;
 function validateAttribute(attribute) {
-    if (typeof attribute != 'string')
+    if (typeof attribute !== 'string')
         throw Error('Invalid request opion. attribute must be a non-zero length string.');
     attribute = attribute.trim();
     if (!attribute)

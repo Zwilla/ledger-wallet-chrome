@@ -52,8 +52,8 @@ limitations under the License.
          * @see JSUCrypt.signature#init
          */
         JSUCrypt.signature.DES.prototype.init = function(key, mode, IV) {
-            if ((mode != JSUCrypt.signature.MODE_SIGN) && 
-                (mode != JSUCrypt.signature.MODE_VERIFY)){
+            if ((mode !== JSUCrypt.signature.MODE_SIGN) &&
+                (mode !== JSUCrypt.signature.MODE_VERIFY)){
                 throw new JSUCrypt.JSUCryptException("Invalid 'mode' parameter");
             }            
             _setKey.call(this, key, EN0);
@@ -119,9 +119,9 @@ limitations under the License.
          */
         JSUCrypt.cipher.DES.prototype.init = function(key, mode, IV) {      
             var enc_dec;
-            if (mode == JSUCrypt.cipher.MODE_ENCRYPT) {
+            if (mode === JSUCrypt.cipher.MODE_ENCRYPT) {
                 enc_dec = EN0;
-            } else if (mode == JSUCrypt.cipher.MODE_DECRYPT) {
+            } else if (mode === JSUCrypt.cipher.MODE_DECRYPT) {
                 enc_dec = DE1;
             } else {
                 throw new JSUCrypt.JSUCryptException("Invalid 'mode' parameter");
@@ -174,11 +174,11 @@ limitations under the License.
     // --------------------------------------------------------------------------
     function _setKey(key, m) {
         var k = key.rawKey;
-        if (k.length == 8) {
+        if (k.length === 8) {
             deskey.call(this, k, m);
-        } else if (k.length == 16) {
+        } else if (k.length === 16) {
             des2key.call(this, k, m);
-        } else if (k.length == 24) {
+        } else if (k.length === 24) {
             des3key.call(this, k, m);
         } else {
             throw new JSUCrypt.JSUCryptException("Invalid 'key' parameter");
@@ -189,7 +189,7 @@ limitations under the License.
     function _setIV(IV) {
         if (IV) {
             IV = JSUCrypt.utils.anyToByteArray(IV);
-            if (IV.length != 8) {
+            if (IV.length !== 8) {
                 throw new JSUCrypt.JSUCryptException("Invalid 'IV' parameter");
             }
             this._IV = [].concat(IV);
@@ -199,7 +199,7 @@ limitations under the License.
     }
 
     function _doCrypt(block) {
-        if (this._key.rawKey.length == 8) {
+        if (this._key.rawKey.length === 8) {
             return des.call(this, block);
         } else  {
             return Ddes.call(this, block);
@@ -529,10 +529,10 @@ limitations under the License.
         for ( j = 0; j < 56; j++ ) {
             l = pc1[j];
             m = l & 07;
-            pc1m[j] = (key[l >> 3] & bytebit[m]) ? 1 : 0;
+            pc1m[j] = (key[l >> 3] && bytebit[m]) ? 1 : 0;
         }
         for( i = 0; i < 16; i++ ) {
-            if( edf == DE1 ) {
+            if( edf === DE1 ) {
                 m = (15 - i) << 1;
             } else {
                 m = i << 1;
@@ -594,7 +594,7 @@ limitations under the License.
     function  des2key(hexkey, edf) {
 
         var i;
-        if( edf == EN0 ) {
+        if( edf === EN0 ) {
             this._KnL = deskeycomp(hexkey.slice(0,8),  EN0);
             this._KnR = deskeycomp(hexkey.slice(8,16),  DE1);
         } else {
@@ -609,7 +609,7 @@ limitations under the License.
    
 
     function des3key(hexkey, edf) {   
-        if( edf == EN0 ) {
+        if( edf === EN0 ) {
             this._KnL = deskeycomp(hexkey.slice(0,8),  EN0);
             this._KnR = deskeycomp(hexkey.slice(8,16),  DE1);
             this._Kn3 = deskeycomp(hexkey.slice(16,24), EN0);

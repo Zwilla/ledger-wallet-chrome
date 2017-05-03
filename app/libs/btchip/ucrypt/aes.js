@@ -23,72 +23,71 @@ limitations under the License.
 
 
 
-((JSUCrypt.signature && JSUCrypt.signature.AES) && (JSUCrypt.cipher && JSUCrypt.cipher.AES)) || (function (undefined) {
+JSUCrypt.signature && JSUCrypt.signature.AES && (JSUCrypt.cipher && JSUCrypt.cipher.AES) || function (undefined) {
     // --------------------------------------------------------------------------
     //                                   Signature
     // --------------------------------------------------------------------------
     if (JSUCrypt.signature && !JSUCrypt.signature.AES) {
-        /** 
+        /**
          * An AES Signature
-         * @class JSUCrypt.signature.AES 
-         * @param {JSUCrypt.padder} padder       a padder
-         * @param {number}        chain_mode   ECB, CBC, ....
+         * @class JSUCrypt.signature.AES
+         * @param {*} padder       a padder
          * @see JSUCrypt.cipher
          * @see JSUCrypt.padder
          */
-        JSUCrypt.signature.AES = function(padder) {
-            if(!padder) {
+        JSUCrypt.signature.AES = function (padder) {
+            if (!padder) {
                 padder = JSUCrypt.padder.None;
             }
             this._padder = padder;
             _setIV.call(this);
             this.reset();
         };
-        
+
         /**
          * @see JSUCrypt.signature#init
          */
-        JSUCrypt.signature.AES.prototype.init = function(key, mode, IV) {   
-            if ((mode != JSUCrypt.signature.MODE_SIGN) && 
-                (mode != JSUCrypt.signature.MODE_VERIFY)){
+        JSUCrypt.signature.AES.prototype.init = function (key, mode, IV) {
+            if ((mode !== JSUCrypt.signature.MODE_SIGN) &&
+                (mode !== JSUCrypt.signature.MODE_VERIFY)) {
                 throw new JSUCrypt.JSUCryptException("Invalid 'mode' parameter");
             }
 
             _setkey.call(this, key, JSUCrypt.cipher.MODE_ENCRYPT);
             _setIV.call(this, IV);
-            this._sig_mode = mode; 
+            this._sig_mode = mode;
             this.reset();
         };
         /**
          * @see JSUCrypt.signature#reset
          * @function
          */
-        JSUCrypt.signature.AES.prototype.reset             = JSUCrypt.signature._symReset;
+        JSUCrypt.signature.AES.prototype.reset = JSUCrypt.signature._symReset;
         /**
          * @see JSUCrypt.signature#update
          * @function
-         */       
-        JSUCrypt.signature.AES.prototype.update            = JSUCrypt.signature._symUpdate;
+         */
+        JSUCrypt.signature.AES.prototype.update = JSUCrypt.signature._symUpdate;
         /**
          * @see JSUCrypt.signature#sign
          * @function
          */
-        JSUCrypt.signature.AES.prototype.sign              = JSUCrypt.signature._symSign;
+        JSUCrypt.signature.AES.prototype.sign = JSUCrypt.signature._symSign;
         /**
          * @see JSUCrypt.signature#verify
          * @function
          */
-        JSUCrypt.signature.AES.prototype.verify            = JSUCrypt.signature._symVerify;
+        JSUCrypt.signature.AES.prototype.verify = JSUCrypt.signature._symVerify;
 
-        JSUCrypt.signature.AES.prototype._doEncryptBlock   = rijndaelEncrypt;
-        JSUCrypt.signature.AES.prototype._blockSize        = 16;
+        JSUCrypt.signature.AES.prototype._doEncryptBlock = rijndaelEncrypt;
+        JSUCrypt.signature.AES.prototype._blockSize = 16;
     }
 
     // --------------------------------------------------------------------------
     //                                   Cipher
     // --------------------------------------------------------------------------
     if (JSUCrypt.cipher && !JSUCrypt.cipher.AES) {
-        /** 
+        /**
          * An AES Cipher
          * @class JSUCrypt.cipher.AES
          * @param {JSUCrypt.padder} padder       a padder
@@ -96,8 +95,8 @@ limitations under the License.
          * @see JSUCrypt.cipher
          * @see JSUCrypt.padder
          */
-        JSUCrypt.cipher.AES = function(padder, chain_mode) {
-            if(!padder) {
+        JSUCrypt.cipher.AES = function (padder, chain_mode) {
+            if (!padder) {
                 padder = JSUCrypt.padder.None;
             }
             this._padder = padder;
@@ -105,48 +104,48 @@ limitations under the License.
             _setIV.call(this);
             this.reset();
         };
-        
-         /**
-          * @see JSUCrypt.cipher#init
-          */
-        JSUCrypt.cipher.AES.prototype.init = function(key, mode, IV) {            
+
+        /**
+         * @see JSUCrypt.cipher#init
+         */
+        JSUCrypt.cipher.AES.prototype.init = function (key, mode, IV) {
             /* key: hex string or byte array, 8,16,24 byte length
              * mode: MODE_ENCRYPT or MODE_DECRYPT (see JSUCrypt.cipher)
              * IV: initial vector
-             */            
-            if ((mode != JSUCrypt.cipher.MODE_ENCRYPT) &&
-                (mode != JSUCrypt.cipher.MODE_DECRYPT)) {
+             */
+            if ((mode !== JSUCrypt.cipher.MODE_ENCRYPT) &&
+                (mode !== JSUCrypt.cipher.MODE_DECRYPT)) {
                 throw new JSUCrypt.JSUCryptException("Invalid 'mode' parameter");
-            }            
+            }
             _setKey.call(this, key, mode);
-            _setIV.call(this,IV);
+            _setIV.call(this, IV);
             this._enc_mode = mode;
-            this.reset();                    
+            this.reset();
         };
-        
+
         /**
          * @see JSUCrypt.cipher#reset
          * @function
          */
-        JSUCrypt.cipher.AES.prototype.reset             = JSUCrypt.cipher._symReset;
+        JSUCrypt.cipher.AES.prototype.reset = JSUCrypt.cipher._symReset;
 
         /**
          * @see JSUCrypt.cipher#update
          * @function
          */
-        JSUCrypt.cipher.AES.prototype.update            = JSUCrypt.cipher._symUpdate;
+        JSUCrypt.cipher.AES.prototype.update = JSUCrypt.cipher._symUpdate;
 
         /**
          * @see JSUCrypt.cipher#finalize
          * @function
          */
-        JSUCrypt.cipher.AES.prototype.finalize          = JSUCrypt.cipher._symFinalize;
+        JSUCrypt.cipher.AES.prototype.finalize = JSUCrypt.cipher._symFinalize;
 
-        JSUCrypt.cipher.AES.prototype._doEncryptBlock   = rijndaelEncrypt;
-        JSUCrypt.cipher.AES.prototype._doDecryptBlock   = rijndaelDecrypt;
-        JSUCrypt.cipher.AES.prototype._blockSize        = 16;
+        JSUCrypt.cipher.AES.prototype._doEncryptBlock = rijndaelEncrypt;
+        JSUCrypt.cipher.AES.prototype._doDecryptBlock = rijndaelDecrypt;
+        JSUCrypt.cipher.AES.prototype._blockSize = 16;
     }
-   
+
     // --------------------------------------------------------------------------
     //                                   Keys
     // --------------------------------------------------------------------------
@@ -157,45 +156,46 @@ limitations under the License.
      * @param {anyBN}       key        key
      * @class
      */
-    JSUCrypt.key.AESKey = function (key) {  
-        this.rawKey = JSUCrypt.utils.anyToByteArray(key);     
+    JSUCrypt.key.AESKey = function (key) {
+        this.rawKey = JSUCrypt.utils.anyToByteArray(key);
     };
-    
+
     // --------------------------------------------------------------------------
     //                                   ...
     // --------------------------------------------------------------------------
-    function  _setKey(key, mode) {
+    function _setKey(key, mode) {
         var k = key.rawKey;
-        if ((k.length == 16) || 
-            (k.length == 24) ||
-            (k.length == 32)) {
-            this._rk = [];    
-            this._Nr = 0;         
-            if (mode == JSUCrypt.cipher.MODE_ENCRYPT) {
+        if ((k.length === 16) ||
+            (k.length === 24) ||
+            (k.length === 32)) {
+            this._rk = [];
+            this._Nr = 0;
+            if (mode === JSUCrypt.cipher.MODE_ENCRYPT) {
                 rijndaelKeySetupEnc.call(this, k);
-            } else if (mode == JSUCrypt.cipher.MODE_DECRYPT) {
+            } else if (mode === JSUCrypt.cipher.MODE_DECRYPT) {
                 rijndaelKeySetupDec.call(this, k);
             } else {
                 throw new JSUCrypt.JSUCryptException("Invalid 'mode' parameter");
             }
         } else {
             throw new JSUCrypt.JSUCryptException("Invalid 'key' parameter");
-        } 
+        }
         this._key = key;
     }
 
     function _setIV(IV) {
         if (IV) {
             IV = JSUCrypt.utils.anyToByteArray(IV);
-            if (IV.length != 16) {
+            if (IV.length !== 16) {
                 throw new JSUCrypt.JSUCryptException("Invalid 'IV' parameter");
             }
             this._IV = [].concat(IV);
         } else {
-            this._IV = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-        }        
+            this._IV = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        }
 
     }
+
     // --- Moified Vincent Rijmen, Antoon Bosselaers, Paulo Barreto AES code ---
 
 
@@ -225,22 +225,19 @@ limitations under the License.
      * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
      * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
      */
-
-
-
     /*
-      Te0[x] = S [x].[02, 01, 01, 03];
-      Te1[x] = S [x].[03, 02, 01, 01];
-      Te2[x] = S [x].[01, 03, 02, 01];
-      Te3[x] = S [x].[01, 01, 03, 02];
-      Te4[x] = S [x].[01, 01, 01, 01];
+         Te0[x] = S [x].[02, 01, 01, 03];
+         Te1[x] = S [x].[03, 02, 01, 01];
+         Te2[x] = S [x].[01, 03, 02, 01];
+         Te3[x] = S [x].[01, 01, 03, 02];
+         Te4[x] = S [x].[01, 01, 01, 01];
 
-      Td0[x] = Si[x].[0e, 09, 0d, 0b];
-      Td1[x] = Si[x].[0b, 0e, 09, 0d];
-      Td2[x] = Si[x].[0d, 0b, 0e, 09];
-      Td3[x] = Si[x].[09, 0d, 0b, 0e];
-      Td4[x] = Si[x].[01, 01, 01, 01];
-    */
+         Td0[x] = Si[x].[0e, 09, 0d, 0b];
+         Td1[x] = Si[x].[0b, 0e, 09, 0d];
+         Td2[x] = Si[x].[0d, 0b, 0e, 09];
+         Td3[x] = Si[x].[09, 0d, 0b, 0e];
+         Td4[x] = Si[x].[01, 01, 01, 01];
+         */
 
 
     var Te0/*[256]*/ = [
@@ -307,10 +304,10 @@ limitations under the License.
         0x038c8c8f, 0x59a1a1f8, 0x09898980, 0x1a0d0d17,
         0x65bfbfda, 0xd7e6e631, 0x844242c6, 0xd06868b8,
         0x824141c3, 0x299999b0, 0x5a2d2d77, 0x1e0f0f11,
-        0x7bb0b0cb, 0xa85454fc, 0x6dbbbbd6, 0x2c16163a,
+        0x7bb0b0cb, 0xa85454fc, 0x6dbbbbd6, 0x2c16163a
     ];
-    
-    var  Te1/*[256]*/ = [
+
+    var Te1/*[256]*/ = [
         0xa5c66363, 0x84f87c7c, 0x99ee7777, 0x8df67b7b,
         0x0dfff2f2, 0xbdd66b6b, 0xb1de6f6f, 0x5491c5c5,
         0x50603030, 0x03020101, 0xa9ce6767, 0x7d562b2b,
@@ -374,7 +371,7 @@ limitations under the License.
         0x8f038c8c, 0xf859a1a1, 0x80098989, 0x171a0d0d,
         0xda65bfbf, 0x31d7e6e6, 0xc6844242, 0xb8d06868,
         0xc3824141, 0xb0299999, 0x775a2d2d, 0x111e0f0f,
-        0xcb7bb0b0, 0xfca85454, 0xd66dbbbb, 0x3a2c1616,
+        0xcb7bb0b0, 0xfca85454, 0xd66dbbbb, 0x3a2c1616
     ];
 
     var Te2/*[256]*/ = [
@@ -441,7 +438,7 @@ limitations under the License.
         0x8c8f038c, 0xa1f859a1, 0x89800989, 0x0d171a0d,
         0xbfda65bf, 0xe631d7e6, 0x42c68442, 0x68b8d068,
         0x41c38241, 0x99b02999, 0x2d775a2d, 0x0f111e0f,
-        0xb0cb7bb0, 0x54fca854, 0xbbd66dbb, 0x163a2c16,
+        0xb0cb7bb0, 0x54fca854, 0xbbd66dbb, 0x163a2c16
     ];
 
     var Te3/*[256]*/ = [
@@ -508,7 +505,7 @@ limitations under the License.
         0x8c8c8f03, 0xa1a1f859, 0x89898009, 0x0d0d171a,
         0xbfbfda65, 0xe6e631d7, 0x4242c684, 0x6868b8d0,
         0x4141c382, 0x9999b029, 0x2d2d775a, 0x0f0f111e,
-        0xb0b0cb7b, 0x5454fca8, 0xbbbbd66d, 0x16163a2c,
+        0xb0b0cb7b, 0x5454fca8, 0xbbbbd66d, 0x16163a2c
     ];
     var Te4/*[256]*/ = [
         0x63636363, 0x7c7c7c7c, 0x77777777, 0x7b7b7b7b,
@@ -574,9 +571,9 @@ limitations under the License.
         0x8c8c8c8c, 0xa1a1a1a1, 0x89898989, 0x0d0d0d0d,
         0xbfbfbfbf, 0xe6e6e6e6, 0x42424242, 0x68686868,
         0x41414141, 0x99999999, 0x2d2d2d2d, 0x0f0f0f0f,
-        0xb0b0b0b0, 0x54545454, 0xbbbbbbbb, 0x16161616,
+        0xb0b0b0b0, 0x54545454, 0xbbbbbbbb, 0x16161616
     ];
-    var  Td0/*[256]*/ = [
+    var Td0/*[256]*/ = [
         0x51f4a750, 0x7e416553, 0x1a17a4c3, 0x3a275e96,
         0x3bab6bcb, 0x1f9d45f1, 0xacfa58ab, 0x4be30393,
         0x2030fa55, 0xad766df6, 0x88cc7691, 0xf5024c25,
@@ -640,7 +637,7 @@ limitations under the License.
         0xcaaff381, 0xb968c43e, 0x3824342c, 0xc2a3405f,
         0x161dc372, 0xbce2250c, 0x283c498b, 0xff0d9541,
         0x39a80171, 0x080cb3de, 0xd8b4e49c, 0x6456c190,
-        0x7bcb8461, 0xd532b670, 0x486c5c74, 0xd0b85742,
+        0x7bcb8461, 0xd532b670, 0x486c5c74, 0xd0b85742
     ];
     var Td1/*[256]*/ = [
         0x5051f4a7, 0x537e4165, 0xc31a17a4, 0x963a275e,
@@ -706,9 +703,9 @@ limitations under the License.
         0x81caaff3, 0x3eb968c4, 0x2c382434, 0x5fc2a340,
         0x72161dc3, 0x0cbce225, 0x8b283c49, 0x41ff0d95,
         0x7139a801, 0xde080cb3, 0x9cd8b4e4, 0x906456c1,
-        0x617bcb84, 0x70d532b6, 0x74486c5c, 0x42d0b857,
+        0x617bcb84, 0x70d532b6, 0x74486c5c, 0x42d0b857
     ];
-    var  Td2/*[256]*/ = [
+    var Td2/*[256]*/ = [
         0xa75051f4, 0x65537e41, 0xa4c31a17, 0x5e963a27,
         0x6bcb3bab, 0x45f11f9d, 0x58abacfa, 0x03934be3,
         0xfa552030, 0x6df6ad76, 0x769188cc, 0x4c25f502,
@@ -772,9 +769,9 @@ limitations under the License.
         0xf381caaf, 0xc43eb968, 0x342c3824, 0x405fc2a3,
         0xc372161d, 0x250cbce2, 0x498b283c, 0x9541ff0d,
         0x017139a8, 0xb3de080c, 0xe49cd8b4, 0xc1906456,
-        0x84617bcb, 0xb670d532, 0x5c74486c, 0x5742d0b8,
+        0x84617bcb, 0xb670d532, 0x5c74486c, 0x5742d0b8
     ];
-    var  Td3/*[256]*/ = [
+    var Td3/*[256]*/ = [
         0xf4a75051, 0x4165537e, 0x17a4c31a, 0x275e963a,
         0xab6bcb3b, 0x9d45f11f, 0xfa58abac, 0xe303934b,
         0x30fa5520, 0x766df6ad, 0xcc769188, 0x024c25f5,
@@ -838,9 +835,9 @@ limitations under the License.
         0xaff381ca, 0x68c43eb9, 0x24342c38, 0xa3405fc2,
         0x1dc37216, 0xe2250cbc, 0x3c498b28, 0x0d9541ff,
         0xa8017139, 0x0cb3de08, 0xb4e49cd8, 0x56c19064,
-        0xcb84617b, 0x32b670d5, 0x6c5c7448, 0xb85742d0,
+        0xcb84617b, 0x32b670d5, 0x6c5c7448, 0xb85742d0
     ];
-    var  Td4/*[256]*/ = [
+    var Td4/*[256]*/ = [
         0x52525252, 0x09090909, 0x6a6a6a6a, 0xd5d5d5d5,
         0x30303030, 0x36363636, 0xa5a5a5a5, 0x38383838,
         0xbfbfbfbf, 0x40404040, 0xa3a3a3a3, 0x9e9e9e9e,
@@ -904,120 +901,131 @@ limitations under the License.
         0x17171717, 0x2b2b2b2b, 0x04040404, 0x7e7e7e7e,
         0xbabababa, 0x77777777, 0xd6d6d6d6, 0x26262626,
         0xe1e1e1e1, 0x69696969, 0x14141414, 0x63636363,
-        0x55555555, 0x21212121, 0x0c0c0c0c, 0x7d7d7d7d,
+        0x55555555, 0x21212121, 0x0c0c0c0c, 0x7d7d7d7d
     ];
     var rcon/*[]*/ = [
         0x01000000, 0x02000000, 0x04000000, 0x08000000,
         0x10000000, 0x20000000, 0x40000000, 0x80000000,
-        0x1B000000, 0x36000000, 
+        0x1B000000, 0x36000000
         /* for 128-bit blocks, Rijndael never uses more than 10 rcon values */
     ];
-    
 
+
+    /**
+     * @return {number}
+     */
     function GETU32(ar, off) {
-        return ((ar[off+0] << 24) | (ar[off+1] << 16) | (ar[off+2] <<  8) | (ar[off+3]));
+        return ((ar[off + 0] << 24) | (ar[off + 1] << 16) | (ar[off + 2] << 8) | (ar[off + 3]));
     }
-    
-    function PUTU32(ar, off, val32) { 
-        ar[off+0] = (val32 >> 24)&0xFF; 
-        ar[off+1] = (val32 >> 16)&0xFF; 
-        ar[off+2] = (val32 >>  8)&0xFF; 
-        ar[off+3] = (val32      )&0xFF; 
+
+    function PUTU32(ar, off, val32) {
+            ar[off + 0] = (val32 >> 24) & 0xFF;
+            ar[off + 1] = (val32 >> 16) & 0xFF;
+            ar[off + 2] = (val32 >> 8) & 0xFF;
+            ar[off + 3] = (val32      ) & 0xFF
+            ;
+
+
     }
 
 
-    
     /**
      * Expand the cipher key into the encryption key schedule.
      *
-     * @return	the number of rounds for the given cipher key size.
+     * @return    the number of rounds for the given cipher key size.
      */
-    function  rijndaelKeySetupEnc(cipherKey) {
-        var i = 0;
-        var temp;
-        var rk = this._rk;
-        var rk_offset = 0;
-        var keySize = cipherKey.length*8;
-        
-        rk[rk_offset+0] = GETU32(cipherKey, 0);
-        rk[rk_offset+1] = GETU32(cipherKey,  4);
-        rk[rk_offset+2] = GETU32(cipherKey,  8);
-        rk[rk_offset+3] = GETU32(cipherKey, 12);
-        if (keySize == 128) {
-            for (;;) {
-                temp  = rk[rk_offset+3];
-                rk[rk_offset+4] = rk[rk_offset+0] ^
-                    (Te4[(temp >> 16) & 0xff] & 0xff000000) ^
-                    (Te4[(temp >>  8) & 0xff] & 0x00ff0000) ^
-                    (Te4[(temp      ) & 0xff] & 0x0000ff00) ^
-                    (Te4[(temp >> 24) & 0xff] & 0x000000ff) ^
-                    rcon[i];
-                rk[rk_offset+5] = rk[rk_offset+1] ^ rk[rk_offset+4];
-                rk[rk_offset+6] = rk[rk_offset+2] ^ rk[rk_offset+5];
-                rk[rk_offset+7] = rk[rk_offset+3] ^ rk[rk_offset+6];
-                if (++i == 10) {                    
-                    this._Nr = 10;
-                    return;
+    function rijndaelKeySetupEnc(cipherKey) {
+            var i = 0;
+            var temp;
+            var rk = this._rk;
+            var rk_offset = 0;
+            var keySize = cipherKey.length * 8
+
+            ;
+
+            rk[rk_offset] = GETU32(cipherKey, 0);
+            rk[rk_offset + 1] = GETU32(cipherKey, 4);
+            rk[rk_offset + 2] = GETU32(cipherKey, 8);
+            rk[rk_offset + 3] = GETU32(cipherKey, 12);
+            if (keySize === 128) {
+                for (; ;) {
+                    temp = rk[rk_offset + 3];
+                    rk[rk_offset + 4] = rk[rk_offset] ^
+                        (Te4[(temp >> 16) & 0xff] & 0xff000000) ^
+                        (Te4[(temp >> 8) & 0xff] & 0x00ff0000) ^
+                        (Te4[(temp      ) & 0xff] & 0x0000ff00) ^
+                        (Te4[(temp >> 24) & 0xff] & 0x000000ff) ^
+                        rcon[i];
+                    rk[rk_offset + 5] = rk[rk_offset + 1] ^ rk[rk_offset + 4];
+                    rk[rk_offset + 6] = rk[rk_offset + 2] ^ rk[rk_offset + 5];
+                    rk[rk_offset + 7] = rk[rk_offset + 3] ^ rk[rk_offset + 6];
+                    if (++i === 10) {
+                        this._Nr = 10;
+                        return;
+                    }
+                    rk_offset +=
+
+                        4;
                 }
-                rk_offset += 4;
+            }
+
+            rk[rk_offset + 4] = GETU32(cipherKey, 16);
+            rk[rk_offset + 5] = GETU32(cipherKey, 20);
+            if (keySize === 192) {
+                for (; ;) {
+                    temp = rk[rk_offset + 5];
+                    rk[rk_offset + 6] = rk[rk_offset] ^
+                        (Te4[(temp >> 16) & 0xff] & 0xff000000) ^
+                        (Te4[(temp >> 8) & 0xff] & 0x00ff0000) ^
+                        (Te4[(temp      ) & 0xff] & 0x0000ff00) ^
+                        (Te4[(temp >> 24) & 0xff] & 0x000000ff) ^
+                        rcon[i];
+                    rk[rk_offset + 7] = rk[rk_offset + 1] ^ rk[rk_offset + 6];
+                    rk[rk_offset + 8] = rk[rk_offset + 2] ^ rk[rk_offset + 7];
+                    rk[rk_offset + 9] = rk[rk_offset + 3] ^ rk[rk_offset + 8];
+                    if (++i === 8) {
+                        this._Nr = 12;
+                        return;
+                    }
+                    rk[rk_offset + 10] = rk[rk_offset + 4] ^ rk[rk_offset + 9];
+                    rk[rk_offset + 11] = rk[rk_offset + 5] ^ rk[rk_offset + 10];
+                    rk_offset
+
+                        += 6;
+                }
+            }
+
+            rk[rk_offset + 6] = GETU32(cipherKey, 24);
+            rk[rk_offset + 7] = GETU32(cipherKey, 28);
+            if (keySize === 256) {
+                for (; ;) {
+                    temp = rk[rk_offset + 7];
+                    rk[rk_offset + 8] = rk[rk_offset] ^
+                        (Te4[(temp >> 16) & 0xff] & 0xff000000) ^
+                        (Te4[(temp >> 8) & 0xff] & 0x00ff0000) ^
+                        (Te4[(temp      ) & 0xff] & 0x0000ff00) ^
+                        (Te4[(temp >> 24) & 0xff] & 0x000000ff) ^
+                        rcon[i];
+                    rk[rk_offset + 9] = rk[rk_offset + 1] ^ rk[rk_offset + 8];
+                    rk[rk_offset + 10] = rk[rk_offset + 2] ^ rk[rk_offset + 9];
+                    rk[rk_offset + 11] = rk[rk_offset + 3] ^ rk[rk_offset + 10];
+                    if (++i === 7) {
+                        this._Nr = 14;
+                        return;
+                    }
+                    temp = rk[rk_offset + 11];
+                    rk[rk_offset + 12] = rk[rk_offset + 4] ^
+                        (Te4[(temp >> 24) & 0xff] & 0xff000000) ^
+                        (Te4[(temp >> 16) & 0xff] & 0x00ff0000) ^
+                        (Te4[(temp >> 8) & 0xff] & 0x0000ff00) ^
+                        (Te4[(temp      ) & 0xff] & 0x000000ff);
+                    rk[rk_offset + 13] = rk[rk_offset + 5] ^ rk[rk_offset + 12];
+                    rk[rk_offset + 14] = rk[rk_offset + 6] ^ rk[rk_offset + 13];
+                    rk[rk_offset + 15] = rk[rk_offset + 7] ^ rk[rk_offset + 14];
+                    rk_offset += 8;
+                }
             }
         }
- 
-        rk[rk_offset+4] = GETU32(cipherKey, 16);
-        rk[rk_offset+5] = GETU32(cipherKey, 20);
-        if (keySize == 192) {
-            for (;;) {
-                temp = rk[ rk_offset+5];
-                rk[rk_offset+6] = rk[rk_offset+0] ^
-                    (Te4[(temp >> 16) & 0xff] & 0xff000000) ^
-                    (Te4[(temp >>  8) & 0xff] & 0x00ff0000) ^
-                    (Te4[(temp      ) & 0xff] & 0x0000ff00) ^
-                    (Te4[(temp >> 24) & 0xff] & 0x000000ff) ^
-                    rcon[i];
-                rk[rk_offset+ 7] = rk[rk_offset+ 1] ^ rk[rk_offset+ 6];
-                rk[rk_offset+ 8] = rk[rk_offset+ 2] ^ rk[rk_offset+ 7];
-                rk[rk_offset+ 9] = rk[rk_offset+ 3] ^ rk[rk_offset+ 8];
-                if (++i == 8) {
-                    this._Nr = 12;
-                    return;
-                }
-                rk[rk_offset+10] = rk[rk_offset+ 4] ^ rk[rk_offset+ 9];
-                rk[rk_offset+11] = rk[rk_offset+ 5] ^ rk[rk_offset+10];
-                rk_offset += 6;
-            }
-        }
-        
-        rk[rk_offset+6] = GETU32(cipherKey, 24);
-        rk[rk_offset+7] = GETU32(cipherKey, 28);
-        if (keySize == 256) {
-            for (;;) {
-                temp = rk[rk_offset+ 7];
-                rk[rk_offset+ 8] = rk[rk_offset+ 0] ^
-                    (Te4[(temp >> 16) & 0xff] & 0xff000000) ^
-                    (Te4[(temp >>  8) & 0xff] & 0x00ff0000) ^
-                    (Te4[(temp      ) & 0xff] & 0x0000ff00) ^
-                    (Te4[(temp >> 24) & 0xff] & 0x000000ff) ^
-                    rcon[i];
-                rk[rk_offset+ 9] = rk[rk_offset+ 1] ^ rk[rk_offset+ 8];
-                rk[rk_offset+10] = rk[rk_offset+ 2] ^ rk[rk_offset+ 9];
-                rk[rk_offset+11] = rk[rk_offset+ 3] ^ rk[rk_offset+10];
-                if (++i == 7) {                    
-                     this._Nr = 14;
-                    return;
-                }
-                temp = rk[rk_offset+11];
-                rk[rk_offset+12] = rk[rk_offset+ 4] ^
-                    (Te4[(temp >> 24) & 0xff] & 0xff000000) ^
-                    (Te4[(temp >> 16) & 0xff] & 0x00ff0000) ^
-                    (Te4[(temp >>  8) & 0xff] & 0x0000ff00) ^
-                    (Te4[(temp      ) & 0xff] & 0x000000ff);
-                rk[rk_offset+13] = rk[rk_offset+ 5] ^ rk[rk_offset+12];
-                rk[rk_offset+14] = rk[rk_offset+ 6] ^ rk[rk_offset+13];
-                rk[rk_offset+15] = rk[rk_offset+ 7] ^ rk[rk_offset+14];
-                rk_offset += 8;
-            }
-        }        
-    }
 
     /*
      * Expand the cipher key into the decryption key schedule.
@@ -1025,280 +1033,301 @@ limitations under the License.
      * @return	the number of rounds for the given cipher key size.
      */
     function rijndaelKeySetupDec(cipherKey) {
-        var i,j;
-        var temp;
+            var i, j;
+            var temp;
 
-        /* expand the cipher key: */
-        rijndaelKeySetupEnc.call(this,cipherKey);
-        var Nr = this._Nr;
-        var rk = this._rk;
-        var rk_offset = 0;
+            /* expand the cipher key: */
+            rijndaelKeySetupEnc.call(this, cipherKey);
+            var Nr = this._Nr;
+            var rk = this._rk;
+            var rk_offset = 0;
 
-        /* invert the order of the round keys: */
-        for (i = 0, j = 4*Nr; i < j; i += 4, j -= 4) {
-            temp = rk[rk_offset+i    ]; rk[rk_offset+i    ] = rk[rk_offset+j    ]; rk[rk_offset+j    ] = temp;
-            temp = rk[rk_offset+i + 1]; rk[rk_offset+i + 1] = rk[rk_offset+j + 1]; rk[rk_offset+j + 1] = temp;
-            temp = rk[rk_offset+i + 2]; rk[rk_offset+i + 2] = rk[rk_offset+j + 2]; rk[rk_offset+j + 2] = temp;
-            temp = rk[rk_offset+i + 3]; rk[rk_offset+i + 3] = rk[rk_offset+j + 3]; rk[rk_offset+j + 3] = temp;
+            /* invert the order of the round keys: */
+            for (i = 0, j = 4 * Nr; i < j; i += 4, j -= 4) {
+                temp = rk[rk_offset + i];
+                rk[rk_offset + i] = rk[rk_offset + j];
+                rk[rk_offset + j] = temp;
+                temp = rk[rk_offset + i + 1];
+                rk[rk_offset + i + 1] = rk[rk_offset + j + 1];
+                rk[rk_offset + j + 1] = temp;
+                temp = rk[rk_offset + i + 2];
+                rk[rk_offset + i + 2] = rk[rk_offset + j + 2];
+                rk[rk_offset + j + 2] = temp;
+                temp = rk[rk_offset + i + 3];
+                rk[rk_offset + i + 3] = rk[rk_offset + j + 3];
+                rk[rk_offset + j + 3] = temp;
+            }
+            /* apply the inverse MixColumn transform to all round keys but the first and the last: */
+            for (i = 1; i < Nr; i++) {
+                rk_offset += 4;
+                rk[rk_offset] =
+                    Td0[Te4[(rk[rk_offset] >> 24) & 0xff] & 0xff] ^
+                    Td1[Te4[(rk[rk_offset] >> 16) & 0xff] & 0xff] ^
+                    Td2[Te4[(rk[rk_offset] >> 8) & 0xff] & 0xff] ^
+                    Td3[Te4[(rk[rk_offset]      ) & 0xff] & 0xff];
+                rk[rk_offset + 1] =
+                    Td0[Te4[(rk[rk_offset + 1] >> 24) & 0xff] & 0xff] ^
+                    Td1[Te4[(rk[rk_offset + 1] >> 16) & 0xff] & 0xff] ^
+                    Td2[Te4[(rk[rk_offset + 1] >> 8) & 0xff] & 0xff] ^
+                    Td3[Te4[(rk[rk_offset + 1]      ) & 0xff] & 0xff];
+                rk[rk_offset + 2] =
+                    Td0[Te4[(rk[rk_offset + 2] >> 24) & 0xff] & 0xff] ^
+                    Td1[Te4[(rk[rk_offset + 2] >> 16) & 0xff] & 0xff] ^
+                    Td2[Te4[(rk[rk_offset + 2] >> 8) & 0xff] & 0xff] ^
+                    Td3[Te4[(rk[rk_offset + 2]      ) & 0xff] & 0xff];
+                rk[rk_offset + 3] =
+                    Td0[Te4[(rk[rk_offset + 3] >> 24) & 0xff] & 0xff] ^
+                    Td1[Te4[(rk[rk_offset + 3] >> 16) & 0xff] & 0xff] ^
+                    Td2[Te4[(rk[rk_offset + 3] >> 8) & 0xff] & 0xff] ^
+                    Td3[
+                    Te4[(rk[rk_offset + 3]      ) & 0xff] & 0xff];
+            }
+            return Nr;
         }
-        /* apply the inverse MixColumn transform to all round keys but the first and the last: */
-        for (i = 1; i < Nr; i++) {
-            rk_offset += 4;
-            rk[rk_offset+0] =
-                Td0[Te4[(rk[rk_offset+0] >> 24) & 0xff] & 0xff] ^
-                Td1[Te4[(rk[rk_offset+0] >> 16) & 0xff] & 0xff] ^
-                Td2[Te4[(rk[rk_offset+0] >>  8) & 0xff] & 0xff] ^
-                Td3[Te4[(rk[rk_offset+0]      ) & 0xff] & 0xff];
-            rk[rk_offset+1] =
-                Td0[Te4[(rk[rk_offset+1] >> 24) & 0xff] & 0xff] ^
-                Td1[Te4[(rk[rk_offset+1] >> 16) & 0xff] & 0xff] ^
-                Td2[Te4[(rk[rk_offset+1] >>  8) & 0xff] & 0xff] ^
-                Td3[Te4[(rk[rk_offset+1]      ) & 0xff] & 0xff];
-            rk[rk_offset+2] =
-                Td0[Te4[(rk[rk_offset+2] >> 24) & 0xff] & 0xff] ^
-                Td1[Te4[(rk[rk_offset+2] >> 16) & 0xff] & 0xff] ^
-                Td2[Te4[(rk[rk_offset+2] >>  8) & 0xff] & 0xff] ^
-                Td3[Te4[(rk[rk_offset+2]      ) & 0xff] & 0xff];
-            rk[rk_offset+3] =
-                Td0[Te4[(rk[rk_offset+3] >> 24) & 0xff] & 0xff] ^
-                Td1[Te4[(rk[rk_offset+3] >> 16) & 0xff] & 0xff] ^
-                Td2[Te4[(rk[rk_offset+3] >>  8) & 0xff] & 0xff] ^
-                Td3[Te4[(rk[rk_offset+3]      ) & 0xff] & 0xff];
-        }  
-        return Nr;
-    }
 
     /*
      * @param {byte[]} pt plain text block
      * @return {byte[]} ciphered text block
      */
-    function  rijndaelEncrypt(pt) {
-        var s0, s1, s2, s3, t0, t1, t2, t3;
-        var ct = [];
+    function rijndaelEncrypt(pt) {
+            var s0, s1, s2, s3, t0, t1, t2, t3;
+            var ct = [];
 
-        var rk = this._rk;
-        var r  = this._Nr >> 1;
-        var rk_offset = 0;
+            var rk = this._rk;
+            var r = this._Nr >> 1;
+            var rk_offset = 0;
 
-        /*
-         * map byte array block to cipher state
-         * and add initial round key:
-         */
-        s0 = GETU32(pt,  0) ^ rk[rk_offset+0];
-        s1 = GETU32(pt,  4) ^ rk[rk_offset+1];
-        s2 = GETU32(pt,  8) ^ rk[rk_offset+2];
-        s3 = GETU32(pt, 12) ^ rk[rk_offset+3];
-        /*
-         * Nr - 1 full rounds:
-         */
-        for (;;) {
-            t0 =
-                Te0[(s0 >> 24) & 0xff] ^
-                Te1[(s1 >> 16) & 0xff] ^
-                Te2[(s2 >>  8) & 0xff] ^
-                Te3[(s3      ) & 0xff] ^
-                rk[rk_offset+4];
-            t1 =
-                Te0[(s1 >> 24) & 0xff] ^
-                Te1[(s2 >> 16) & 0xff] ^
-                Te2[(s3 >>  8) & 0xff] ^
-                Te3[(s0      ) & 0xff] ^
-                rk[rk_offset+5];
-            t2 =
-                Te0[(s2 >> 24) & 0xff] ^
-                Te1[(s3 >> 16) & 0xff] ^
-                Te2[(s0 >>  8) & 0xff] ^
-                Te3[(s1      ) & 0xff] ^
-                rk[rk_offset+6];
-            t3 =
-                Te0[(s3 >> 24) & 0xff] ^
-                Te1[(s0 >> 16) & 0xff] ^
-                Te2[(s1 >>  8) & 0xff] ^
-                Te3[(s2      ) & 0xff] ^
-                rk[rk_offset+7];
-            
-            rk_offset += 8;
-            if (--r == 0) {
-                break;
+            /*
+             * map byte array block to cipher state
+             * and add initial round key:
+             */
+            s0 = GETU32(pt, 0) ^ rk[rk_offset];
+            s1 = GETU32(pt, 4) ^ rk[rk_offset + 1];
+            s2 = GETU32(pt, 8) ^ rk[rk_offset + 2];
+            s3 = GETU32(pt, 12) ^ rk[rk_offset + 3];
+            /*
+             * Nr - 1 full rounds:
+             */
+            for (; ;) {
+                t0 =
+                    Te0[(s0 >> 24) & 0xff] ^
+                    Te1[(s1 >> 16) & 0xff] ^
+                    Te2[(s2 >> 8) & 0xff] ^
+                    Te3[(s3      ) & 0xff] ^
+                    rk[rk_offset + 4];
+                t1 =
+                    Te0[(s1 >> 24) & 0xff] ^
+                    Te1[(s2 >> 16) & 0xff] ^
+                    Te2[(s3 >> 8) & 0xff] ^
+                    Te3[(s0      ) & 0xff] ^
+                    rk[rk_offset + 5];
+                t2 =
+                    Te0[(s2 >> 24) & 0xff] ^
+                    Te1[(s3 >> 16) & 0xff] ^
+                    Te2[(s0 >> 8) & 0xff] ^
+                    Te3[(s1      ) & 0xff] ^
+                    rk[rk_offset + 6];
+                t3 =
+                    Te0[(s3 >> 24) & 0xff] ^
+                    Te1[(s0 >> 16) & 0xff] ^
+                    Te2[(s1 >> 8) & 0xff] ^
+                    Te3[(s2      ) & 0xff] ^
+                    rk[rk_offset + 7];
+
+                rk_offset += 8;
+                if (
+
+                    --r === 0) {
+                    break;
+                }
+
+                s0 =
+                    Te0[(t0 >> 24) & 0xff] ^
+                    Te1[(t1 >> 16) & 0xff] ^
+                    Te2[(t2 >> 8) & 0xff] ^
+                    Te3[(t3      ) & 0xff] ^
+                    rk[rk_offset];
+                s1 =
+                    Te0[(t1 >> 24) & 0xff] ^
+                    Te1[(t2 >> 16) & 0xff] ^
+                    Te2[(t3 >> 8) & 0xff] ^
+                    Te3[(t0      ) & 0xff] ^
+                    rk[rk_offset + 1];
+                s2 =
+                    Te0[(t2 >> 24) & 0xff] ^
+                    Te1[(t3 >> 16) &
+                    0xff] ^
+                    Te2[(t0 >> 8) & 0xff] ^
+                    Te3[(t1      ) & 0xff] ^
+                    rk[rk_offset + 2];
+                s3 =
+                    Te0[(t3 >> 24) & 0xff] ^
+                    Te1[(t0 >> 16) & 0xff] ^
+                    Te2[(t1 >> 8
+
+                    ) & 0xff] ^
+                    Te3[(t2      ) & 0xff] ^
+                    rk[rk_offset + 3];
             }
-            
+
+            /*
+             * apply last round and
+             * map cipher state to byte array block:
+             */
             s0 =
-                Te0[(t0 >> 24) & 0xff] ^
-                Te1[(t1 >> 16) & 0xff] ^
-                Te2[(t2 >>  8) & 0xff] ^
-                Te3[(t3      ) & 0xff] ^
-                rk[rk_offset+0];
+                (Te4[(t0 >> 24) & 0xff] & 0xff000000) ^
+                (Te4[(t1 >> 16) & 0xff] & 0x00ff0000) ^
+                (Te4[(t2 >> 8) & 0xff] & 0x0000ff00) ^
+                (Te4[(t3      ) & 0xff] & 0x000000ff) ^
+                rk[rk_offset];
+            PUTU32(ct, 0, s0);
             s1 =
-                Te0[(t1 >> 24) & 0xff] ^
-                Te1[(t2 >> 16) & 0xff] ^
-                Te2[(t3 >>  8) & 0xff] ^
-                Te3[(t0      ) & 0xff] ^
-                rk[rk_offset+1];
+                (Te4[(t1 >> 24) & 0xff] & 0xff000000) ^
+                (Te4[(t2 >> 16) & 0xff] & 0x00ff0000) ^
+                (Te4[(t3 >> 8) & 0xff] & 0x0000ff00) ^
+                (Te4[(t0      ) & 0xff] & 0x000000ff) ^
+                rk[rk_offset + 1];
+            PUTU32(ct, 4, s1);
             s2 =
-                Te0[(t2 >> 24) & 0xff] ^
-                Te1[(t3 >> 16) & 0xff] ^
-                Te2[(t0 >>  8) & 0xff] ^
-                Te3[(t1      ) & 0xff] ^
-            rk[rk_offset+2];
+                (Te4[(t2 >> 24) & 0xff] & 0xff000000) ^
+                (Te4[(t3 >> 16) & 0xff] & 0x00ff0000) ^
+                (Te4[(t0 >> 8) & 0xff] & 0x0000ff00) ^
+                (Te4[(t1      ) & 0xff] & 0x000000ff) ^
+                rk[rk_offset + 2];
+            PUTU32(ct, 8, s2);
             s3 =
-                Te0[(t3 >> 24) & 0xff] ^
-                Te1[(t0 >> 16) & 0xff] ^
-                Te2[(t1 >>  8) & 0xff] ^
-                Te3[(t2      ) & 0xff] ^
-                rk[rk_offset+3];
+                (Te4[(t3 >> 24) & 0xff] & 0xff000000) ^
+                (Te4[(t0 >> 16) & 0xff] & 0x00ff0000) ^
+                (Te4[(t1 >> 8) & 0xff] &
+
+                0x0000ff00) ^
+                (Te4[(t2      ) & 0xff] & 0x000000ff) ^
+                rk[rk_offset + 3];
+            PUTU32(ct, 12, s3);
+
+            return ct;
         }
-        
-        /*
-         * apply last round and
-         * map cipher state to byte array block:
-         */
-        s0 =
-            (Te4[(t0 >> 24) & 0xff] & 0xff000000) ^
-            (Te4[(t1 >> 16) & 0xff] & 0x00ff0000) ^
-            (Te4[(t2 >>  8) & 0xff] & 0x0000ff00) ^
-            (Te4[(t3      ) & 0xff] & 0x000000ff) ^
-            rk[rk_offset+0];
-        PUTU32(ct,  0, s0);
-        s1 =
-            (Te4[(t1 >> 24) & 0xff] & 0xff000000) ^
-            (Te4[(t2 >> 16) & 0xff] & 0x00ff0000) ^
-            (Te4[(t3 >>  8) & 0xff] & 0x0000ff00) ^
-            (Te4[(t0      ) & 0xff] & 0x000000ff) ^
-            rk[rk_offset+1];
-        PUTU32(ct,  4, s1);
-        s2 =
-            (Te4[(t2 >> 24) & 0xff] & 0xff000000) ^
-            (Te4[(t3 >> 16) & 0xff] & 0x00ff0000) ^
-            (Te4[(t0 >>  8) & 0xff] & 0x0000ff00) ^
-            (Te4[(t1      ) & 0xff] & 0x000000ff) ^
-            rk[rk_offset+2];
-        PUTU32(ct,  8, s2);
-        s3 =
-            (Te4[(t3 >> 24) & 0xff] & 0xff000000) ^
-            (Te4[(t0 >> 16) & 0xff] & 0x00ff0000) ^
-            (Te4[(t1 >>  8) & 0xff] & 0x0000ff00) ^
-            (Te4[(t2      ) & 0xff] & 0x000000ff) ^
-            rk[rk_offset+3];
-        PUTU32(ct, 12, s3);
-        
-        return ct;
-    }
 
     /*
      * @param {byte[]}  ct cipher text block
      * @return {byte[]} plain text block
      */
     function rijndaelDecrypt(ct) {
-        var s0, s1, s2, s3, t0, t1, t2, t3;
-        var pt = [];
-        
-        var rk = this._rk;
-        var r  = this._Nr >> 1;
-        var rk_offset = 0;
+            var s0, s1, s2, s3, t0, t1, t2, t3;
+            var pt = [];
 
-        /*
-         * map byte array block to cipher state
-         * and add initial round key:
-         */
-        s0 = GETU32(ct,  0) ^ rk[rk_offset+0];
-        s1 = GETU32(ct,  4) ^ rk[rk_offset+1];
-        s2 = GETU32(ct,  8) ^ rk[rk_offset+2];
-        s3 = GETU32(ct, 12) ^ rk[rk_offset+3];
-        /*
-         * Nr - 1 full rounds:
-         */
-        for (;;) {
-            t0 =
-                Td0[(s0 >> 24) & 0xff] ^
-                Td1[(s3 >> 16) & 0xff] ^
-                Td2[(s2 >>  8) & 0xff] ^
-                Td3[(s1      ) & 0xff] ^
-                rk[rk_offset+4];
-            t1 =
-                Td0[(s1 >> 24) & 0xff] ^
-                Td1[(s0 >> 16) & 0xff] ^
-                Td2[(s3 >>  8) & 0xff] ^
-                Td3[(s2      ) & 0xff] ^
-                rk[rk_offset+5];
-            t2 =
-                Td0[(s2 >> 24) & 0xff] ^
-                Td1[(s1 >> 16) & 0xff] ^
-                Td2[(s0 >>  8) & 0xff] ^
-                Td3[(s3      ) & 0xff] ^
-                rk[rk_offset+6];
-            t3 =
-                Td0[(s3 >> 24) & 0xff] ^
-                Td1[(s2 >> 16) & 0xff] ^
-                Td2[(s1 >>  8) & 0xff] ^
-                Td3[(s0      ) & 0xff] ^
-                rk[rk_offset+7];
-            
-            rk_offset += 8;
-            if (--r == 0) {
-                break;
+            var rk = this._rk;
+            var r = this._Nr >> 1;
+            var rk_offset = 0;
+
+            /*
+             * map byte array block to cipher state
+             * and add initial round key:
+             */
+            s0 = GETU32(ct, 0) ^ rk[rk_offset];
+            s1 = GETU32(ct, 4) ^ rk[rk_offset + 1];
+            s2 = GETU32(ct, 8) ^ rk[rk_offset + 2];
+            s3 = GETU32(ct, 12) ^ rk[rk_offset + 3];
+            /*
+             * Nr - 1 full rounds:
+             */
+            for (; ;) {
+                t0 =
+                    Td0[(s0 >> 24) & 0xff] ^
+                    Td1[(s3 >> 16) & 0xff] ^
+                    Td2[(s2 >> 8) & 0xff] ^
+                    Td3[(s1      ) & 0xff] ^
+                    rk[rk_offset + 4];
+                t1 =
+                    Td0[(s1 >> 24) & 0xff] ^
+                    Td1[(s0 >> 16) & 0xff] ^
+                    Td2[(s3 >> 8) & 0xff] ^
+                    Td3[(s2      ) & 0xff] ^
+                    rk[rk_offset + 5];
+                t2 =
+                    Td0[(s2 >> 24) & 0xff] ^
+                    Td1[(s1 >> 16) & 0xff] ^
+                    Td2[(s0 >> 8) & 0xff] ^
+                    Td3[(s3      ) & 0xff] ^
+                    rk[rk_offset + 6];
+                t3 =
+                    Td0[(s3 >> 24) & 0xff] ^
+                    Td1[(
+
+                    s2 >> 16) & 0xff] ^
+                    Td2[(s1 >> 8) & 0xff] ^
+                    Td3[
+
+                    (s0      ) & 0xff] ^
+                    rk[rk_offset + 7];
+
+                rk_offset += 8;
+                if (--r === 0) {
+                    break;
+                }
+
+                s0 =
+                    Td0[(t0 >> 24) & 0xff] ^
+                    Td1[(t3 >> 16) & 0xff] ^
+                    Td2[(t2 >> 8) & 0xff] ^
+                    Td3[(t1      ) & 0xff] ^
+                    rk[rk_offset];
+                s1 =
+                    Td0[(t1 >> 24) & 0xff] ^
+                    Td1[(t0 >> 16) & 0xff] ^
+                    Td2[(t3 >> 8) & 0xff] ^
+                    Td3[(t2      ) & 0xff] ^
+                    rk[rk_offset + 1];
+                s2 =
+                    Td0[(t2 >> 24) & 0xff] ^
+                    Td1[(t1 >> 16) & 0xff] ^
+                    Td2[(t0 >> 8) & 0xff] ^
+                    Td3[(t3      ) & 0xff] ^
+                    rk[rk_offset + 2];
+                s3 =
+                    Td0[(t3 >> 24) & 0xff] ^
+                    Td1[(t2 >> 16) & 0xff] ^
+                    Td2[(t1 >> 8) & 0xff] ^
+                    Td3[(t0      ) & 0xff] ^
+                    rk[rk_offset + 3];
             }
-            
+            /*
+             * apply last round and
+             * map cipher state to byte array block:
+             */
             s0 =
-                Td0[(t0 >> 24) & 0xff] ^
-                Td1[(t3 >> 16) & 0xff] ^
-                Td2[(t2 >>  8) & 0xff] ^
-                Td3[(t1      ) & 0xff] ^
-                rk[rk_offset+0];
+                (Td4[(t0 >> 24) & 0xff] & 0xff000000) ^
+                (Td4[(t3 >> 16) & 0xff] & 0x00ff0000) ^
+                (Td4[(t2 >> 8) & 0xff] & 0x0000ff00) ^
+                (Td4[(t1      ) & 0xff] & 0x000000ff) ^
+                rk[rk_offset];
+            PUTU32(pt, 0, s0);
             s1 =
-                Td0[(t1 >> 24) & 0xff] ^
-                Td1[(t0 >> 16) & 0xff] ^
-                Td2[(t3 >>  8) & 0xff] ^
-                Td3[(t2      ) & 0xff] ^
-                rk[rk_offset+1];
+                (Td4[(t1 >> 24) & 0xff] & 0xff000000) ^
+                (Td4[(t0 >> 16) & 0xff] & 0x00ff0000) ^
+                (Td4[(t3 >> 8) & 0xff] & 0x0000ff00) ^
+                (Td4[(t2      ) & 0xff] & 0x000000ff) ^
+                rk[rk_offset + 1];
+            PUTU32(pt, 4, s1);
             s2 =
-                Td0[(t2 >> 24) & 0xff] ^
-                Td1[(t1 >> 16) & 0xff] ^
-                Td2[(t0 >>  8) & 0xff] ^
-                Td3[(t3      ) & 0xff] ^
-                rk[rk_offset+2];
+                (Td4[(t2 >> 24) & 0xff] & 0xff000000) ^
+                (Td4[(t1 >> 16) & 0xff] & 0x00ff0000) ^
+                (Td4[(t0 >> 8) & 0xff] & 0x0000ff00) ^
+                (Td4[(t3      ) & 0xff] & 0x000000ff) ^
+                rk[rk_offset + 2];
+            PUTU32(pt, 8, s2);
             s3 =
-                Td0[(t3 >> 24) & 0xff] ^
-                Td1[(t2 >> 16) & 0xff] ^
-                Td2[(t1 >>  8) & 0xff] ^
-                Td3[(t0      ) & 0xff] ^
-                rk[rk_offset+3];
-        }
-        /*
-         * apply last round and
-         * map cipher state to byte array block:
-         */
-        s0 =
-            (Td4[(t0 >> 24) & 0xff] & 0xff000000) ^
-            (Td4[(t3 >> 16) & 0xff] & 0x00ff0000) ^
-            (Td4[(t2 >>  8) & 0xff] & 0x0000ff00) ^
-            (Td4[(t1      ) & 0xff] & 0x000000ff) ^
-            rk[rk_offset+0];
-        PUTU32(pt,  0, s0);
-        s1 =
-            (Td4[(t1 >> 24) & 0xff] & 0xff000000) ^
-            (Td4[(t0 >> 16) & 0xff] & 0x00ff0000) ^
-            (Td4[(t3 >>  8) & 0xff] & 0x0000ff00) ^
-            (Td4[(t2      ) & 0xff] & 0x000000ff) ^
-            rk[rk_offset+1];
-        PUTU32(pt,  4, s1);
-        s2 =
-            (Td4[(t2 >> 24) & 0xff] & 0xff000000) ^
-            (Td4[(t1 >> 16) & 0xff] & 0x00ff0000) ^
-            (Td4[(t0 >>  8) & 0xff] & 0x0000ff00) ^
-            (Td4[(t3      ) & 0xff] & 0x000000ff) ^
-            rk[rk_offset+2];
-        PUTU32(pt,  8, s2);
-        s3 =
-            (Td4[(t3 >> 24) & 0xff] & 0xff000000) ^
-            (Td4[(t2 >> 16) & 0xff] & 0x00ff0000) ^
-            (Td4[(t1 >>  8) & 0xff] & 0x0000ff00) ^
-            (Td4[(t0      ) & 0xff] & 0x000000ff) ^
-            rk[rk_offset+3];
-        PUTU32(pt, 12, s3);
+                (Td4[(t3 >> 24) & 0xff] & 0xff000000) ^
+                (Td4[(t2 >> 16) & 0xff] & 0x00ff0000) ^
+                (Td4[(t1 >> 8) & 0xff] & 0x0000ff00) ^
+                (Td4[(t0      ) & 0xff] & 0x000000ff) ^
+                rk[rk_offset + 3];
+            PUTU32(pt, 12, s3);
 
-        return pt;
-    }
+            return pt;
+        }
+
     // --- END OF: Moified Vincent Rijmen, Antoon Bosselaers, Paulo Barreto AES code ---
 
 
-}());
+}();

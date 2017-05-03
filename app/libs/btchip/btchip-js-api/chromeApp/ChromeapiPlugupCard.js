@@ -1,3 +1,4 @@
+var Class = require("../../../jquery-2.1.1.min.js");
 /*
 ************************************************************************
 Copyright (c) 2013-2014 UBINITY SAS
@@ -31,7 +32,7 @@ var ChromeapiPlugupCard = Class.extend(Card, {
 		if (typeof timeout == "undefined") {
 			timeout = 0;
 		}
-		this.winusb = (device['transport'] == 'winusb');
+		this.winusb = (device['transport'] === 'winusb');
 		this.device = new chromeDevice(device);
 		this.terminal = terminal;
 		this.timeout = timeout;
@@ -81,7 +82,7 @@ var ChromeapiPlugupCard = Class.extend(Card, {
 			result = new ByteString(header, HEX);
 			result = result.concat(command.bytes(offset, blockSize));
 			offset += blockSize;
-			while (offset != command.length) {
+			while (offset !== command.length) {
 				header = Convert.toHexByte((channel >> 8) & 0xff);
 				header += Convert.toHexByte(channel & 0xff);
 				header += Convert.toHexByte(0x05);
@@ -116,7 +117,7 @@ var ChromeapiPlugupCard = Class.extend(Card, {
 		deferred.promise.apdu = apdu;
 		deferred.promise.returnLength = returnLength;
 
-		if (this.timeout != 0) {
+		if (this.timeout !== 0) {
 			exchangeTimeout = setTimeout(function() {
 				deferred.reject("timeout");
 			}, this.timeout);
@@ -125,14 +126,14 @@ var ChromeapiPlugupCard = Class.extend(Card, {
 		// enter the exchange wait list
 		currentObject.exchangeStack.push(deferred);
 
-		if (currentObject.exchangeStack.length == 1) {
+		if (currentObject.exchangeStack.length === 1) {
 			var processNextExchange = function() {
 
 				// don't pop it now, to avoid multiple at once
 				var deferred = currentObject.exchangeStack[0];
 
 				// notify graphical listener
-				if (typeof currentObject.listener != "undefined") {
+				if (typeof currentObject.listener !== "undefined") {
 					currentObject.listener.begin();
 				}
 
@@ -155,19 +156,19 @@ var ChromeapiPlugupCard = Class.extend(Card, {
 							if ((typeof data == "undefined") || (data.length < 7 + 5)) {
 								return;
 							}
-							if (data.byteAt(offset++) != ((channel >> 8) & 0xff)) {
+							if (data.byteAt(offset++) !== ((channel >> 8) & 0xff)) {
 								throw "Invalid channel";
 							}
-							if (data.byteAt(offset++) != (channel & 0xff)) {
+							if (data.byteAt(offset++) !== (channel & 0xff)) {
 								throw "Invalid channel";
 							}
-							if (data.byteAt(offset++) != 0x05) {
+							if (data.byteAt(offset++) !== 0x05) {
 								throw "Invalid tag";
 							}
-							if (data.byteAt(offset++) != ((sequenceIdx >> 8) & 0xff)) {
+							if (data.byteAt(offset++) !== ((sequenceIdx >> 8) & 0xff)) {
 								throw "Invalid sequence";
 							}
-							if (data.byteAt(offset++) != (sequenceIdx & 0xff)) {
+							if (data.byteAt(offset++) !== (sequenceIdx & 0xff)) {
 								throw "Invalid sequence";
 							}
 							var responseLength = (data.byteAt(offset) << 8)	+ data.byteAt(offset + 1);
@@ -178,24 +179,24 @@ var ChromeapiPlugupCard = Class.extend(Card, {
 							var blockSize = (responseLength > packetSize - 7 ? packetSize - 7 : responseLength);
 							var result = data.bytes(offset, blockSize);
 							offset += blockSize;
-							while (result.length != responseLength) {
+							while (result.length !== responseLength) {
 								sequenceIdx++;
-								if (offset == data.length) {
+								if (offset === data.length) {
 									return;
 								}
-								if (data.byteAt(offset++) != ((channel >> 8) & 0xff)) {
+								if (data.byteAt(offset++) !== ((channel >> 8) & 0xff)) {
 									throw "Invalid channel";
 								}
-								if (data.byteAt(offset++) != (channel & 0xff)) {
+								if (data.byteAt(offset++) !== (channel & 0xff)) {
 									throw "Invalid channel";
 								}
-								if (data.byteAt(offset++) != 0x05) {
+								if (data.byteAt(offset++) !== 0x05) {
 									throw "Invalid tag";
 								}
-								if (data.byteAt(offset++) != ((sequenceIdx >> 8) & 0xff)) {
+								if (data.byteAt(offset++) !== ((sequenceIdx >> 8) & 0xff)) {
 									throw "Invalid sequence";
 								}
-								if (data.byteAt(offset++) != (sequenceIdx & 0xff)) {
+								if (data.byteAt(offset++) !== (sequenceIdx & 0xff)) {
 									throw "Invalid sequence";
 								}
 								blockSize = ((responseLength - result.length) > packetSize - 5 ? packetSize - 5 : responseLength - result.length);
@@ -207,7 +208,7 @@ var ChromeapiPlugupCard = Class.extend(Card, {
 
 						var received = new ByteString("", HEX);
 						var sendPart = function() {
-							if (offsetSent == deferred.promise.apdu.length) {
+							if (offsetSent === deferred.promise.apdu.length) {
 								return receivePart();
 							}
 							var blockSize = (deferred.promise.apdu.length - offsetSent > 64 ? 64 : deferred.promise.apdu.length - offsetSent);
@@ -217,7 +218,7 @@ var ChromeapiPlugupCard = Class.extend(Card, {
 							for (var i=0; i<paddingSize; i++) {
 								padding += "00";
 							}
-							if (padding.length != 0) {
+							if (padding.length !== 0) {
 								block = block.concat(new ByteString(padding, HEX));
 							}
 							return currentObject.device.send_async(block.toString(HEX)).then(
@@ -235,13 +236,13 @@ var ChromeapiPlugupCard = Class.extend(Card, {
 									received = received.concat(new ByteString(result.data, HEX));
 									if (firstReceived) {
 										firstReceived = false;
-										if ((received.length == 2) || (received.byteAt(0) != 0x61)) {
+										if ((received.length === 2) || (received.byteAt(0) !== 0x61)) {
 											deferredHidSend.resolve({resultCode:0, data:received.toString(HEX)});
 										}
 										else {
 											toReceive = received.byteAt(1);
-											if (toReceive == 0) {
-												toReceive == 256;
+											if (toReceive === 0) {
+												toReceive === 256;
 											}
 											toReceive += 2;
 										}
@@ -279,7 +280,7 @@ var ChromeapiPlugupCard = Class.extend(Card, {
 				performExchange().then(function(result) {
 					var resultBin = new ByteString(result.data, HEX);
 					if (!currentObject.ledger) {
-						if (resultBin.length == 2 || resultBin.byteAt(0) != 0x61) {
+						if (resultBin.length === 2 || resultBin.byteAt(0) !== 0x61) {
 							deferred.promise.SW1 = resultBin.byteAt(0);
 							deferred.promise.SW2 = resultBin.byteAt(1);
 							deferred.promise.response = new ByteString("", HEX);
@@ -287,7 +288,7 @@ var ChromeapiPlugupCard = Class.extend(Card, {
 						else {
 							var size = resultBin.byteAt(1);
 							// fake T0
-							if (size == 0) { size = 256; }
+							if (size === 0) { size = 256; }
 							deferred.promise.response = resultBin.bytes(2, size);
 							deferred.promise.SW1 = resultBin.byteAt(2 + size);
 							deferred.promise.SW2 = resultBin.byteAt(2 + size + 1);
@@ -302,24 +303,24 @@ var ChromeapiPlugupCard = Class.extend(Card, {
 					currentObject.SW1 = deferred.promise.SW1;
 					currentObject.SW2 = deferred.promise.SW2;
 					currentObject.SW = deferred.promise.SW;
-					if (typeof currentObject.logger != "undefined") {
+					if (typeof currentObject.logger !== "undefined") {
 						currentObject.logger.log(currentObject.terminal.getName(), 0, deferred.promise.apdu, deferred.promise.response, deferred.promise.SW);
 					}
 					// build the response
-					if (this.timeout != 0) {
+					if (this.timeout !== 0) {
 						clearTimeout(exchangeTimeout);
 					}
 					deferred.resolve(deferred.promise.response);
 				})
 				.fail(function(err) {
-					if (this.timeout != 0) {
+					if (this.timeout !== 0) {
 						clearTimeout(exchangeTimeout);
 					}
 					deferred.reject(err);
 				})
 				.finally(function () {
 					// notify graphical listener
-					if (typeof currentObject.listener != "undefined") {
+					if (typeof currentObject.listener !== "undefined") {
 						currentObject.listener.end();
 					}
 

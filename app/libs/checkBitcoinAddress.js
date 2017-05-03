@@ -2,7 +2,7 @@
 
     function base58_decode(string) {
         var table = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
-        var table_rev = new Array();
+        var table_rev = [];
 
         var i;
         for (i = 0; i < 58; i++) {
@@ -25,7 +25,7 @@
         var str = hex2a(hex);
 
         var nPad;
-        for (nPad = 0; string[nPad] == table[0]; nPad++);
+        for (nPad = 0; string[nPad] === table[0]; nPad++);
 
         var output = str;
         if (nPad > 0) output = repeat("\0", nPad) + str;
@@ -56,7 +56,7 @@
     }
 
     function pow(big, exp) {
-        if (exp == 0) return int2bigInt(1, 1, 0);
+        if (exp === 0) return int2bigInt(1, 1, 0);
         var i;
         var newbig = big;
         for (i = 1; i < exp; i++) {
@@ -99,8 +99,8 @@
         var good_cksum = hex2a(sha256_digest(hex2a(sha256_digest(rest)))).substr(0, 4);
 
         var version = parseInt(new ByteString(rest.substr(0, rest.length - 20), ASCII).toString(HEX), 16);
-        if (cksum != good_cksum || (version !== ledger.config.network.version.P2SH && version !== ledger.config.network.version.regular)) return false;
-        return true;
+        return !(cksum !== good_cksum || (version !== ledger.config.network.version.P2SH && version !== ledger.config.network.version.regular));
+
     }
 
-})()
+})();

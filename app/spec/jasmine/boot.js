@@ -37,7 +37,7 @@
   /**
    * Add all of the Jasmine global/public interface to the proper global, so a project can use the public interface directly. For example, calling `describe` in specs instead of `jasmine.getEnv().describe`.
    */
-  if (typeof window == "undefined" && typeof exports == "object") {
+  if (typeof window == "undefined" && typeof exports === "object") {
     extend(exports, jasmineInterface);
   } else {
     extend(window, jasmineInterface);
@@ -54,7 +54,7 @@
   });
 
   var catchingExceptions = queryString.getParam("catch");
-  env.catchExceptions(typeof catchingExceptions === "undefined" ? true : catchingExceptions);
+  env.catchExceptions(typeof catchingExceptions == "undefined" ? true : catchingExceptions);
 
   /**
    * ## Reporters

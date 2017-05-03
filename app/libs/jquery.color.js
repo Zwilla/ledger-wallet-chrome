@@ -12,7 +12,7 @@
 
     function b(f) {
         var e;
-        if (f && f.constructor == Array && f.length == 3) {
+        if (f && f.constructor === Array && f.length === 3) {
             return f
         }
         if (e = /rgb\(\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*\)/.exec(f)) {
@@ -36,7 +36,7 @@
         var f;
         do {
             f = d.css(g, e);
-            if (f != "" && f != "transparent" || d.nodeName(g, "body")) {
+            if (f !== "" && f !== "transparent" || d.nodeName(g, "body")) {
                 break
             }
             e = "backgroundColor"

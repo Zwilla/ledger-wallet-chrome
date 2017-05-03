@@ -66,7 +66,7 @@ var BTChip = Class.create({
         for (var i = 0; i < components.length; i++) {
             var hdFlag = 0;
             var component = components[i];
-            if (component.charAt(component.length - 1) == '\'') {
+            if (component.charAt(component.length - 1) === '\'') {
                 hdFlag = 1;
                 component = component.substring(0, component.length - 1);
             }
@@ -110,7 +110,7 @@ var BTChip = Class.create({
                 }
             }
             else {
-                if (bip32SeedOrEntropy.length != 32) {
+                if (bip32SeedOrEntropy.length !== 32) {
                     throw "Invalid seed length";
                 }
                 data += bip32SeedOrEntropy.toString(HEX);
@@ -217,7 +217,7 @@ var BTChip = Class.create({
             }
         }
         else {
-            if (bip32SeedOrEntropy.length != 32) {
+            if (bip32SeedOrEntropy.length !== 32) {
                 throw "Invalid seed length";
             }
             data += bip32SeedOrEntropy.toString(HEX);
@@ -296,7 +296,7 @@ var BTChip = Class.create({
                 }
             }
             else {
-                if (bip32SeedOrEntropy.length != 32) {
+                if (bip32SeedOrEntropy.length !== 32) {
                     throw "Invalid seed length";
                 }
                 data += bip32SeedOrEntropy.toString(HEX);
@@ -311,12 +311,12 @@ var BTChip = Class.create({
                     }
                 }
                 if (bip39Generate) {
-                    if (bip32SeedOrEntropy.length != 32) {
+                    if (bip32SeedOrEntropy.length !== 32) {
                         throw "Invalid entropy length";
                     }
                 }
                 if (bip39Restore) {
-                    if (bip32SeedOrEntropy.length != 48) {
+                    if (bip32SeedOrEntropy.length !== 48) {
                         throw "Invalid encoded BIP 39 mnemonic length"
                     }
                 }
@@ -348,13 +348,13 @@ var BTChip = Class.create({
             var offset = 1;
             var resultList = {};
             resultList['seedFlag'] = seedFlag;
-            if ((modeMask & BTChip.MODE_DEVELOPER) != 0) {
+            if ((modeMask & BTChip.MODE_DEVELOPER) !== 0) {
                 resultList['trustedInputKey'] = result.bytes(offset, 16);
                 offset += 16;
                 resultList['keyWrappingKey'] = result.bytes(offset, 16);
                 offset += 16;
             }
-            if (seedFlag == 0x02) {
+            if (seedFlag === 0x02) {
                 resultList['swappedMnemonic'] = result.bytes(offset, 48);
                 offset += 48;
                 resultList['encryptedDeviceEntropy'] = result.bytes(offset, 32);
@@ -396,7 +396,7 @@ var BTChip = Class.create({
     getFirmwareVersion_async: function () {
         return this.card.sendApdu_async(0xe0, 0xc4, 0x00, 0x00, 0x04, [0x9000]).then(function (result) {
             var response = {};
-            response['compressedPublicKeys'] = (result.byteAt(0) == 0x01);
+            response['compressedPublicKeys'] = (result.byteAt(0) === 0x01);
             response['firmwareVersion'] = result.bytes(1);
             return response;
         });
@@ -410,7 +410,7 @@ var BTChip = Class.create({
 
         if (this.deprecatedBIP32Derivation) {
             var account, chainIndex, internalChain;
-            if (path.length != 3) {
+            if (path.length !== 3) {
                 throw "Invalid BIP 32 path for deprecated BIP32 derivation";
             }
             account = path[0];
@@ -449,7 +449,7 @@ var BTChip = Class.create({
         var path = this.parseBIP32Path(path);
         if (this.deprecatedBIP32Derivation) {
             var account, chainIndex, internalChain;
-            if (path.length != 3) {
+            if (path.length !== 3) {
                 throw "Invalid BIP 32 path for deprecated BIP32 derivation";
             }
             account = path[0];
@@ -471,7 +471,7 @@ var BTChip = Class.create({
 
     signMessageSign_async: function (pin) {
         var data;
-        if (typeof pin != "undefined") {
+        if (typeof pin !== "undefined") {
             data = pin;
         }
         else {
@@ -499,7 +499,7 @@ var BTChip = Class.create({
     },
 
     ecdsaVerifyImmediate_async: function (publicKey, hash, signature, curveFid) {
-        if (typeof curveFid == 'undefined') {
+        if (typeof curveFid === 'undefined') {
             curveFid = 0xb1c0;
         }
         var data = new ByteString(Convert.toHexShort(curveFid) + Convert.toHexByte(publicKey.length), HEX);
@@ -539,9 +539,9 @@ var BTChip = Class.create({
             var scriptBlocks = [];
             var offset = 0;
             var scriptResult;
-            while (offset != script.length) {
+            while (offset !== script.length) {
                 var blockSize = (script.length - offset > 251 ? 251 : script.length - offset);
-                if (((offset + blockSize) != script.length) || (typeof sequence == 'undefined')) {
+                if (((offset + blockSize) !== script.length) || (typeof sequence === 'undefined')) {
                     scriptBlocks.push(script.bytes(offset, blockSize));
                 }
                 else {
@@ -612,11 +612,11 @@ var BTChip = Class.create({
                 },
                 function (finished) {
                     data = transaction['locktime'];
-                    if (typeof transaction['extraData'] != 'undefined') {
+                    if (typeof transaction['extraData'] !== 'undefined') {
                         data = data.concat(currentObject.createVarint(transaction['extraData'].length));
                     }
                     currentObject.getTrustedInputRaw_async(false, undefined, data).then(function (result) {
-                        if (typeof transaction['extraData'] != 'undefined') {
+                        if (typeof transaction['extraData'] !== 'undefined') {
                             processExtraData();
                         }
                         else {
@@ -698,22 +698,22 @@ var BTChip = Class.create({
                     var txhash = currentObject.reverseBytestring(new ByteString(input[0], HEX));
                     var outpoint = currentObject.reverseBytestring(new ByteString(input[1], HEX));
                     data = data.concat(txhash).concat(outpoint);
-                    if (i == currentIndex) {
+                    if (i === currentIndex) {
                         script = new ByteString(redeemScript, HEX);
                     } else {
                         script = "";
                     }
                     data = data.concat(currentObject.createVarint(script.length));
-                    if (script.length == 0) {
+                    if (script.length === 0) {
                         data = data.concat(new ByteString("FFFFFFFF", HEX)); // TODO: unusual sequence
                     }
                     currentObject.startUntrustedHashTransactionInputRaw_async(true, false, data).then(function (result) {
                         var offset = 0;
                         var blocks = [];
-                        while (offset != script.length) {
+                        while (offset !== script.length) {
                             var blockSize = (script.length - offset > 255 ? 255 : script.length - offset);
                             block = script.bytes(offset, blockSize);
-                            if (offset + blockSize == script.length) {
+                            if (offset + blockSize === script.length) {
                                 block = block.concat(new ByteString("FFFFFFFF", HEX)); // TODO: unusual sequence
                             }
                             blocks.push(block);
@@ -760,7 +760,7 @@ var BTChip = Class.create({
             var internalPromise = Q.defer();
             var outputsBlocks = [];
             var offset = 0;
-            while (offset != data.length) {
+            while (offset !== data.length) {
                 var blockSize = (data.length - offset > 255 ? 255 : data.length - offset);
                 outputsBlocks.push(data.bytes(offset, blockSize));
                 offset += blockSize;
@@ -769,7 +769,7 @@ var BTChip = Class.create({
             async.eachSeries(
                 outputsBlocks,
                 function (outputsBlock, finishedCallback) {
-                    currentObject.untrustedHashTransactionInputFinalizeFullRaw_async(i == outputsBlocks.length - 1, outputsBlock).then(function (result) {
+                    currentObject.untrustedHashTransactionInputFinalizeFullRaw_async(i === outputsBlocks.length - 1, outputsBlock).then(function (result) {
                         i += 1;
                         finishedCallback();
                     }).fail(function (err) {
@@ -795,7 +795,7 @@ var BTChip = Class.create({
         var path = this.parseBIP32Path(path);
         if (this.deprecatedBIP32Derivation) {
             var account, chainIndex, internalChain;
-            if (path.length != 3) {
+            if (path.length !== 3) {
                 throw "Invalid BIP 32 path for deprecated BIP32 derivation";
             }
             account = path[0];
@@ -827,10 +827,10 @@ var BTChip = Class.create({
             /* MODIF VINCENT */
             var authorizationMode = outData.byteAt(1 + scriptDataLength);
             var offset = 1 + scriptDataLength + 1;
-            if (authorizationMode == 0x02) {
+            if (authorizationMode === 0x02) {
                 result['authorizationReference'] = outData.bytes(offset);
             }
-            if (authorizationMode == 0x03) {
+            if (authorizationMode === 0x03) {
                 var referenceLength = outData.byteAt(offset++);
                 result['authorizationReference'] = outData.bytes(offset, referenceLength);
                 offset += referenceLength;
@@ -863,7 +863,7 @@ var BTChip = Class.create({
         var path = this.parseBIP32Path(path);
         if (this.deprecatedBIP32Derivation) {
             var account, chainIndex, internalChain;
-            if (path.length != 3) {
+            if (path.length !== 3) {
                 throw "Invalid BIP 32 path for deprecated BIP32 derivation";
             }
             account = path[0];
@@ -894,7 +894,7 @@ var BTChip = Class.create({
     },
 
     compressPublicKey: function (publicKey) {
-        var prefix = ((publicKey.byteAt(64) & 1) != 0 ? 0x03 : 0x02);
+        var prefix = ((publicKey.byteAt(64) & 1) !== 0 ? 0x03 : 0x02);
         return new ByteString(Convert.toHexByte(prefix), HEX).concat(publicKey.bytes(1, 32));
     },
 
@@ -908,7 +908,7 @@ var BTChip = Class.create({
         var signatures = [];
         var firstRun = true;
         var scriptData;
-        var resuming = (typeof authorization != "undefined");
+        var resuming = (typeof authorization !== "undefined");
         var currentObject = this;
 
         if (typeof lockTime == "undefined") {
@@ -1013,7 +1013,7 @@ var BTChip = Class.create({
                                 notify(notifyHashOutputBase58);
                                 currentObject.hashOutputBase58_async(changePath, outputAddress, amount, fees).then(function (resultHash) {
                                     notify(notifyStartUntrustedHash);
-                                    if (resultHash['scriptData'].length != 0) {
+                                    if (resultHash['scriptData'].length !== 0) {
                                         scriptData = resultHash['scriptData'];
                                     }
                                     /* MODIF NESS */
@@ -1146,11 +1146,11 @@ var BTChip = Class.create({
 
         return asyncWhile(function () {return offset < outputScript.length;}, function () {
             var blockSize = ((offset + MAX_BLOCK_FULL) >= outputScript.length ? outputScript.length - offset : MAX_BLOCK_FULL);
-            var p1 = ((offset + blockSize) == outputScript.length ? 0x80 : 0x00);
+            var p1 = ((offset + blockSize) === outputScript.length ? 0x80 : 0x00);
             return self.card.sendApdu_async(0xe0, 0x4a, p1, 0x00, outputScript.bytes(offset, blockSize), [0x9000])
                 .then(function (data) {
                     outData = data;
-                    if (outData.byteAt(0) != 0x00) {
+                    if (outData.byteAt(0) !== 0x00) {
                         encryptedOutputScript = encryptedOutputScript.concat(outData.bytes(1, outData.byteAt(0)));
                     }
                     offset += offset + blockSize;
@@ -1162,11 +1162,11 @@ var BTChip = Class.create({
             result['authorizationRequired'] = (outData.byteAt(1 + scriptDataLength));
             var authorizationMode = outData.byteAt(1 + scriptDataLength);
             var offset = 1 + scriptDataLength + 1;
-            if (authorizationMode == 0x02 || authorizationMode == 0x04) {
+            if (authorizationMode === 0x02 || authorizationMode === 0x04) {
                 var referenceLength = outData.byteAt(offset++);
                 result['authorizationReference'] = outData.bytes(offset, referenceLength);
             }
-            if (authorizationMode == 0x03) {
+            if (authorizationMode === 0x03) {
                 var referenceLength = outData.byteAt(offset++);
                 result['authorizationReference'] = outData.bytes(offset - 1, referenceLength + 1);
                 offset += referenceLength;
@@ -1215,7 +1215,7 @@ var BTChip = Class.create({
         } else if (ledger.config.network.name === "stratis") {
           timestamp = new ByteString(Convert.toHexInt((new Date().getTime() / 1000) - (15 * 60)).match(/([0-9a-f]{2})/g).reverse().join(''), HEX); // Well... Stratis node doesn't like on-time transaction. Only late transaction can go through ><
         }
-        var resuming = (typeof authorization != "undefined");
+        var resuming = (typeof authorization !== "undefined");
         var self = this;
         var targetTransaction = {};
 
@@ -1322,7 +1322,7 @@ var BTChip = Class.create({
         }).then(function () {
             return foreach(inputs, function (input, i) {
                 var usedScript;
-                if ((inputs[i].length == 3) && (typeof inputs[i][2] != "undefined")) {
+                if ((inputs[i].length === 3) && (typeof inputs[i][2] !== "undefined")) {
                     usedScript = inputs[i][2];
                 }
                 else {
@@ -1333,7 +1333,7 @@ var BTChip = Class.create({
                 var notifyStartUntrustedHash = {stage: "hashTransaction", currentUntrustedHash: i + 1};
                 return self.startUntrustedHashTransactionInput_async(firstRun, targetTransaction, trustedInputs).then(function () {
                     notify(notifyHashOutputBase58);
-                    return doIf(!resuming && (typeof changePath != "undefined"), function () {
+                    return doIf(!resuming && (typeof changePath !== "undefined"), function () {
                         return self.provideOutputFullChangePath_async(changePath);
                     }).then (function () {
                         return self.hashOutputFull_async(outputScript);
@@ -1380,7 +1380,7 @@ var BTChip = Class.create({
             result = result.concat(self.reverseBytestring(lockTime));
             return result;
         }).fail(function (failure) {
-            if ((typeof failure) != "undefined" && (typeof failure.authorizationRequired) != "undefined") {
+            if ((typeof failure) !== "undefined" && (typeof failure.authorizationRequired) !== "undefined") {
                 // Recover from failure
                 // This is just the signature interruption due to authorization requirement
                 return failure;
@@ -1525,7 +1525,7 @@ var BTChip = Class.create({
             data = data.concat(input['prevout'].concat(this.createVarint(input['script'].length)));
             data = data.concat(input['script']).concat(input['sequence']);
         }
-        if (typeof transaction['outputs'] != "undefined") {
+        if (typeof transaction['outputs'] !== "undefined") {
             data = data.concat(this.createVarint(transaction['outputs'].length));
             for (var i = 0; i < transaction['outputs'].length; i++) {
                 var output = transaction['outputs'][i];
@@ -1541,10 +1541,10 @@ var BTChip = Class.create({
         if (data.byteAt(offset) < 0xfd) {
             return [data.byteAt(offset), 1];
         }
-        if (data.byteAt(offset) == 0xfd) {
+        if (data.byteAt(offset) === 0xfd) {
             return [((data.byteAt(offset + 2) << 8) + data.byteAt(offset + 1)), 3];
         }
-        if (data.byteAt(offset) == 0xfe) {
+        if (data.byteAt(offset) === 0xfe) {
             return [((data.byteAt(offset + 4) << 24) + (data.byteAt(offset + 3) << 16) +
             (data.byteAt(offset + 2) << 8) + data.byteAt(offset + 1)), 5];
         }
@@ -1615,7 +1615,7 @@ var BTChip = Class.create({
         result['outputs'] = outputs;
         result['locktime'] = locktime;
         offset += 4;
-        if (offset != transaction.length) {
+        if (offset !== transaction.length) {
             result['extraData'] = transaction.bytes(offset);
         }
         return result;

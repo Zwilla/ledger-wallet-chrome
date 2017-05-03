@@ -109,10 +109,10 @@ bridgedDevice.callbacks = {};
 bridgedDevice.id = 0;
 
 window.addEventListener("message", function(event) {
-  if (event.data.destination == "PUP_APP") {
+  if (event.data.destination === "PUP_APP") {
     var promise = bridgedDevice.callbacks[event.data.id];
     delete bridgedDevice.callbacks[event.data.id];
-    if (typeof event.data.response.exception != "undefined") {
+    if (typeof event.data.response.exception !== "undefined") {
       promise.reject(event.data.response.exception);
     }
     else {

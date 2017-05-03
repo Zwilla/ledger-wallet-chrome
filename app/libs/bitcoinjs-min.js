@@ -1,9 +1,9 @@
 ! function(e) {
-  if ("object" == typeof exports && "undefined" != typeof module) module.exports = e();
-  else if ("function" == typeof define && define.amd) define([], e);
+  if ("object" === typeof exports && "undefined" !== typeof module) module.exports = e();
+  else if ("function" === typeof define && define.amd) define([], e);
   else {
     var f;
-    "undefined" != typeof window ? f = window : "undefined" != typeof global ? f = global : "undefined" != typeof self && (f = self), f.bitcoin = e()
+    "undefined" !== typeof window ? f = window : "undefined" !== typeof global ? f = global : "undefined" !== typeof self && (f = self); f.bitcoin = e()
   }
 }(function() {
   var define, module, exports;
@@ -11,7 +11,7 @@
     function s(o, u) {
       if (!n[o]) {
         if (!t[o]) {
-          var a = typeof require == "function" && require;
+          var a = typeof require === "function" && require;
           if (!u && a) return a(o, !0);
           if (i) return i(o, !0);
           var f = new Error("Cannot find module '" + o + "'");
@@ -27,16 +27,16 @@
       }
       return n[o].exports
     }
-    var i = typeof require == "function" && require;
+    var i = typeof require === "function" && require;
     for (var o = 0; o < r.length; o++) s(r[o]);
     return s
   }({
     1: [function(require, module, exports) {
       function BigInteger(a, b, c) {
         if (!(this instanceof BigInteger)) return new BigInteger(a, b, c);
-        if (a != null) {
-          if ("number" == typeof a) this.fromNumber(a, b, c);
-          else if (b == null && "string" != typeof a) this.fromString(a, 256);
+        if (a !== null) {
+          if ("number" === typeof a) this.fromNumber(a, b, c);
+          else if (b === null && "string" !== typeof a) this.fromString(a, 256);
           else this.fromString(a, b)
         }
       }
@@ -108,7 +108,7 @@
 
       function intAt(s, i) {
         var c = BI_RC[s.charCodeAt(i)];
-        return c == null ? -1 : c
+        return c === null ? -1 : c
       }
 
       function bnpCopyTo(r) {
@@ -134,12 +134,12 @@
       function bnpFromString(s, b) {
         var self = this;
         var k;
-        if (b == 16) k = 4;
-        else if (b == 8) k = 3;
-        else if (b == 256) k = 8;
-        else if (b == 2) k = 1;
-        else if (b == 32) k = 5;
-        else if (b == 4) k = 2;
+        if (b === 16) k = 4;
+        else if (b === 8) k = 3;
+        else if (b === 256) k = 8;
+        else if (b === 2) k = 1;
+        else if (b === 32) k = 5;
+        else if (b === 4) k = 2;
         else {
           self.fromRadix(s, b);
           return
@@ -150,13 +150,13 @@
             mi = false,
             sh = 0;
         while (--i >= 0) {
-          var x = k == 8 ? s[i] & 255 : intAt(s, i);
+          var x = k === 8 ? s[i] & 255 : intAt(s, i);
           if (x < 0) {
-            if (s.charAt(i) == "-") mi = true;
+            if (s.charAt(i) === "-") mi = true;
             continue
           }
           mi = false;
-          if (sh == 0) self[self.t++] = x;
+          if (sh === 0) self[self.t++] = x;
           else if (sh + k > self.DB) {
             self[self.t - 1] |= (x & (1 << self.DB - sh) - 1) << sh;
             self[self.t++] = x >> self.DB - sh
@@ -164,7 +164,7 @@
           sh += k;
           if (sh >= self.DB) sh -= self.DB
         }
-        if (k == 8 && (s[0] & 128) != 0) {
+        if (k === 8 && (s[0] & 128) !== 0) {
           self.s = -1;
           if (sh > 0) self[self.t - 1] |= (1 << self.DB - sh) - 1 << sh
         }
@@ -174,18 +174,18 @@
 
       function bnpClamp() {
         var c = this.s & this.DM;
-        while (this.t > 0 && this[this.t - 1] == c) --this.t
+        while (this.t > 0 && this[this.t - 1] === c) --this.t
       }
 
       function bnToString(b) {
         var self = this;
         if (self.s < 0) return "-" + self.negate().toString(b);
         var k;
-        if (b == 16) k = 4;
-        else if (b == 8) k = 3;
-        else if (b == 2) k = 1;
-        else if (b == 32) k = 5;
-        else if (b == 4) k = 2;
+        if (b === 16) k = 4;
+        else if (b === 8) k = 3;
+        else if (b === 2) k = 1;
+        else if (b === 32) k = 5;
+        else if (b === 4) k = 2;
         else return self.toRadix(b);
         var km = (1 << k) - 1,
             d, m = false,
@@ -227,35 +227,35 @@
 
       function bnCompareTo(a) {
         var r = this.s - a.s;
-        if (r != 0) return r;
+        if (r !== 0) return r;
         var i = this.t;
         r = i - a.t;
-        if (r != 0) return this.s < 0 ? -r : r;
+        if (r !== 0) return this.s < 0 ? -r : r;
         while (--i >= 0)
-          if ((r = this[i] - a[i]) != 0) return r;
+          if ((r = this[i] - a[i]) !== 0) return r;
         return 0
       }
 
       function nbits(x) {
         var r = 1,
             t;
-        if ((t = x >>> 16) != 0) {
+        if ((t = x >>> 16) !== 0) {
           x = t;
           r += 16
         }
-        if ((t = x >> 8) != 0) {
+        if ((t = x >> 8) !== 0) {
           x = t;
           r += 8
         }
-        if ((t = x >> 4) != 0) {
+        if ((t = x >> 4) !== 0) {
           x = t;
           r += 4
         }
-        if ((t = x >> 2) != 0) {
+        if ((t = x >> 2) !== 0) {
           x = t;
           r += 2
         }
-        if ((t = x >> 1) != 0) {
+        if ((t = x >> 1) !== 0) {
           x = t;
           r += 1
         }
@@ -368,7 +368,7 @@
         for (i = 0; i < y.t; ++i) r[i + x.t] = x.am(0, y[i], r, i, 0, x.t);
         r.s = 0;
         r.clamp();
-        if (this.s != a.s) BigInteger.ZERO.subTo(r, r)
+        if (this.s !== a.s) BigInteger.ZERO.subTo(r, r)
       }
 
       function bnpSquareTo(r) {
@@ -393,11 +393,11 @@
         if (pm.t <= 0) return;
         var pt = self.abs();
         if (pt.t < pm.t) {
-          if (q != null) q.fromInt(0);
-          if (r != null) self.copyTo(r);
+          if (q !== null) q.fromInt(0);
+          if (r !== null) self.copyTo(r);
           return
         }
-        if (r == null) r = new BigInteger;
+        if (r === null) r = new BigInteger;
         var y = new BigInteger,
             ts = self.s,
             ms = m.s;
@@ -411,14 +411,14 @@
         }
         var ys = y.t;
         var y0 = y[ys - 1];
-        if (y0 == 0) return;
+        if (y0 === 0) return;
         var yt = y0 * (1 << self.F1) + (ys > 1 ? y[ys - 2] >> self.F2 : 0);
         var d1 = self.FV / yt,
             d2 = (1 << self.F1) / yt,
             e = 1 << self.F2;
         var i = r.t,
             j = i - ys,
-            t = q == null ? new BigInteger : q;
+            t = q === null ? new BigInteger : q;
         y.dlShiftTo(j, t);
         if (r.compareTo(t) >= 0) {
           r[r.t++] = 1;
@@ -428,16 +428,16 @@
         t.subTo(y, y);
         while (y.t < ys) y[y.t++] = 0;
         while (--j >= 0) {
-          var qd = r[--i] == y0 ? self.DM : Math.floor(r[i] * d1 + (r[i - 1] + e) * d2);
+          var qd = r[--i] === y0 ? self.DM : Math.floor(r[i] * d1 + (r[i - 1] + e) * d2);
           if ((r[i] += y.am(0, qd, r, j, 0, ys)) < qd) {
             y.dlShiftTo(j, t);
             r.subTo(t, r);
             while (r[i] < --qd) r.subTo(t, r)
           }
         }
-        if (q != null) {
+        if (q !== null) {
           r.drShiftTo(ys, q);
-          if (ts != ms) BigInteger.ZERO.subTo(q, q)
+          if (ts !== ms) BigInteger.ZERO.subTo(q, q)
         }
         r.t = ys;
         r.clamp();
@@ -487,7 +487,7 @@
       function bnpInvDigit() {
         if (this.t < 1) return 0;
         var x = this[0];
-        if ((x & 1) == 0) return 0;
+        if ((x & 1) === 0) return 0;
         var y = x & 3;
         y = y * (2 - (x & 15) * y) & 15;
         y = y * (2 - (x & 255) * y) & 255;
@@ -553,7 +553,7 @@
       Montgomery.prototype.sqrTo = montSqrTo;
 
       function bnpIsEven() {
-        return (this.t > 0 ? this[0] & 1 : this.s) == 0
+        return (this.t > 0 ? this[0] & 1 : this.s) === 0
       }
 
       function bnpExp(e, z) {
@@ -613,19 +613,19 @@
 
       function bnIntValue() {
         if (this.s < 0) {
-          if (this.t == 1) return this[0] - this.DV;
-          else if (this.t == 0) return -1
-        } else if (this.t == 1) return this[0];
-        else if (this.t == 0) return 0;
+          if (this.t === 1) return this[0] - this.DV;
+          else if (this.t === 0) return -1
+        } else if (this.t === 1) return this[0];
+        else if (this.t === 0) return 0;
         return (this[1] & (1 << 32 - this.DB) - 1) << this.DB | this[0]
       }
 
       function bnByteValue() {
-        return this.t == 0 ? this.s : this[0] << 24 >> 24
+        return this.t === 0 ? this.s : this[0] << 24 >> 24
       }
 
       function bnShortValue() {
-        return this.t == 0 ? this.s : this[0] << 16 >> 16
+        return this.t === 0 ? this.s : this[0] << 16 >> 16
       }
 
       function bnpChunkSize(r) {
@@ -634,13 +634,13 @@
 
       function bnSigNum() {
         if (this.s < 0) return -1;
-        else if (this.t <= 0 || this.t == 1 && this[0] <= 0) return 0;
+        else if (this.t <= 0 || this.t === 1 && this[0] <= 0) return 0;
         else return 1
       }
 
       function bnpToRadix(b) {
-        if (b == null) b = 10;
-        if (this.signum() == 0 || b < 2 || b > 36) return "0";
+        if (b === null) b = 10;
+        if (this.signum() === 0 || b < 2 || b > 36) return "0";
         var cs = this.chunkSize(b);
         var a = Math.pow(b, cs);
         var d = nbv(a),
@@ -658,7 +658,7 @@
       function bnpFromRadix(s, b) {
         var self = this;
         self.fromInt(0);
-        if (b == null) b = 10;
+        if (b === null) b = 10;
         var cs = self.chunkSize(b);
         var d = Math.pow(b, cs),
             mi = false,
@@ -667,7 +667,7 @@
         for (var i = 0; i < s.length; ++i) {
           var x = intAt(s, i);
           if (x < 0) {
-            if (s.charAt(i) == "-" && self.signum() == 0) mi = true;
+            if (s.charAt(i) === "-" && self.signum() === 0) mi = true;
             continue
           }
           w = b * w + x;
@@ -687,7 +687,7 @@
 
       function bnpFromNumber(a, b, c) {
         var self = this;
-        if ("number" == typeof b) {
+        if ("number" === typeof b) {
           if (a < 2) self.fromInt(1);
           else {
             self.fromNumber(a, c);
@@ -717,7 +717,7 @@
         var p = self.DB - i * self.DB % 8,
             d, k = 0;
         if (i-- > 0) {
-          if (p < self.DB && (d = self[i] >> p) != (self.s & self.DM) >> p) r[k++] = d | self.s << self.DB - p;
+          if (p < self.DB && (d = self[i] >> p) !== (self.s & self.DM) >> p) r[k++] = d | self.s << self.DB - p;
           while (i >= 0) {
             if (p < 8) {
               d = (self[i] & (1 << p) - 1) << 8 - p;
@@ -729,16 +729,16 @@
                 --i
               }
             }
-            if ((d & 128) != 0) d |= -256;
-            if (k === 0 && (self.s & 128) != (d & 128)) ++k;
-            if (k > 0 || d != self.s) r[k++] = d
+            if ((d & 128) !== 0) d |= -256;
+            if (k === 0 && (self.s & 128) !== (d & 128)) ++k;
+            if (k > 0 || d !== self.s) r[k++] = d
           }
         }
         return r
       }
 
       function bnEquals(a) {
-        return this.compareTo(a) == 0
+        return this.compareTo(a) === 0
       }
 
       function bnMin(a) {
@@ -829,38 +829,38 @@
       }
 
       function lbit(x) {
-        if (x == 0) return -1;
+        if (x === 0) return -1;
         var r = 0;
-        if ((x & 65535) == 0) {
+        if ((x & 65535) === 0) {
           x >>= 16;
           r += 16
         }
-        if ((x & 255) == 0) {
+        if ((x & 255) === 0) {
           x >>= 8;
           r += 8
         }
-        if ((x & 15) == 0) {
+        if ((x & 15) === 0) {
           x >>= 4;
           r += 4
         }
-        if ((x & 3) == 0) {
+        if ((x & 3) === 0) {
           x >>= 2;
           r += 2
         }
-        if ((x & 1) == 0) ++r;
+        if ((x & 1) === 0) ++r;
         return r
       }
 
       function bnGetLowestSetBit() {
         for (var i = 0; i < this.t; ++i)
-          if (this[i] != 0) return i * this.DB + lbit(this[i]);
+          if (this[i] !== 0) return i * this.DB + lbit(this[i]);
         if (this.s < 0) return this.t * this.DB;
         return -1
       }
 
       function cbit(x) {
         var r = 0;
-        while (x != 0) {
+        while (x !== 0) {
           x &= x - 1;
           ++r
         }
@@ -876,8 +876,8 @@
 
       function bnTestBit(n) {
         var j = Math.floor(n / this.DB);
-        if (j >= this.t) return this.s != 0;
-        return (this[j] & 1 << n % this.DB) != 0
+        if (j >= this.t) return this.s !== 0;
+        return (this[j] & 1 << n % this.DB) !== 0
       }
 
       function bnpChangeBit(n, op) {
@@ -982,7 +982,7 @@
       }
 
       function bnpDAddOffset(n, w) {
-        if (n == 0) return;
+        if (n === 0) return;
         while (this.t <= w) this[this.t++] = 0;
         this[w] += n;
         while (this[w] >= this.DV) {
@@ -1126,7 +1126,7 @@
             if (j > 0) w |= e[j - 1] >> this.DB + i - k1
           }
           n = k;
-          while ((w & 1) == 0) {
+          while ((w & 1) === 0) {
             w >>= 1;
             --n
           }
@@ -1151,7 +1151,7 @@
             }
             z.mulTo(r2, g[w], r)
           }
-          while (j >= 0 && (e[j] & 1 << i) == 0) {
+          while (j >= 0 && (e[j] & 1 << i) === 0) {
             z.sqrTo(r, r2);
             t = r;
             r = r2;
@@ -1201,7 +1201,7 @@
         var d = this.DV % n,
             r = this.s < 0 ? n - 1 : 0;
         if (this.t > 0)
-          if (d == 0) r = this[0] % n;
+          if (d === 0) r = this[0] % n;
           else
             for (var i = this.t - 1; i >= 0; --i) r = (d * r + this[i]) % n;
         return r
@@ -1209,14 +1209,14 @@
 
       function bnModInverse(m) {
         var ac = m.isEven();
-        if (this.isEven() && ac || m.signum() == 0) return BigInteger.ZERO;
+        if (this.isEven() && ac || m.signum() === 0) return BigInteger.ZERO;
         var u = m.clone(),
             v = this.clone();
         var a = nbv(1),
             b = nbv(0),
             c = nbv(0),
             d = nbv(1);
-        while (u.signum() != 0) {
+        while (u.signum() !== 0) {
           while (u.isEven()) {
             u.rShiftTo(1, u);
             if (ac) {
@@ -1249,7 +1249,7 @@
             d.subTo(b, d)
           }
         }
-        if (v.compareTo(BigInteger.ONE) != 0) return BigInteger.ZERO;
+        if (v.compareTo(BigInteger.ONE) !== 0) return BigInteger.ZERO;
         if (d.compareTo(m) >= 0) return d.subtract(m);
         if (d.signum() < 0) d.addTo(m, d);
         else return d;
@@ -1261,9 +1261,9 @@
 
       function bnIsProbablePrime(t) {
         var i, x = this.abs();
-        if (x.t == 1 && x[0] <= lowprimes[lowprimes.length - 1]) {
+        if (x.t === 1 && x[0] <= lowprimes[lowprimes.length - 1]) {
           for (i = 0; i < lowprimes.length; ++i)
-            if (x[0] == lowprimes[i]) return true;
+            if (x[0] === lowprimes[i]) return true;
           return false
         }
         if (x.isEven()) return false;
@@ -1274,7 +1274,7 @@
           while (j < lowprimes.length && m < lplim) m *= lowprimes[j++];
           m = x.modInt(m);
           while (i < j)
-            if (m % lowprimes[i++] == 0) return false
+            if (m % lowprimes[i++] === 0) return false
         }
         return x.millerRabin(t)
       }
@@ -1291,18 +1291,18 @@
         for (var i = 0; i < t; ++i) {
           for (;;) {
             j = lowprimes[Math.floor(Math.random() * lowprimes.length)];
-            if (bases.indexOf(j) == -1) break
+            if (bases.indexOf(j) === -1) break
           }
           bases.push(j);
           a.fromInt(j);
           var y = a.modPow(r, this);
-          if (y.compareTo(BigInteger.ONE) != 0 && y.compareTo(n1) != 0) {
+          if (y.compareTo(BigInteger.ONE) !== 0 && y.compareTo(n1) !== 0) {
             var j = 1;
-            while (j++ < k && y.compareTo(n1) != 0) {
+            while (j++ < k && y.compareTo(n1) !== 0) {
               y = y.modPowInt(2, this);
-              if (y.compareTo(BigInteger.ONE) == 0) return false
+              if (y.compareTo(BigInteger.ONE) === 0) return false
             }
-            if (y.compareTo(n1) != 0) return false
+            if (y.compareTo(n1) !== 0) return false
           }
         }
         return true
@@ -1366,7 +1366,7 @@
         var assert = require("assert");
         var BigInteger = require("./bigi");
         BigInteger.fromByteArrayUnsigned = function(byteArray) {
-          if (byteArray[0] & 128) {
+          if (byteArray[0] && 128) {
             return new BigInteger([0].concat(byteArray))
           }
           return new BigInteger(byteArray)
@@ -1380,7 +1380,7 @@
         };
         BigInteger.prototype.toDERInteger = BigInteger.prototype.toByteArray;
         BigInteger.fromBuffer = function(buffer) {
-          if (buffer[0] & 128) {
+          if (buffer[0] && 128) {
             var byteArray = Array.prototype.slice.call(buffer);
             return new BigInteger([0].concat(byteArray))
           }
@@ -1556,10 +1556,10 @@
       }
       assert.ok = ok;
       assert.equal = function equal(actual, expected, message) {
-        if (actual != expected) fail(actual, expected, message, "==", assert.equal)
+        if (actual !== expected) fail(actual, expected, message, "==", assert.equal)
       };
       assert.notEqual = function notEqual(actual, expected, message) {
-        if (actual == expected) {
+        if (actual === expected) {
           fail(actual, expected, message, "!=", assert.notEqual)
         }
       };
@@ -1573,7 +1573,7 @@
         if (actual === expected) {
           return true
         } else if (util.isBuffer(actual) && util.isBuffer(expected)) {
-          if (actual.length != expected.length) return false;
+          if (actual.length !== expected.length) return false;
           for (var i = 0; i < actual.length; i++) {
             if (actual[i] !== expected[i]) return false
           }
@@ -1583,14 +1583,14 @@
         } else if (util.isRegExp(actual) && util.isRegExp(expected)) {
           return actual.source === expected.source && actual.global === expected.global && actual.multiline === expected.multiline && actual.lastIndex === expected.lastIndex && actual.ignoreCase === expected.ignoreCase
         } else if (!util.isObject(actual) && !util.isObject(expected)) {
-          return actual == expected
+          return actual === expected
         } else {
           return objEquiv(actual, expected)
         }
       }
 
       function isArguments(object) {
-        return Object.prototype.toString.call(object) == "[object Arguments]"
+        return Object.prototype.toString.call(object) === "[object Arguments]"
       }
 
       function objEquiv(a, b) {
@@ -1611,11 +1611,11 @@
         } catch (e) {
           return false
         }
-        if (ka.length != kb.length) return false;
+        if (ka.length !== kb.length) return false;
         ka.sort();
         kb.sort();
         for (i = ka.length - 1; i >= 0; i--) {
-          if (ka[i] != kb[i]) return false
+          if (ka[i] !== kb[i]) return false
         }
         for (i = ka.length - 1; i >= 0; i--) {
           key = ka[i];
@@ -1643,7 +1643,7 @@
         if (!actual || !expected) {
           return false
         }
-        if (Object.prototype.toString.call(expected) == "[object RegExp]") {
+        if (Object.prototype.toString.call(expected) === "[object RegExp]") {
           return expected.test(actual)
         } else if (actual instanceof expected) {
           return true
@@ -1759,7 +1759,7 @@
         return buf
       }
       Buffer.isBuffer = function(b) {
-        return !!(b != null && b._isBuffer)
+        return (b !== null && b._isBuffer)
       };
       Buffer.compare = function(a, b) {
         if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b)) throw new TypeError("Arguments must be Buffers");
@@ -1800,7 +1800,7 @@
           return list[0]
         }
         var i;
-        if (totalLength === undefined) {
+        if (totalLength == undefined) {
           totalLength = 0;
           for (i = 0; i < list.length; i++) {
             totalLength += list[i].length
@@ -1850,7 +1850,7 @@
       Buffer.prototype.toString = function(encoding, start, end) {
         var loweredCase = false;
         start = start >>> 0;
-        end = end === undefined || end === Infinity ? this.length : end >>> 0;
+        end = end == undefined || end === Infinity ? this.length : end >>> 0;
         if (!encoding) encoding = "utf8";
         if (start < 0) start = 0;
         if (end > this.length) end = this.length;
@@ -1931,13 +1931,11 @@
       }
 
       function utf8Write(buf, string, offset, length) {
-        var charsWritten = blitBuffer(utf8ToBytes(string), buf, offset, length);
-        return charsWritten
+          return blitBuffer(utf8ToBytes(string), buf, offset, length)
       }
 
       function asciiWrite(buf, string, offset, length) {
-        var charsWritten = blitBuffer(asciiToBytes(string), buf, offset, length);
-        return charsWritten
+          return blitBuffer(asciiToBytes(string), buf, offset, length)
       }
 
       function binaryWrite(buf, string, offset, length) {
@@ -1945,13 +1943,11 @@
       }
 
       function base64Write(buf, string, offset, length) {
-        var charsWritten = blitBuffer(base64ToBytes(string), buf, offset, length);
-        return charsWritten
+          return blitBuffer(base64ToBytes(string), buf, offset, length)
       }
 
       function utf16leWrite(buf, string, offset, length) {
-        var charsWritten = blitBuffer(utf16leToBytes(string), buf, offset, length, 2);
-        return charsWritten
+          return blitBuffer(utf16leToBytes(string), buf, offset, length, 2)
       }
       Buffer.prototype.write = function(string, offset, length, encoding) {
         if (isFinite(offset)) {
@@ -2070,7 +2066,7 @@
       Buffer.prototype.slice = function(start, end) {
         var len = this.length;
         start = ~~start;
-        end = end === undefined ? len : ~~end;
+        end = end == undefined ? len : ~~end;
         if (start < 0) {
           start += len;
           if (start < 0) start = 0
@@ -2122,18 +2118,18 @@
       };
       Buffer.prototype.readInt8 = function(offset, noAssert) {
         if (!noAssert) checkOffset(offset, 1, this.length);
-        if (!(this[offset] & 128)) return this[offset];
+        if (!(this[offset] && 128)) return this[offset];
         return (255 - this[offset] + 1) * -1
       };
       Buffer.prototype.readInt16LE = function(offset, noAssert) {
         if (!noAssert) checkOffset(offset, 2, this.length);
         var val = this[offset] | this[offset + 1] << 8;
-        return val & 32768 ? val | 4294901760 : val
+        return val && 32768 ? val | 4294901760 : val
       };
       Buffer.prototype.readInt16BE = function(offset, noAssert) {
         if (!noAssert) checkOffset(offset, 2, this.length);
         var val = this[offset + 1] | this[offset] << 8;
-        return val & 32768 ? val | 4294901760 : val
+        return val && 32768 ? val | 4294901760 : val
       };
       Buffer.prototype.readInt32LE = function(offset, noAssert) {
         if (!noAssert) checkOffset(offset, 4, this.length);
@@ -2598,7 +2594,7 @@
         }
         exports.toByteArray = b64ToByteArray;
         exports.fromByteArray = uint8ToBase64
-      })(typeof exports === "undefined" ? this.base64js = {} : exports)
+      })(typeof exports == "undefined" ? this.base64js = {} : exports)
     }, {}],
     9: [function(require, module, exports) {
       exports.read = function(buffer, offset, isLE, mLen, nBytes) {
@@ -2677,7 +2673,7 @@
       var isArray = Array.isArray;
       var str = Object.prototype.toString;
       module.exports = isArray || function(val) {
-            return !!val && "[object Array]" == str.call(val)
+            return !!val && "[object Array]" === str.call(val)
           }
     }, {}],
     11: [function(require, module, exports) {
@@ -2887,7 +2883,7 @@
     }, {}],
     13: [function(require, module, exports) {
       module.exports = Array.isArray || function(arr) {
-            return Object.prototype.toString.call(arr) == "[object Array]"
+            return Object.prototype.toString.call(arr) === "[object Array]"
           }
     }, {}],
     14: [function(require, module, exports) {
@@ -2972,8 +2968,8 @@
           Writable.call(this, options);
           if (options && options.readable === false) this.readable = false;
           if (options && options.writable === false) this.writable = false;
-          this.allowHalfOpen = true;
-          if (options && options.allowHalfOpen === false) this.allowHalfOpen = false;
+
+          this.allowHalfOpen = !(options && options.allowHalfOpen === false);
           this.once("end", onend)
         }
 
@@ -3088,7 +3084,7 @@
           var er = chunkInvalid(state, chunk);
           if (er) {
             stream.emit("error", er)
-          } else if (chunk === null || chunk === undefined) {
+          } else if (chunk === null || chunk == undefined) {
             state.reading = false;
             if (!state.ended) onEofChunk(stream, state)
           } else if (state.objectMode || chunk && chunk.length > 0) {
@@ -3478,7 +3474,7 @@
           });
           stream.on("data", function(chunk) {
             if (state.decoder) chunk = state.decoder.write(chunk);
-            if (state.objectMode && (chunk === null || chunk === undefined)) return;
+            if (state.objectMode && (chunk === null || chunk == undefined)) return;
             else if (!state.objectMode && (!chunk || !chunk.length)) return;
             var ret = self.push(chunk);
             if (!ret) {
@@ -3487,7 +3483,7 @@
             }
           });
           for (var i in stream) {
-            if (typeof stream[i] === "function" && typeof this[i] === "undefined") {
+            if (typeof stream[i] === "function" && typeof this[i] == "undefined") {
               this[i] = function(method) {
                 return function() {
                   return stream[method].apply(stream, arguments)
@@ -3921,7 +3917,7 @@
         exports.isNull = isNull;
 
         function isNullOrUndefined(arg) {
-          return arg == null
+          return arg === null
         }
         exports.isNullOrUndefined = isNullOrUndefined;
 
@@ -3971,7 +3967,7 @@
         exports.isFunction = isFunction;
 
         function isPrimitive(arg) {
-          return arg === null || typeof arg === "boolean" || typeof arg === "number" || typeof arg === "string" || typeof arg === "symbol" || typeof arg === "undefined"
+          return arg === null || typeof arg === "boolean" || typeof arg === "number" || typeof arg === "string" || typeof arg === "symbol" || typeof arg == "undefined"
         }
         exports.isPrimitive = isPrimitive;
 
@@ -4201,15 +4197,15 @@
         var i = buffer.length >= 3 ? 3 : buffer.length;
         for (; i > 0; i--) {
           var c = buffer[buffer.length - i];
-          if (i == 1 && c >> 5 == 6) {
+          if (i === 1 && c >> 5 === 6) {
             this.charLength = 2;
             break
           }
-          if (i <= 2 && c >> 4 == 14) {
+          if (i <= 2 && c >> 4 === 14) {
             this.charLength = 3;
             break
           }
-          if (i <= 3 && c >> 3 == 30) {
+          if (i <= 3 && c >> 3 === 30) {
             this.charLength = 4;
             break
           }
@@ -4457,7 +4453,7 @@
           if (isError(value)) {
             base = " " + formatError(value)
           }
-          if (keys.length === 0 && (!array || value.length == 0)) {
+          if (keys.length === 0 && (!array || value.length === 0)) {
             return braces[0] + base + braces[1]
           }
           if (recurseTimes < 0) {
@@ -4598,7 +4594,7 @@
         exports.isNull = isNull;
 
         function isNullOrUndefined(arg) {
-          return arg == null
+          return arg === null
         }
         exports.isNullOrUndefined = isNullOrUndefined;
 
@@ -4648,7 +4644,7 @@
         exports.isFunction = isFunction;
 
         function isPrimitive(arg) {
-          return arg === null || typeof arg === "boolean" || typeof arg === "number" || typeof arg === "string" || typeof arg === "symbol" || typeof arg === "undefined"
+          return arg === null || typeof arg === "boolean" || typeof arg === "number" || typeof arg === "string" || typeof arg === "symbol" || typeof arg == "undefined"
         }
         exports.isPrimitive = isPrimitive;
         exports.isBuffer = require("./support/isBuffer");
@@ -5169,7 +5165,7 @@
           var oldb = b;
           var oldc = c;
           var oldd = d;
-          a = md5_ff(a, b, c, d, x[i + 0], 7, -680876936);
+          a = md5_ff(a, b, c, d, x[i], 7, -680876936);
           d = md5_ff(d, a, b, c, x[i + 1], 12, -389564586);
           c = md5_ff(c, d, a, b, x[i + 2], 17, 606105819);
           b = md5_ff(b, c, d, a, x[i + 3], 22, -1044525330);
@@ -5188,7 +5184,7 @@
           a = md5_gg(a, b, c, d, x[i + 1], 5, -165796510);
           d = md5_gg(d, a, b, c, x[i + 6], 9, -1069501632);
           c = md5_gg(c, d, a, b, x[i + 11], 14, 643717713);
-          b = md5_gg(b, c, d, a, x[i + 0], 20, -373897302);
+          b = md5_gg(b, c, d, a, x[i], 20, -373897302);
           a = md5_gg(a, b, c, d, x[i + 5], 5, -701558691);
           d = md5_gg(d, a, b, c, x[i + 10], 9, 38016083);
           c = md5_gg(c, d, a, b, x[i + 15], 14, -660478335);
@@ -5210,14 +5206,14 @@
           c = md5_hh(c, d, a, b, x[i + 7], 16, -155497632);
           b = md5_hh(b, c, d, a, x[i + 10], 23, -1094730640);
           a = md5_hh(a, b, c, d, x[i + 13], 4, 681279174);
-          d = md5_hh(d, a, b, c, x[i + 0], 11, -358537222);
+          d = md5_hh(d, a, b, c, x[i], 11, -358537222);
           c = md5_hh(c, d, a, b, x[i + 3], 16, -722521979);
           b = md5_hh(b, c, d, a, x[i + 6], 23, 76029189);
           a = md5_hh(a, b, c, d, x[i + 9], 4, -640364487);
           d = md5_hh(d, a, b, c, x[i + 12], 11, -421815835);
           c = md5_hh(c, d, a, b, x[i + 15], 16, 530742520);
           b = md5_hh(b, c, d, a, x[i + 2], 23, -995338651);
-          a = md5_ii(a, b, c, d, x[i + 0], 6, -198630844);
+          a = md5_ii(a, b, c, d, x[i], 6, -198630844);
           d = md5_ii(d, a, b, c, x[i + 7], 10, 1126891415);
           c = md5_ii(c, d, a, b, x[i + 14], 15, -1416354905);
           b = md5_ii(b, c, d, a, x[i + 5], 21, -57434055);
@@ -5452,7 +5448,7 @@
           ksRows = (this._nRounds + 1) * 4;
           this._keySchedule = [];
           for (ksRow = _i = 0; 0 <= ksRows ? _i < ksRows : _i > ksRows; ksRow = 0 <= ksRows ? ++_i : --_i) {
-            this._keySchedule[ksRow] = ksRow < keySize ? keyWords[ksRow] : (t = this._keySchedule[ksRow - 1], ksRow % keySize === 0 ? (t = t << 8 | t >>> 24, t = G.SBOX[t >>> 24] << 24 | G.SBOX[t >>> 16 & 255] << 16 | G.SBOX[t >>> 8 & 255] << 8 | G.SBOX[t & 255], t ^= G.RCON[ksRow / keySize | 0] << 24) : keySize > 6 && ksRow % keySize === 4 ? t = G.SBOX[t >>> 24] << 24 | G.SBOX[t >>> 16 & 255] << 16 | G.SBOX[t >>> 8 & 255] << 8 | G.SBOX[t & 255] : void 0, this._keySchedule[ksRow - keySize] ^ t)
+            this._keySchedule[ksRow] = ksRow < keySize ? keyWords[ksRow] : (t = this._keySchedule[ksRow - 1], ksRow % keySize === 0 ? (t = t << 8 | t >>> 24, t = G.SBOX[t >>> 24] << 24 | G.SBOX[t >>> 16 & 255] << 16 | G.SBOX[t >>> 8 & 255] << 8 | G.SBOX[t & 255],t ^= G.RCON[ksRow / keySize | 0] << 24) : keySize > 6 && ksRow % keySize === 4 ? t = G.SBOX[t >>> 24] << 24 | G.SBOX[t >>> 16 & 255] << 16 | G.SBOX[t >>> 8 & 255] << 8 | G.SBOX[t & 255] : void 0, this._keySchedule[ksRow - keySize] ^ t)
           }
           this._invKeySchedule = [];
           for (invKsRow = _j = 0; 0 <= ksRows ? _j < ksRows : _j > ksRows; invKsRow = 0 <= ksRows ? ++_j : --_j) {
@@ -7175,7 +7171,7 @@
         var state = this._baseState;
         if (state["default"] !== null && state["default"] === data) return;
         var result = this._encodeValue(data, reporter, parent);
-        if (result === undefined) return;
+        if (result == undefined) return;
         if (this._skipDefault(result, reporter, parent)) return;
         return result
       };
@@ -7185,7 +7181,7 @@
         var result = null;
         var present = true;
         this.reporter = reporter;
-        if (state.optional && data === undefined) {
+        if (state.optional && data == undefined) {
           if (state["default"] !== null) data = state["default"];
           else return
         }
@@ -7747,7 +7743,7 @@
         var i;
         if (state["default"] === null) return false;
         var data = dataBuffer.join();
-        if (state.defaultBuffer === undefined) state.defaultBuffer = this._encodeValue(state["default"], reporter, parent).join();
+        if (state.defaultBuffer == undefined) state.defaultBuffer = this._encodeValue(state["default"], reporter, parent).join();
         if (data.length !== state.defaultBuffer.length) return false;
         for (i = 0; i < data.length; i++)
           if (data[i] !== state.defaultBuffer[i]) return false;
@@ -12859,7 +12855,7 @@
         var C = 8 | 0;
         var D = 12 | 0;
         var E = 16 | 0;
-        var W = new(typeof Int32Array === "undefined" ? Array : Int32Array)(80);
+        var W = new(typeof Int32Array == "undefined" ? Array : Int32Array)(80);
         var POOL = [];
 
         function Sha1() {
@@ -14301,7 +14297,7 @@
         var secp256k1 = ecurve.getCurveByName("secp256k1");
 
         function ECPubKey(Q, compressed) {
-          if (compressed === undefined) compressed = true;
+          if (compressed == undefined) compressed = true;
           enforceType(ecurve.Point, Q);
           enforceType("Boolean", compressed);
           this.compressed = compressed;
@@ -14553,7 +14549,7 @@
           return base58check.encode(this.toBuffer(isPrivate, true))
         };
         HDNode.prototype.toBuffer = function(isPrivate, __ignoreDeprecation) {
-          if (isPrivate === undefined) {
+          if (isPrivate == undefined) {
             isPrivate = !!this.privKey
           } else {
             console.warn("isPrivate flag is deprecated, please use the .neutered() method instead")
@@ -15395,7 +15391,7 @@
           return Transaction.fromBuffer(new Buffer(hex, "hex"))
         };
         Transaction.prototype.addInput = function(hash, index, sequence, script) {
-          if (sequence === undefined) sequence = Transaction.DEFAULT_SEQUENCE;
+          if (sequence == undefined) sequence = Transaction.DEFAULT_SEQUENCE;
           script = script || Script.EMPTY;
           if (typeof hash === "string") {
             hash = bufferutils.reverse(new Buffer(hash, "hex"))
@@ -15889,7 +15885,7 @@
           assert(value > this.network.dustThreshold, value + " must be above dust threshold (" + this.network.dustThreshold + " Satoshis)");
           var changeAddress = options.changeAddress;
           var fixedFee = options.fixedFee;
-          var minConf = options.minConf === undefined ? 0 : options.minConf;
+          var minConf = options.minConf == undefined ? 0 : options.minConf;
           var unspents = this.unspents.filter(function(unspent) {
             return unspent.confirmations >= minConf
           }).filter(function(unspent) {
@@ -15906,7 +15902,7 @@
             var unspent = unspents[i];
             addresses.push(unspent.address);
             txb.addInput(unspent.txHash, unspent.index);
-            var fee = fixedFee === undefined ? estimatePaddedFee(txb.buildIncomplete(), this.network) : fixedFee;
+            var fee = fixedFee == undefined ? estimatePaddedFee(txb.buildIncomplete(), this.network) : fixedFee;
             accum += unspent.value;
             subTotal = value + fee;
             if (accum >= subTotal) {
@@ -16046,7 +16042,7 @@
             if (unspent.hash !== undefined) {
               console.warn("unspent.hash is deprecated, use unspent.txId instead")
             }
-            if (index === undefined) {
+            if (index == undefined) {
               console.warn("unspent.outputIndex is deprecated, use unspent.index instead");
               index = unspent.outputIndex
             }

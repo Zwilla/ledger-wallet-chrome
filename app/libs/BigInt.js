@@ -241,7 +241,7 @@ function findPrimes(n) {
 //does a single round of Miller-Rabin base b consider x to be a possible prime?
 //x is a bigInt, and b is an integer, with b<x
 function millerRabinInt(x,b) {
-    if (mr_x1.length!=x.length) {
+    if (mr_x1.length!==x.length) {
         mr_x1=dup(x);
         mr_r=dup(x);
         mr_a=dup(x);
@@ -256,7 +256,7 @@ function millerRabinInt(x,b) {
 function millerRabin(x,b) {
     var i,j,k,s;
 
-    if (mr_x1.length!=x.length) {
+    if (mr_x1.length!==x.length) {
         mr_x1=dup(x);
         mr_r=dup(x);
         mr_a=dup(x);
@@ -273,7 +273,7 @@ function millerRabin(x,b) {
     k=0;
     for (i=0;i<mr_r.length;i++)
         for (j=1;j<mask;j<<=1)
-            if (x[i] & j) {
+            if (x[i] && j) {
                 s=(k<mr_r.length+bpe ? k : 0);
                 i=mr_r.length;
                 j=mask;
@@ -304,7 +304,7 @@ function millerRabin(x,b) {
 //returns how many bits long the bigInt is, not counting leading zeros.
 function bitSize(x) {
     var j,z,w;
-    for (j=x.length-1; (x[j]==0) && (j>0); j--);
+    for (j=x.length-1; (x[j]===0) && (j>0); j--);
     for (z=0,w=x[j]; w; (w>>=1),z++);
     z+=bpe*j;
     return z;
@@ -347,10 +347,10 @@ function randProbPrimeRounds(k,n) {
 
     //optimization: try larger and smaller B to find the best limit.
 
-    if (primes.length==0)
+    if (primes.length===0)
         primes=findPrimes(30000);  //check for divisibility by primes <=30000
 
-    if (rpprb.length!=ans.length)
+    if (rpprb.length!==ans.length)
         rpprb=dup(ans);
 
     for (;;) { //keep trying random values for ans until one appears to be prime
@@ -364,7 +364,7 @@ function randProbPrimeRounds(k,n) {
 
         //check ans for divisibility by small primes up to B
         for (i=0; (i<primes.length) && (primes[i]<=B); i++)
-            if (modInt(ans,primes[i])==0 && !equalsInt(ans,primes[i])) {
+            if (modInt(ans,primes[i])===0 && !equalsInt(ans,primes[i])) {
                 divisible=1;
                 break;
             }
@@ -447,10 +447,10 @@ function multMod(x,y,n) {
 function randTruePrime_(ans,k) {
     var c,m,pm,dd,j,r,B,divisible,z,zz,recSize;
 
-    if (primes.length==0)
+    if (primes.length===0)
         primes=findPrimes(30000);  //check for divisibility by primes <=30000
 
-    if (pows.length==0) {
+    if (pows.length===0) {
         pows=new Array(512);
         for (j=0;j<512;j++) {
             pows[j]=Math.pow(2,j/511.-1.);
@@ -462,7 +462,7 @@ function randTruePrime_(ans,k) {
     m=20;   //generate this k-bit number by first recursively generating a number that has between k/2 and k-m bits
     recLimit=20; //stop recursion when k <=recLimit.  Must have recLimit >= 2
 
-    if (s_i2.length!=ans.length) {
+    if (s_i2.length!==ans.length) {
         s_i2=dup(ans);
         s_R =dup(ans);
         s_n1=dup(ans);
@@ -485,8 +485,8 @@ function randTruePrime_(ans,k) {
         for (dd=1;dd;) {
             dd=0;
             ans[0]= 1 | (1<<(k-1)) | Math.floor(Math.random()*(1<<k));  //random, k-bit, odd integer, with msb 1
-            for (j=1;(j<primes.length) && ((primes[j]&pm)==primes[j]);j++) { //trial division by all primes 3...sqrt(2^k)
-                if (0==(ans[0]%primes[j])) {
+            for (j=1; (j<primes.length) && ((primes[j]&pm)===primes[j]); j++) { //trial division by all primes 3...sqrt(2^k)
+                if (0===(ans[0]%primes[j])) {
                     dd=1;
                     break;
                 }
@@ -533,7 +533,7 @@ function randTruePrime_(ans,k) {
 
         //check s_n for divisibility by small primes up to B
         for (divisible=0,j=0; (j<primes.length) && (primes[j]<B); j++)
-            if (modInt(s_n,primes[j])==0 && !equalsInt(s_n,primes[j])) {
+            if (modInt(s_n,primes[j])===0 && !equalsInt(s_n,primes[j])) {
                 divisible=1;
                 break;
             }
@@ -544,7 +544,7 @@ function randTruePrime_(ans,k) {
 
         if (!divisible) {  //if it passes that test, continue checking s_n
             addInt_(s_n,-3);
-            for (j=s_n.length-1;(s_n[j]==0) && (j>0); j--);  //strip leading zeros
+            for (j=s_n.length-1; (s_n[j]===0) && (j>0); j--);  //strip leading zeros
             for (zz=0,w=s_n[j]; w; (w>>=1),zz++);
             zz+=bpe*j;                             //zz=number of bits in s_n, ignoring leading zeros
             for (;;) {  //generate z-bit numbers until one falls in the range [0,s_n-1]
@@ -595,7 +595,7 @@ function randBigInt_(b,n,s) {
         b[i]=Math.floor(Math.random()*(1<<(bpe-1)));
     }
     b[a-1] &= (2<<((n-1)%bpe))-1;
-    if (s==1)
+    if (s===1)
         b[a-1] |= (1<<((n-1)%bpe));
 }
 
@@ -612,7 +612,7 @@ function GCD(x,y) {
 //y is destroyed.
 function GCD_(x,y) {
     var i,xp,yp,A,B,C,D,q,sing;
-    if (T.length!=x.length)
+    if (T.length!==x.length)
         T=dup(x);
 
     sing=1;
@@ -632,7 +632,7 @@ function GCD_(x,y) {
         while ((yp+C) && (yp+D)) {
             q =Math.floor((xp+A)/(yp+C));
             qp=Math.floor((xp+B)/(yp+D));
-            if (q!=qp)
+            if (q!==qp)
                 break;
             t= A-q*C;   A=C;   C=t;    //  do (A,B,xp, C,D,yp) = (C,D,yp, A,B,xp) - q*(0,0,0, C,D,yp)
             t= B-q*D;   B=D;   D=t;
@@ -649,7 +649,7 @@ function GCD_(x,y) {
             copy_(y,T);
         }
     }
-    if (y[0]==0)
+    if (y[0]===0)
         return;
     t=modInt(x,y[0]);
     copyInt_(x,y[0]);
@@ -666,12 +666,12 @@ function GCD_(x,y) {
 function inverseMod_(x,n) {
     var k=1+2*Math.max(x.length,n.length);
 
-    if(!(x[0]&1)  && !(n[0]&1)) {  //if both inputs are even, then inverse doesn't exist
+    if(!(x[0]&&1)  && !(n[0]&&1)) {  //if both inputs are even, then inverse doesn't exist
         copyInt_(x,0);
         return 0;
     }
 
-    if (eg_u.length!=k) {
+    if (eg_u.length!==k) {
         eg_u=new Array(k);
         eg_v=new Array(k);
         eg_A=new Array(k);
@@ -687,9 +687,9 @@ function inverseMod_(x,n) {
     copyInt_(eg_C,0);
     copyInt_(eg_D,1);
     for (;;) {
-        while(!(eg_u[0]&1)) {  //while eg_u is even
+        while(!(eg_u[0]&&1)) {  //while eg_u is even
             halve_(eg_u);
-            if (!(eg_A[0]&1) && !(eg_B[0]&1)) { //if eg_A==eg_B==0 mod 2
+            if (!(eg_A[0]&&1) && !(eg_B[0]&&1)) { //if eg_A==eg_B==0 mod 2
                 halve_(eg_A);
                 halve_(eg_B);
             } else {
@@ -698,9 +698,9 @@ function inverseMod_(x,n) {
             }
         }
 
-        while (!(eg_v[0]&1)) {  //while eg_v is even
+        while (!(eg_v[0]&&1)) {  //while eg_v is even
             halve_(eg_v);
-            if (!(eg_C[0]&1) && !(eg_D[0]&1)) { //if eg_C==eg_D==0 mod 2
+            if (!(eg_C[0]&&1) && !(eg_D[0]&&1)) { //if eg_C==eg_D==0 mod 2
                 halve_(eg_C);
                 halve_(eg_D);
             } else {
@@ -737,13 +737,13 @@ function inverseMod_(x,n) {
 function inverseModInt(x,n) {
     var a=1,b=0,t;
     for (;;) {
-        if (x==1) return a;
-        if (x==0) return 0;
+        if (x===1) return a;
+        if (x===0) return 0;
         b-=a*Math.floor(n/x);
         n%=x;
 
-        if (n==1) return b; //to avoid negatives, change this b to n-b, and each -= to +=
-        if (n==0) return 0;
+        if (n===1) return b; //to avoid negatives, change this b to n-b, and each -= to +=
+        if (n===0) return 0;
         a-=b*Math.floor(x/n);
         x%=n;
     }
@@ -761,14 +761,14 @@ function inverseModInt_(x,n) {
 function eGCD_(x,y,v,a,b) {
     var g=0;
     var k=Math.max(x.length,y.length);
-    if (eg_u.length!=k) {
+    if (eg_u.length!==k) {
         eg_u=new Array(k);
         eg_A=new Array(k);
         eg_B=new Array(k);
         eg_C=new Array(k);
         eg_D=new Array(k);
     }
-    while(!(x[0]&1)  && !(y[0]&1)) {  //while x and y both even
+    while(!(x[0]&&1)  && !(y[0]&&1)) {  //while x and y both even
         halve_(x);
         halve_(y);
         g++;
@@ -780,9 +780,9 @@ function eGCD_(x,y,v,a,b) {
     copyInt_(eg_C,0);
     copyInt_(eg_D,1);
     for (;;) {
-        while(!(eg_u[0]&1)) {  //while u is even
+        while(!(eg_u[0]&&1)) {  //while u is even
             halve_(eg_u);
-            if (!(eg_A[0]&1) && !(eg_B[0]&1)) { //if A==B==0 mod 2
+            if (!(eg_A[0]&&1) && !(eg_B[0]&&1)) { //if A==B==0 mod 2
                 halve_(eg_A);
                 halve_(eg_B);
             } else {
@@ -791,9 +791,9 @@ function eGCD_(x,y,v,a,b) {
             }
         }
 
-        while (!(v[0]&1)) {  //while v is even
+        while (!(v[0]&&1)) {  //while v is even
             halve_(v);
-            if (!(eg_C[0]&1) && !(eg_D[0]&1)) { //if C==D==0 mod 2
+            if (!(eg_C[0]&&1) && !(eg_D[0]&&1)) { //if C==D==0 mod 2
                 halve_(eg_C);
                 halve_(eg_D);
             } else {
@@ -880,7 +880,7 @@ function divide_(x,y,q,r) {
     var kx, ky;
     var i,j,y1,y2,c,a,b;
     copy_(r,x);
-    for (ky=y.length;y[ky-1]==0;ky--); //ky is number of elements in y, not including leading zeros
+    for (ky=y.length; y[ky-1]===0; ky--); //ky is number of elements in y, not including leading zeros
 
     //normalize: ensure the most significant element of y has its highest bit set
     b=y[ky-1];
@@ -891,7 +891,7 @@ function divide_(x,y,q,r) {
     leftShift_(r,a);
 
     //Rob Visser discovered a bug: the following line was originally just before the normalization.
-    for (kx=r.length;r[kx-1]==0 && kx>ky;kx--); //kx is number of elements in normalized x, not including leading zeros
+    for (kx=r.length; r[kx-1]===0 && kx>ky; kx--); //kx is number of elements in normalized x, not including leading zeros
 
     copyInt_(q,0);                      // q=0
     while (!greaterShift(y,r,kx-ky)) {  // while (leftShift_(y,kx-ky) <= r) {
@@ -900,7 +900,7 @@ function divide_(x,y,q,r) {
     }                                   // }
 
     for (i=kx-1; i>=ky; i--) {
-        if (r[i]==y[ky-1])
+        if (r[i]===y[ky-1])
             q[i-ky]=mask;
         else
             q[i-ky]=Math.floor((r[i]*radix+r[i-1])/y[ky-1]);
@@ -918,7 +918,7 @@ function divide_(x,y,q,r) {
             c=y1>>bpe;
             y1=y1 & mask;
 
-            if (c==r[i] ? y1==r[i-1] ? y2>(i>1 ? r[i-2] : 0) : y1>r[i-1] : c>r[i])
+            if (c===r[i] ? y1===r[i-1] ? y2>(i>1 ? r[i-2] : 0) : y1>r[i-1] : c>r[i])
                 q[i-ky]--;
             else
                 break;
@@ -980,7 +980,7 @@ function int2bigInt(t,bits,minSize) {
 function str2bigInt(s,base,minSize) {
     var d, i, j, x, y, kk;
     var k=s.length;
-    if (base==-1) { //comma-separated list of array elements in decimal
+    if (base===-1) { //comma-separated list of array elements in decimal
         x=new Array(0);
         for (;;) {
             y=new Array(x.length+1);
@@ -992,7 +992,7 @@ function str2bigInt(s,base,minSize) {
             if (d<1)
                 break;
             s=s.substring(d+1);
-            if (s.length==0)
+            if (s.length===0)
                 break;
         }
         if (x.length<minSize) {
@@ -1030,7 +1030,7 @@ function str2bigInt(s,base,minSize) {
 //y must have less than bpe bits
 function equalsInt(x,y) {
     var i;
-    if (x[0]!=y)
+    if (x[0]!==y)
         return 0;
     for (i=1;i<x.length;i++)
         if (x[i])
@@ -1044,7 +1044,7 @@ function equals(x,y) {
     var i;
     var k=x.length<y.length ? x.length : y.length;
     for (i=0;i<k;i++)
-        if (x[i]!=y[i])
+        if (x[i]!==y[i])
             return 0;
     if (x.length>y.length) {
         for (;i<x.length;i++)
@@ -1072,12 +1072,12 @@ function isZero(x) {
 function bigInt2str(x,base) {
     var i,t,s="";
 
-    if (s6.length!=x.length)
+    if (s6.length!==x.length)
         s6=dup(x);
     else
         copy_(s6,x);
 
-    if (base==-1) { //return the list of array contents
+    if (base===-1) { //return the list of array contents
         for (i=x.length-1;i>0;i--)
             s+=x[i]+',';
         s+=x[0];
@@ -1088,7 +1088,7 @@ function bigInt2str(x,base) {
             s=digitsStr.substring(t,t+1)+s;
         }
     }
-    if (s.length==0)
+    if (s.length===0)
         s="0";
     return s;
 }
@@ -1326,7 +1326,7 @@ function add_(x,y) {
 //do x=x*y for bigInts x and y.  This is faster when y<x.
 function mult_(x,y) {
     var i;
-    if (ss.length!=2*x.length)
+    if (ss.length!==2*x.length)
         ss=new Array(2*x.length);
     copyInt_(ss,0);
     for (i=0;i<y.length;i++)
@@ -1337,11 +1337,11 @@ function mult_(x,y) {
 
 //do x=x mod n for bigInts x and n.
 function mod_(x,n) {
-    if (s4.length!=x.length)
+    if (s4.length!==x.length)
         s4=dup(x);
     else
         copy_(s4,x);
-    if (s5.length!=x.length)
+    if (s5.length!==x.length)
         s5=dup(x);
     divide_(s4,n,s5,x);  //x = remainder of s4 / n
 }
@@ -1350,7 +1350,7 @@ function mod_(x,n) {
 //for greater speed, let y<x.
 function multMod_(x,y,n) {
     var i;
-    if (s0.length!=2*x.length)
+    if (s0.length!==2*x.length)
         s0=new Array(2*x.length);
     copyInt_(s0,0);
     for (i=0;i<y.length;i++)
@@ -1365,7 +1365,7 @@ function squareMod_(x,n) {
     var i,j,d,c,kx,kn,k;
     for (kx=x.length; kx>0 && !x[kx-1]; kx--);  //ignore leading zeros in x
     k=kx>n.length ? 2*kx : 2*n.length; //k=# elements in the product, which is twice the elements in the larger of x and n
-    if (s0.length!=k)
+    if (s0.length!==k)
         s0=new Array(k);
     copyInt_(s0,0);
     for (i=0;i<kx;i++) {
@@ -1396,16 +1396,16 @@ function trim(x,k) {
 //this is faster when n is odd.  x usually needs to have as many elements as n.
 function powMod_(x,y,n) {
     var k1,k2,kn,np;
-    if(s7.length!=n.length)
+    if(s7.length!==n.length)
         s7=dup(n);
 
     //for even modulus, use a simple square-and-multiply algorithm,
     //rather than using the more complex Montgomery algorithm.
-    if ((n[0]&1)==0) {
+    if ((n[0]&1)===0) {
         copy_(s7,x);
         copyInt_(x,1);
         while(!equalsInt(y,0)) {
-            if (y[0]&1)
+            if (y[0]&&1)
                 multMod_(x,s7,n);
             divInt_(y,2);
             squareMod_(s7,n);
@@ -1420,17 +1420,17 @@ function powMod_(x,y,n) {
     s7[kn]=1;
     multMod_(x ,s7,n);   // x = x * 2**(kn*bp) mod n
 
-    if (s3.length!=x.length)
+    if (s3.length!==x.length)
         s3=dup(x);
     else
         copy_(s3,x);
 
-    for (k1=y.length-1;k1>0 & !y[k1]; k1--);  //k1=first nonzero element of y
-    if (y[k1]==0) {  //anything to the 0th power is 1
+    for (k1=y.length-1;k1>0 && !y[k1]; k1--);  //k1=first nonzero element of y
+    if (y[k1]===0) {  //anything to the 0th power is 1
         copyInt_(x,1);
         return;
     }
-    for (k2=1<<(bpe-1);k2 && !(y[k1] & k2); k2>>=1);  //k2=position of first 1 bit in y[k1]
+    for (k2=1<<(bpe-1);k2 && !(y[k1] && k2); k2>>=1);  //k2=position of first 1 bit in y[k1]
     for (;;) {
         if (!(k2>>=1)) {  //look at next bit of y
             k1--;
@@ -1442,7 +1442,7 @@ function powMod_(x,y,n) {
         }
         mont_(x,x,n,np);
 
-        if (k2 & y[k1]) //if next bit is a 1
+        if (k2 && y[k1]) //if next bit is a 1
             mont_(x,s3,n,np);
     }
 }
@@ -1463,13 +1463,13 @@ function mont_(x,y,n,np) {
     var kn=n.length;
     var ky=y.length;
 
-    if (sa.length!=kn)
+    if (sa.length!==kn)
         sa=new Array(kn);
 
     copyInt_(sa,0);
 
-    for (;kn>0 && n[kn-1]==0;kn--); //ignore leading zeros of n
-    for (;ky>0 && y[ky-1]==0;ky--); //ignore leading zeros of y
+    for (; kn>0 && n[kn-1]===0; kn--); //ignore leading zeros of n
+    for (; ky>0 && y[ky-1]===0; ky--); //ignore leading zeros of y
     ks=sa.length-1; //sa will never have more than this many nonzero elements.
 
     //the following loop consumes 95% of the runtime for randTruePrime_() and powMod_() for large numbers

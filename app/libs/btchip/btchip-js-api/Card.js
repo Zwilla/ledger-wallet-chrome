@@ -69,7 +69,7 @@ var Card = Class.create({
 		if (!(statuses instanceof Array)) {
 			throw "Invalid statuses";
 		}
-		if (apdus.length != statuses.length) {
+		if (apdus.length !== statuses.length) {
 			throw "APDUs and status length differ";
 		}
 		if (typeof answerAll == "undefined") {
@@ -95,7 +95,7 @@ var Card = Class.create({
 				if (!(apdus[i][0] instanceof ByteString)) {
 					throw "APDU array " + i + " content must be a ByteString";
 				}
-				if (typeof apdus[i][1] != "number") {
+				if (typeof apdus[i][1] !== "number") {
 					throw "APDU array " + i + " returned length must be a Number";
 				}
 				apdu = apdus[i][0];
@@ -109,25 +109,25 @@ var Card = Class.create({
 			}
 			response = this.exchange(apdu, returnLength);
 			for (var j=0; j<statuses[i].length; j++) {
-				if (typeof statuses[i][j] == "number") {
-					if (this.SW == statuses[i][j]) {
+				if (typeof statuses[i][j] === "number") {
+					if (this.SW === statuses[i][j]) {
 						break;
 					}
 				}
 				else {
-					if ((this.SW & statuses[i][j][1]) == statuses[i][j][0]) {
+					if ((this.SW & statuses[i][j][1]) === statuses[i][j][0]) {
 						break;
 					}
 				}
 			}
 			// Report an exception only if the card layer says so (i.e. always if not called by a remote card) 
 			// otherwise it's up to the remote side to report the exception in order to track the exchanged commands
-			if ((j == statuses[i].length) && throwException) {
+			if ((j === statuses[i].length) && throwException) {
 				throw "Status " + i + " differ - " + Convert.toHexShort(this.SW);
 			}		
 			if (answerAll) {
 				result.push(response.concat(new ByteString("" + Convert.toHexShort(this.SW), HEX)));
-				if (j == statuses[i].length) {
+				if (j === statuses[i].length) {
 					break;
 				}
 			}
@@ -165,20 +165,20 @@ var Card = Class.create({
 		}		
 		else {
 			// First format the APDU
-			if (!(typeof cla == "number")) {
+			if (!(typeof cla === "number")) {
 				throw "Invalid CLA";
 			}
-			if (!(typeof ins == "number")) {
+			if (!(typeof ins === "number")) {
 				throw "Invalid INS";
 			}
-			if (!(typeof p1 == "number")) {
+			if (!(typeof p1 === "number")) {
 				throw "Invalid P1";
 			}
-			if (!(typeof p2 == "number")) {
+			if (!(typeof p2 === "number")) {
 				throw "Invalid P2";
 			}
 			var apdu = Convert.toHexDigit(cla) + Convert.toHexDigit(ins) + Convert.toHexDigit(p1) + Convert.toHexDigit(p2);
-			if (typeof opt1 == "number") {
+			if (typeof opt1 === "number") {
 				apdu += Convert.toHexDigit(opt1);
 				le = opt1;
 			}
@@ -211,7 +211,7 @@ var Card = Class.create({
 					swCheck = opt2;
 				}
 				else
-				if ((typeof le == "number") && (op3 instanceof Array)) {
+				if ((typeof le === "number") && (op3 instanceof Array)) {
 					// Le to retrieve and SW to check
 					le = opt2;
 					swCheck = opt3;
@@ -221,7 +221,7 @@ var Card = Class.create({
 				}
 			}
 			else
-			if (typeof opt1 == "number") {
+			if (typeof opt1 === "number") {
 				if ((typeof opt2 == "undefined") && (typeof opt3 == "undefined")) {
 					// Simple Case 2 scenario already handled in the APDU itself
 				}
@@ -247,12 +247,12 @@ var Card = Class.create({
 			}
 			for (var i=0; i<swCheck.length; i++) {
 				if (swCheck[i] instanceof Array) {
-					if ((swCheck[i].length != 2) || (typeof swCheck[i][0] != "number") || (typeof swCheck[i][1] != "number")) {
+					if ((swCheck[i].length !== 2) || (typeof swCheck[i][0] !== "number") || (typeof swCheck[i][1] !== "number")) {
 						throw "Invalid SW parameter " + (i + 1);
 					}
 				}				
 				else
-				if (!(typeof swCheck[i] == "number")) {
+				if (!(typeof swCheck[i] === "number")) {
 					throw "Invalid SW parameter " + (i + 1);
 				}
 			}
@@ -273,18 +273,18 @@ var Card = Class.create({
         return promise.then(function(response) {
 			if (swCheck) {
 				for (var i=0; i<swCheck.length; i++) {
-					if (typeof swCheck[i] == "number") {
-						if (promise.SW == swCheck[i]) {
+					if (typeof swCheck[i] === "number") {
+						if (promise.SW === swCheck[i]) {
 							break;
 						}
 					}
 					else {
-						if ((promise.SW & swCheck[i][1]) == swCheck[i][0]) {
+						if ((promise.SW & swCheck[i][1]) === swCheck[i][0]) {
 							break;
 						}
 					}
 				}
-				if (i == swCheck.length) {
+				if (i === swCheck.length) {
 					throw "Invalid status " + i + " - " + Convert.toHexShort(promise.SW);
 				}			
 			}		

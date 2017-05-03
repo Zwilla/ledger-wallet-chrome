@@ -319,11 +319,11 @@ JSUCrypt.signature || (function (undefined) {
             var sig = [].concat(this._block);
             this.reset();
             
-            if (sigToCheck.length != sig.length) {
+            if (sigToCheck.length !== sig.length) {
                 return false;
             }
             for (var i = 0; i<this._block.length; i++) {
-                if (sig[i] != sigToCheck[i]) {
+                if (sig[i] !== sigToCheck[i]) {
                     return false;
                 }
         }

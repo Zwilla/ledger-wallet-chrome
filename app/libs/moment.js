@@ -190,6 +190,9 @@
             YYYYY : function () {
                 return leftZeroFill(this.year(), 5);
             },
+            /**
+             * @return {string}
+             */
             YYYYYY : function () {
                 var y = this.year(), sign = y >= 0 ? '+' : '-';
                 return sign + leftZeroFill(Math.abs(y), 6);
@@ -248,6 +251,9 @@
             SSSS : function () {
                 return leftZeroFill(this.milliseconds(), 3);
             },
+            /**
+             * @return {string}
+             */
             Z    : function () {
                 var a = this.utcOffset(),
                     b = '+';
@@ -257,6 +263,9 @@
                 }
                 return b + leftZeroFill(toInt(a / 60), 2) + ':' + leftZeroFill(toInt(a) % 60, 2);
             },
+            /**
+             * @return {string}
+             */
             ZZ   : function () {
                 var a = this.utcOffset(),
                     b = '+';
@@ -293,8 +302,8 @@
     // default.
     function dfl(a, b, c) {
         switch (arguments.length) {
-            case 2: return a != null ? a : b;
-            case 3: return a != null ? a : b != null ? b : c;
+            case 2: return a !== null ? a : b;
+            case 3: return a !== null ? a : b !== null ? b : c;
             default: throw new Error('Implement me');
         }
     }
@@ -390,13 +399,13 @@
     function meridiemFixWrap(locale, hour, meridiem) {
         var isPm;
 
-        if (meridiem == null) {
+        if (meridiem === null) {
             // nothing to do
             return hour;
         }
-        if (locale.meridiemHour != null) {
+        if (locale.meridiemHour !== null) {
             return locale.meridiemHour(hour, meridiem);
-        } else if (locale.isPM != null) {
+        } else if (locale.isPM !== null) {
             // Fallback
             isPm = locale.isPM(meridiem);
             if (isPm && hour < 12) {
@@ -610,7 +619,7 @@
         var milliseconds = duration._milliseconds,
             days = duration._days,
             months = duration._months;
-        updateOffset = updateOffset == null ? true : updateOffset;
+        updateOffset = updateOffset === null ? true : updateOffset;
 
         if (milliseconds) {
             mom._d.setTime(+mom._d + milliseconds * isAdding);
@@ -706,7 +715,7 @@
                 return method.call(moment._locale, m, format || '');
             };
 
-            if (index != null) {
+            if (index !== null) {
                 return getter(index);
             }
             else {
@@ -773,7 +782,7 @@
     }
 
     function isValid(m) {
-        if (m._isValid == null) {
+        if (m._isValid === null) {
             m._isValid = !isNaN(m._d.getTime()) &&
             m._pf.overflow < 0 &&
             !m._pf.empty &&
@@ -786,7 +795,7 @@
                 m._isValid = m._isValid &&
                 m._pf.charsLeftOver === 0 &&
                 m._pf.unusedTokens.length === 0 &&
-                m._pf.bigHour === undefined;
+                m._pf.bigHour == undefined;
             }
         }
         return m._isValid;
@@ -1242,14 +1251,14 @@
         switch (token) {
             // QUARTER
             case 'Q':
-                if (input != null) {
+                if (input !== null) {
                     datePartArray[MONTH] = (toInt(input) - 1) * 3;
                 }
                 break;
             // MONTH
             case 'M' : // fall through to MM
             case 'MM' :
-                if (input != null) {
+                if (input !== null) {
                     datePartArray[MONTH] = toInt(input) - 1;
                 }
                 break;
@@ -1257,7 +1266,7 @@
             case 'MMMM' :
                 a = config._locale.monthsParse(input, token, config._strict);
                 // if we didn't find a month name, mark the date as invalid.
-                if (a != null) {
+                if (a !== null) {
                     datePartArray[MONTH] = a;
                 } else {
                     config._pf.invalidMonth = input;
@@ -1266,12 +1275,12 @@
             // DAY OF MONTH
             case 'D' : // fall through to DD
             case 'DD' :
-                if (input != null) {
+                if (input !== null) {
                     datePartArray[DATE] = toInt(input);
                 }
                 break;
             case 'Do' :
-                if (input != null) {
+                if (input !== null) {
                     datePartArray[DATE] = toInt(parseInt(
                         input.match(/\d{1,2}/)[0], 10));
                 }
@@ -1279,7 +1288,7 @@
             // DAY OF YEAR
             case 'DDD' : // fall through to DDDD
             case 'DDDD' :
-                if (input != null) {
+                if (input !== null) {
                     config._dayOfYear = toInt(input);
                 }
 
@@ -1345,7 +1354,7 @@
             case 'dddd':
                 a = config._locale.weekdaysParse(input);
                 // if we didn't get a weekday name, mark the date as invalid
-                if (a != null) {
+                if (a !== null) {
                     config._w = config._w || {};
                     config._w['d'] = a;
                 } else {
@@ -1382,7 +1391,7 @@
         var w, weekYear, week, weekday, dow, doy, temp;
 
         w = config._w;
-        if (w.GG != null || w.W != null || w.E != null) {
+        if (w.GG !== null || w.W !== null || w.E !== null) {
             dow = 1;
             doy = 4;
 
@@ -1400,13 +1409,13 @@
             weekYear = dfl(w.gg, config._a[YEAR], weekOfYear(moment(), dow, doy).year);
             week = dfl(w.w, 1);
 
-            if (w.d != null) {
+            if (w.d !== null) {
                 // weekday -- low day numbers are considered next week
                 weekday = w.d;
                 if (weekday < dow) {
                     ++week;
                 }
-            } else if (w.e != null) {
+            } else if (w.e !== null) {
                 // local weekday -- counting starts from begining of week
                 weekday = w.e + dow;
             } else {
@@ -1434,7 +1443,7 @@
         currentDate = currentDateArray(config);
 
         //compute day of the year from weeks and weekdays
-        if (config._w && config._a[DATE] == null && config._a[MONTH] == null) {
+        if (config._w && config._a[DATE] === null && config._a[MONTH] === null) {
             dayOfYearFromWeekInfo(config);
         }
 
@@ -1456,13 +1465,13 @@
         // * if day of month is given, default month and year
         // * if month is given, default only year
         // * if year is given, don't default anything
-        for (i = 0; i < 3 && config._a[i] == null; ++i) {
+        for (i = 0; i < 3 && config._a[i] === null; ++i) {
             config._a[i] = input[i] = currentDate[i];
         }
 
         // Zero out whatever was not defaulted, including time
         for (; i < 7; i++) {
-            config._a[i] = input[i] = (config._a[i] == null) ? (i === 2 ? 1 : 0) : config._a[i];
+            config._a[i] = input[i] = (config._a[i] === null) ? (i === 2 ? 1 : 0) : config._a[i];
         }
 
         // Check for 24:00:00.000
@@ -1477,7 +1486,7 @@
         config._d = (config._useUTC ? makeUTCDate : makeDate).apply(null, input);
         // Apply timezone offset from input. The actual utcOffset can be changed
         // with parseZone.
-        if (config._tzm != null) {
+        if (config._tzm !== null) {
             config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
         }
 
@@ -1610,7 +1619,7 @@
         for (i = 0; i < config._f.length; i++) {
             currentScore = 0;
             tempConfig = copyConfig({}, config);
-            if (config._useUTC != null) {
+            if (config._useUTC !== null) {
                 tempConfig._useUTC = config._useUTC;
             }
             tempConfig._pf = defaultParsingFlags();
@@ -1629,7 +1638,7 @@
 
             tempConfig._pf.score = currentScore;
 
-            if (scoreToBeat == null || currentScore < scoreToBeat) {
+            if (scoreToBeat === null || currentScore < scoreToBeat) {
                 scoreToBeat = currentScore;
                 bestMoment = tempConfig;
             }
@@ -1687,7 +1696,7 @@
 
     function makeDateFromInput(config) {
         var input = config._i, matched;
-        if (input === undefined) {
+        if (input == undefined) {
             config._d = new Date();
         } else if (isDate(input)) {
             config._d = new Date(+input);
@@ -1820,7 +1829,7 @@
         var d = makeUTCDate(year, 0, 1).getUTCDay(), daysToAdd, dayOfYear;
 
         d = d === 0 ? 7 : d;
-        weekday = weekday != null ? weekday : firstDayOfWeek;
+        weekday = weekday !== null ? weekday : firstDayOfWeek;
         daysToAdd = firstDayOfWeek - d + (d > firstDayOfWeekOfYear ? 7 : 0) - (d < firstDayOfWeek ? 7 : 0);
         dayOfYear = 7 * (week - 1) + (weekday - firstDayOfWeek) + daysToAdd + 1;
 
@@ -1841,7 +1850,7 @@
 
         config._locale = config._locale || moment.localeData(config._l);
 
-        if (input === null || (format === undefined && input === '')) {
+        if (input === null || (format == undefined && input === '')) {
             return moment.invalid({nullInput: true});
         }
 
@@ -2018,7 +2027,7 @@
                 s: parseIso(match[7]),
                 w: parseIso(match[8])
             };
-        } else if (duration == null) {// checks for null or undefined
+        } else if (duration === null) {// checks for null or undefined
             duration = {};
         } else if (typeof duration === 'object' &&
             ('from' in duration || 'to' in duration)) {
@@ -2057,10 +2066,10 @@
 
     // This function allows you to set a threshold for relative time strings
     moment.relativeTimeThreshold = function (threshold, limit) {
-        if (relativeTimeThresholds[threshold] === undefined) {
+        if (relativeTimeThresholds[threshold] == undefined) {
             return false;
         }
-        if (limit === undefined) {
+        if (limit == undefined) {
             return relativeTimeThresholds[threshold];
         }
         relativeTimeThresholds[threshold] = limit;
@@ -2148,7 +2157,7 @@
     // compare moment object
     moment.isMoment = function (obj) {
         return obj instanceof Moment ||
-            (obj != null && hasOwnProp(obj, '_isAMomentObject'));
+            (obj !== null && hasOwnProp(obj, '_isAMomentObject'));
     };
 
     // for typechecking Duration objects
@@ -2166,7 +2175,7 @@
 
     moment.invalid = function (flags) {
         var m = moment.utc(NaN);
-        if (flags != null) {
+        if (flags !== null) {
             extend(m._pf, flags);
         }
         else {
@@ -2346,7 +2355,7 @@
 
         day : function (input) {
             var day = this._isUTC ? this._d.getUTCDay() : this._d.getDay();
-            if (input != null) {
+            if (input !== null) {
                 input = parseWeekday(input, this.localeData());
                 return this.add(input - day, 'd');
             } else {
@@ -2401,7 +2410,7 @@
 
         endOf: function (units) {
             units = normalizeUnits(units);
-            if (units === undefined || units === 'millisecond') {
+            if (units == undefined || units === 'millisecond') {
                 return this;
             }
             return this.startOf(units).add(1, (units === 'isoWeek' ? 'week' : units)).subtract(1, 'ms');
@@ -2467,7 +2476,7 @@
             'moment().zone is deprecated, use moment().utcOffset instead. ' +
             'https://github.com/moment/moment/issues/1779',
             function (input, keepLocalTime) {
-                if (input != null) {
+                if (input !== null) {
                     if (typeof input !== 'string') {
                         input = -input;
                     }
@@ -2494,7 +2503,7 @@
         utcOffset : function (input, keepLocalTime) {
             var offset = this._offset || 0,
                 localAdjust;
-            if (input != null) {
+            if (input !== null) {
                 if (typeof input === 'string') {
                     input = utcOffsetFromString(input);
                 }
@@ -2506,7 +2515,7 @@
                 }
                 this._offset = input;
                 this._isUTC = true;
-                if (localAdjust != null) {
+                if (localAdjust !== null) {
                     this.add(localAdjust, 'm');
                 }
                 if (offset !== input) {
@@ -2572,43 +2581,43 @@
 
         dayOfYear : function (input) {
             var dayOfYear = round((moment(this).startOf('day') - moment(this).startOf('year')) / 864e5) + 1;
-            return input == null ? dayOfYear : this.add((input - dayOfYear), 'd');
+            return input === null ? dayOfYear : this.add((input - dayOfYear), 'd');
         },
 
         quarter : function (input) {
-            return input == null ? Math.ceil((this.month() + 1) / 3) : this.month((input - 1) * 3 + this.month() % 3);
+            return input === null ? Math.ceil((this.month() + 1) / 3) : this.month((input - 1) * 3 + this.month() % 3);
         },
 
         weekYear : function (input) {
             var year = weekOfYear(this, this.localeData()._week.dow, this.localeData()._week.doy).year;
-            return input == null ? year : this.add((input - year), 'y');
+            return input === null ? year : this.add((input - year), 'y');
         },
 
         isoWeekYear : function (input) {
             var year = weekOfYear(this, 1, 4).year;
-            return input == null ? year : this.add((input - year), 'y');
+            return input === null ? year : this.add((input - year), 'y');
         },
 
         week : function (input) {
             var week = this.localeData().week(this);
-            return input == null ? week : this.add((input - week) * 7, 'd');
+            return input === null ? week : this.add((input - week) * 7, 'd');
         },
 
         isoWeek : function (input) {
             var week = weekOfYear(this, 1, 4).week;
-            return input == null ? week : this.add((input - week) * 7, 'd');
+            return input === null ? week : this.add((input - week) * 7, 'd');
         },
 
         weekday : function (input) {
             var weekday = (this.day() + 7 - this.localeData()._week.dow) % 7;
-            return input == null ? weekday : this.add(input - weekday, 'd');
+            return input === null ? weekday : this.add(input - weekday, 'd');
         },
 
         isoWeekday : function (input) {
             // behaves the same as moment#day except
             // as a getter, returns 7 instead of 0 (1-7 range instead of 0-6)
             // as a setter, sunday should belong to the previous week.
-            return input == null ? this.day() || 7 : this.day(this.day() % 7 ? input : input - 7);
+            return input === null ? this.day() || 7 : this.day(this.day() % 7 ? input : input - 7);
         },
 
         isoWeeksInYear : function () {
@@ -2647,11 +2656,11 @@
         locale : function (key) {
             var newLocaleData;
 
-            if (key === undefined) {
+            if (key == undefined) {
                 return this._locale._abbr;
             } else {
                 newLocaleData = moment.localeData(key);
-                if (newLocaleData != null) {
+                if (newLocaleData !== null) {
                     this._locale = newLocaleData;
                 }
                 return this;
@@ -2661,7 +2670,7 @@
         lang : deprecate(
             'moment().lang() is deprecated. Instead, use moment().localeData() to get the language configuration. Use moment().locale() to change languages.',
             function (key) {
-                if (key === undefined) {
+                if (key == undefined) {
                     return this.localeData();
                 } else {
                     return this.locale(key);
@@ -2713,7 +2722,7 @@
 
     function makeAccessor(unit, keepTime) {
         return function (value) {
-            if (value != null) {
+            if (value !== null) {
                 rawSetter(this, unit, value);
                 moment.updateOffset(this, keepTime);
                 return this;
@@ -3976,7 +3985,7 @@
                 'b': 'v',
                 'd': 'z'
             };
-            if (mutationTable[text.charAt(0)] === undefined) {
+            if (mutationTable[text.charAt(0)] == undefined) {
                 return text;
             }
             return mutationTable[text.charAt(0)] + text.substring(1);
@@ -5765,6 +5774,9 @@
                     return number + ' ימים';
                 },
                 M : 'חודש',
+                /**
+                 * @return {string}
+                 */
                 MM : function (number) {
                     if (number === 2) {
                         return 'חודשיים';
@@ -6831,10 +6843,8 @@
                 return true;
             } else if (number < 10) {
                 // Only 1 digit
-                if (4 <= number && number <= 7) {
-                    return true;
-                }
-                return false;
+                return 4 <= number && number <= 7;
+
             } else if (number < 100) {
                 // 2 digits
                 var lastDigit = number % 10, firstDigit = number / 10;

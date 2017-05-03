@@ -88,7 +88,7 @@ function zbarProcessImageData(imgData) {
         if (n == ALLOC_NONE) {
             u = r
         } else {
-            u = [_malloc, Runtime.stackAlloc, Runtime.staticAlloc, Runtime.dynamicAlloc][n === undefined ? ALLOC_STATIC : n](Math.max(s, o ? 1 : t.length))
+            u = [_malloc, Runtime.stackAlloc, Runtime.staticAlloc, Runtime.dynamicAlloc][n == undefined ? ALLOC_STATIC : n](Math.max(s, o ? 1 : t.length))
         }
         if (i) {
             var r = u,
@@ -443,13 +443,13 @@ function zbarProcessImageData(imgData) {
             }
             var n = t.func;
             if (typeof n === "number") {
-                if (t.arg === undefined) {
+                if (t.arg == undefined) {
                     Runtime.dynCall("v", n)
                 } else {
                     Runtime.dynCall("vi", n, [t.arg])
                 }
             } else {
-                n(t.arg === undefined ? null : t.arg)
+                n(t.arg == undefined ? null : t.arg)
             }
         }
     }
@@ -2749,10 +2749,10 @@ function zbarProcessImageData(imgData) {
                     } catch (a) {
                         throw new FS.ErrnoError(ERRNO_CODES.EIO)
                     }
-                    if (u === undefined && s === 0) {
+                    if (u == undefined && s === 0) {
                         throw new FS.ErrnoError(ERRNO_CODES.EAGAIN)
                     }
-                    if (u === null || u === undefined) break;
+                    if (u === null || u == undefined) break;
                     s++;
                     t[n + o] = u
                 }
@@ -3722,7 +3722,7 @@ function zbarProcessImageData(imgData) {
                 recurse_count: 0
             };
             for (var r in n) {
-                if (t[r] === undefined) {
+                if (t[r] == undefined) {
                     t[r] = n[r]
                 }
             }
@@ -3920,7 +3920,7 @@ function zbarProcessImageData(imgData) {
         },
         modeStringToFlags: function(e) {
             var t = FS.flagModes[e];
-            if (typeof t === "undefined") {
+            if (typeof t == "undefined") {
                 throw new Error("Unknown file open mode: " + e)
             }
             return t
@@ -4222,7 +4222,7 @@ function zbarProcessImageData(imgData) {
             return FS.mknod(e, t, 0)
         },
         mkdev: function(e, t, n) {
-            if (typeof n === "undefined") {
+            if (typeof n == "undefined") {
                 n = t;
                 t = 438
             }
@@ -4542,7 +4542,7 @@ function zbarProcessImageData(imgData) {
                 throw new FS.ErrnoError(ERRNO_CODES.ENOENT)
             }
             t = typeof t === "string" ? FS.modeStringToFlags(t) : t;
-            n = typeof n === "undefined" ? 438 : n;
+            n = typeof n == "undefined" ? 438 : n;
             if (t & 64) {
                 n = n & 4095 | 32768
             } else {
@@ -4654,7 +4654,7 @@ function zbarProcessImageData(imgData) {
                 throw new FS.ErrnoError(ERRNO_CODES.EINVAL)
             }
             var s = true;
-            if (typeof i === "undefined") {
+            if (typeof i == "undefined") {
                 i = e.position;
                 s = false
             } else if (!e.seekable) {
@@ -4681,7 +4681,7 @@ function zbarProcessImageData(imgData) {
                 FS.llseek(e, 0, 2)
             }
             var o = true;
-            if (typeof i === "undefined") {
+            if (typeof i == "undefined") {
                 i = e.position;
                 o = false
             } else if (!e.seekable) {
@@ -5030,10 +5030,10 @@ function zbarProcessImageData(imgData) {
                         } catch (f) {
                             throw new FS.ErrnoError(ERRNO_CODES.EIO)
                         }
-                        if (a === undefined && o === 0) {
+                        if (a == undefined && o === 0) {
                             throw new FS.ErrnoError(ERRNO_CODES.EAGAIN)
                         }
-                        if (a === null || a === undefined) break;
+                        if (a === null || a == undefined) break;
                         o++;
                         t[r + u] = a
                     }
@@ -5129,10 +5129,10 @@ function zbarProcessImageData(imgData) {
                     var t = e * o;
                     var n = (e + 1) * o - 1;
                     n = Math.min(n, r - 1);
-                    if (typeof a.chunks[e] === "undefined") {
+                    if (typeof a.chunks[e] == "undefined") {
                         a.chunks[e] = u(t, n)
                     }
-                    if (typeof a.chunks[e] === "undefined") throw new Error("doXHR failed!");
+                    if (typeof a.chunks[e] == "undefined") throw new Error("doXHR failed!");
                     return a.chunks[e]
                 });
                 this._length = r;
@@ -5693,7 +5693,7 @@ function zbarProcessImageData(imgData) {
             getname: function(e, t) {
                 var n, r;
                 if (t) {
-                    if (e.daddr === undefined || e.dport === undefined) {
+                    if (e.daddr == undefined || e.dport == undefined) {
                         throw new FS.ErrnoError(ERRNO_CODES.ENOTCONN)
                     }
                     n = e.daddr;
@@ -5709,11 +5709,11 @@ function zbarProcessImageData(imgData) {
             },
             sendmsg: function(e, t, n, r, i, s) {
                 if (e.type === 2) {
-                    if (i === undefined || s === undefined) {
+                    if (i == undefined || s == undefined) {
                         i = e.daddr;
                         s = e.dport
                     }
-                    if (i === undefined || s === undefined) {
+                    if (i == undefined || s == undefined) {
                         throw new FS.ErrnoError(ERRNO_CODES.EDESTADDRREQ)
                     }
                 } else {
@@ -5871,7 +5871,7 @@ function zbarProcessImageData(imgData) {
             }
             Browser.BlobBuilder = typeof MozBlobBuilder != "undefined" ? MozBlobBuilder : typeof WebKitBlobBuilder != "undefined" ? WebKitBlobBuilder : !Browser.hasBlobConstructor ? console.log("warning: no BlobBuilder") : null;
             Browser.URLObject = typeof window != "undefined" ? window.URL ? window.URL : window.webkitURL : undefined;
-            if (!Module.noImageDecoding && typeof Browser.URLObject === "undefined") {
+            if (!Module.noImageDecoding && typeof Browser.URLObject == "undefined") {
                 console.log("warning: Browser does not support creating object URLs. Built-in browser image decoding will not be available.");
                 Module.noImageDecoding = true
             }
@@ -6038,7 +6038,7 @@ function zbarProcessImageData(imgData) {
             }
             if (!i) return null;
             if (n) {
-                if (!t) assert(typeof GLctx === "undefined", "cannot set in module if GLctx is used, but we are a non-GL context that would replace it");
+                if (!t) assert(typeof GLctx == "undefined", "cannot set in module if GLctx is used, but we are a non-GL context that would replace it");
                 Module.ctx = i;
                 if (t) GL.makeContextCurrent(s);
                 Module.useWebGL = t;
@@ -6073,8 +6073,8 @@ function zbarProcessImageData(imgData) {
             }
             Browser.lockPointer = e;
             Browser.resizeCanvas = t;
-            if (typeof Browser.lockPointer === "undefined") Browser.lockPointer = true;
-            if (typeof Browser.resizeCanvas === "undefined") Browser.resizeCanvas = false;
+            if (typeof Browser.lockPointer == "undefined") Browser.lockPointer = true;
+            if (typeof Browser.resizeCanvas == "undefined") Browser.resizeCanvas = false;
             var n = Module["canvas"];
             if (!Browser.fullScreenHandlersInstalled) {
                 Browser.fullScreenHandlersInstalled = true;
@@ -6105,7 +6105,7 @@ function zbarProcessImageData(imgData) {
             setTimeout(e, n)
         },
         requestAnimationFrame: function(t) {
-            if (typeof window === "undefined") {
+            if (typeof window == "undefined") {
                 Browser.fakeRequestAnimationFrame(t)
             } else {
                 if (!window.requestAnimationFrame) {
@@ -6205,7 +6205,7 @@ function zbarProcessImageData(imgData) {
                 var s = typeof window.scrollY !== "undefined" ? window.scrollY : window.pageYOffset;
                 if (e.type === "touchstart" || e.type === "touchend" || e.type === "touchmove") {
                     var o = e.touch;
-                    if (o === undefined) {
+                    if (o == undefined) {
                         return
                     }
                     var u = o.pageX - (i + t.left);

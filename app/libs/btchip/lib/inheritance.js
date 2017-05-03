@@ -9,12 +9,12 @@ var Class = (function() {
 
   return {
     extend: function(parent, def) {
-      if (arguments.length == 1) { def = parent; parent = null; }
+      if (arguments.length === 1) { def = parent; parent = null; }
       var func = function() {
-        if (arguments[0] ==  __extending) { return; }
+        if (arguments[0] ===  __extending) { return; }
         this.initialize.apply(this, arguments);
       };
-      if (typeof(parent) == 'function') {
+      if (typeof(parent) === 'function') {
         func.prototype = new parent( __extending);
       }
       var mixins = [];
@@ -35,9 +35,9 @@ var Class = (function() {
     },
     mixin: function (dest, src, clobber) {
       clobber = clobber || false;
-      if (typeof(src) != 'undefined' && src !== null) {
+      if (typeof(src) !== 'undefined' && src !== null) {
         for (var prop in src) {
-          if (clobber || (!dest[prop] && typeof(src[prop]) == 'function')) {
+          if (clobber || (!dest[prop] && typeof(src[prop]) === 'function')) {
             dest[prop] = src[prop];
           }
         }
@@ -45,7 +45,7 @@ var Class = (function() {
       return dest;
     },
     inherit: function(dest, src, fname) {
-      if (arguments.length == 3) {
+      if (arguments.length === 3) {
         var ancestor = dest[fname], descendent = src[fname], method = descendent;
         descendent = function() {
           var ref = this.parent; this.parent = ancestor;
@@ -59,7 +59,7 @@ var Class = (function() {
         dest[fname] = descendent;
       } else {
         for (var prop in src) {
-          if (dest[prop] && typeof(src[prop]) == 'function') {
+          if (dest[prop] && typeof(src[prop]) === 'function') {
             Class.inherit(dest, src, prop);
           } else {
             dest[prop] = src[prop];
@@ -70,7 +70,7 @@ var Class = (function() {
     },
     singleton: function() {
       var args = arguments;
-      if (args.length == 2 && args[0].getInstance) {
+      if (args.length === 2 && args[0].getInstance) {
         var klass = args[0].getInstance(__extending);
         // we're extending a singleton swap it out for it's class
         if (klass) { args[0] = klass; }
@@ -82,7 +82,7 @@ var Class = (function() {
         var klass = Class.extend.apply(args.callee, args);
         return {
           getInstance: function () {
-            if (arguments[0] == __extending) return klass;
+            if (arguments[0] === __extending) return klass;
             if (instance) return instance;
             return (instance = new klass());
           }

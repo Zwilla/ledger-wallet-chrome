@@ -25,10 +25,5 @@ limitations under the License.
 /** @namespace JSUCrypt.keyagreement */
 JSUCrypt.keyagreement ||  (function (undefined) {
 
-    /**
-     * @lends  JSUCrypt.keyagreement
-     */
-    var ka = {     
-    };
-    JSUCrypt.keyagreement = ka;
+    JSUCrypt.keyagreement = {};
 }());

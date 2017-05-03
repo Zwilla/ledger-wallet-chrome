@@ -1,3 +1,6 @@
+var Blob = require("../jquery-2.1.1.min.js");
+var unescape = require("querystring").unescape;
+var escape = require("querystring").escape;
 /*
  Copyright (c) 2013 Gildas Lormeau. All rights reserved.
 
@@ -65,7 +68,7 @@
 		for (i = 0; i < 256; i++) {
 			t = i;
 			for (j = 0; j < 8; j++)
-				if (t & 1)
+				if (t && 1)
 					t = (t >>> 1) ^ 0xEDB88320;
 				else
 					t = t >>> 1;
@@ -141,7 +144,7 @@
 
 		function init(callback) {
 			var dataEnd = dataURI.length;
-			while (dataURI.charAt(dataEnd - 1) == "=")
+			while (dataURI.charAt(dataEnd - 1) === "=")
 				dataEnd--;
 			dataStart = dataURI.indexOf(",") + 1;
 			that.size = Math.floor((dataEnd - dataStart) * 0.75);
@@ -534,7 +537,7 @@
 			onerror(ERR_ENCRYPTED);
 			return;
 		}
-		if (centralDirectory || (entry.bitFlag & 0x0008) != 0x0008) {
+		if (centralDirectory || (entry.bitFlag & 0x0008) !== 0x0008) {
 			entry.crc32 = data.view.getUint32(index + 10, true);
 			entry.compressedSize = data.view.getUint32(index + 14, true);
 			entry.uncompressedSize = data.view.getUint32(index + 18, true);
@@ -559,7 +562,7 @@
 			function testCrc32(crc32) {
 				var dataCrc32 = getDataHelper(4);
 				dataCrc32.view.setUint32(0, crc32);
-				return that.crc32 == dataCrc32.view.getUint32(0);
+				return that.crc32 === dataCrc32.view.getUint32(0);
 			}
 
 			function getWriterData(uncompressedSize, crc32) {
@@ -581,7 +584,7 @@
 
 			reader.readUint8Array(that.offset, 30, function(bytes) {
 				var data = getDataHelper(bytes.length, bytes), dataOffset;
-				if (data.view.getUint32(0) != 0x504b0304) {
+				if (data.view.getUint32(0) !== 0x504b0304) {
 					onerror(ERR_BAD_FORMAT);
 					return;
 				}
@@ -648,17 +651,17 @@
 						for (i = 0; i < fileslength; i++) {
 							entry = new Entry();
 							entry._worker = worker;
-							if (data.view.getUint32(index) != 0x504b0102) {
+							if (data.view.getUint32(index) !== 0x504b0102) {
 								onerror(ERR_BAD_FORMAT);
 								return;
 							}
 							readCommonHeader(entry, data, index + 6, true, onerror);
 							entry.commentLength = data.view.getUint16(index + 32, true);
-							entry.directory = ((data.view.getUint8(index + 38) & 0x10) == 0x10);
+							entry.directory = ((data.view.getUint8(index + 38) & 0x10) === 0x10);
 							entry.offset = data.view.getUint32(index + 42, true);
 							filename = getString(data.array.subarray(index + 46, index + 46 + entry.filenameLength));
 							entry.filename = ((entry.bitFlag & 0x0800) === 0x0800) ? decodeUTF8(filename) : decodeASCII(filename);
-							if (!entry.directory && entry.filename.charAt(entry.filename.length - 1) == "/")
+							if (!entry.directory && entry.filename.charAt(entry.filename.length - 1) === "/")
 								entry.directory = true;
 							comment = getString(data.array.subarray(index + 46 + entry.filenameLength + entry.extraFieldLength, index + 46
 									+ entry.filenameLength + entry.extraFieldLength + entry.commentLength));
@@ -759,7 +762,7 @@
 					var footer = getDataHelper(16);
 					datalength += compressedLength || 0;
 					footer.view.setUint32(0, 0x504b0708);
-					if (typeof crc32 != "undefined") {
+					if (typeof crc32 !== "undefined") {
 						header.view.setUint32(10, crc32, true);
 						footer.view.setUint32(4, crc32, true);
 					}
@@ -778,7 +781,7 @@
 				function writeFile() {
 					options = options || {};
 					name = name.trim();
-					if (options.directory && name.charAt(name.length - 1) != "/")
+					if (options.directory && name.charAt(name.length - 1) !== "/")
 						name += "/";
 					if (files.hasOwnProperty(name)) {
 						onerror(ERR_DUPLICATED_NAME);

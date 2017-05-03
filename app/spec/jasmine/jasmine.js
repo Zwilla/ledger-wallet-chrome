@@ -113,9 +113,8 @@ getJasmineRequireObj().base = function(j$, jasmineGlobal) {
   };
 
   j$.getEnv = function(options) {
-    var env = j$.currentEnv_ = j$.currentEnv_ || new j$.Env(options);
-    //jasmine. singletons in here (setTimeout blah blah).
-    return env;
+      //jasmine. singletons in here (setTimeout blah blah).
+    return j$.currentEnv_ = j$.currentEnv_ || new j$.Env(options);
   };
 
   j$.isArray_ = function(value) {
@@ -388,7 +387,7 @@ getJasmineRequireObj().Spec = function(j$) {
   return Spec;
 };
 
-if (typeof window == void 0 && typeof exports == 'object') {
+if (typeof window === void 0 && typeof exports === 'object') {
   exports.Spec = jasmineRequire.Spec;
 }
 
@@ -933,24 +932,24 @@ getJasmineRequireObj().Any = function() {
   }
 
   Any.prototype.jasmineMatches = function(other) {
-    if (this.expectedObject == String) {
-      return typeof other == 'string' || other instanceof String;
+    if (this.expectedObject === String) {
+      return typeof other === 'string' || other instanceof String;
     }
 
-    if (this.expectedObject == Number) {
-      return typeof other == 'number' || other instanceof Number;
+    if (this.expectedObject === Number) {
+      return typeof other === 'number' || other instanceof Number;
     }
 
-    if (this.expectedObject == Function) {
-      return typeof other == 'function' || other instanceof Function;
+    if (this.expectedObject === Function) {
+      return typeof other === 'function' || other instanceof Function;
     }
 
-    if (this.expectedObject == Object) {
-      return typeof other == 'object';
+    if (this.expectedObject === Object) {
+      return typeof other === 'object';
     }
     
-    if (this.expectedObject == Boolean) {
-      return typeof other == 'boolean';
+    if (this.expectedObject === Boolean) {
+      return typeof other === 'boolean';
     }
 
     return other instanceof this.expectedObject;
@@ -1357,7 +1356,7 @@ getJasmineRequireObj().Expectation = function() {
         }
       }
 
-      if (expected.length == 1) {
+      if (expected.length === 1) {
         expected = expected[0];
       }
 
@@ -2148,7 +2147,7 @@ getJasmineRequireObj().Suite = function() {
   return Suite;
 };
 
-if (typeof window == void 0 && typeof exports == 'object') {
+if (typeof window === void 0 && typeof exports === 'object') {
   exports.Suite = jasmineRequire.Suite;
 }
 
@@ -2262,57 +2261,57 @@ getJasmineRequireObj().matchersUtil = function(j$) {
     }
 
     if (a instanceof Error && b instanceof Error) {
-      return a.message == b.message;
+      return a.message === b.message;
     }
 
     // Identical objects are equal. `0 === -0`, but they aren't identical.
     // See the [Harmony `egal` proposal](http://wiki.ecmascript.org/doku.php?id=harmony:egal).
-    if (a === b) { return a !== 0 || 1 / a == 1 / b; }
+    if (a === b) { return a !== 0 || 1 / a === 1 / b; }
     // A strict comparison is necessary because `null == undefined`.
     if (a === null || b === null) { return a === b; }
     var className = Object.prototype.toString.call(a);
-    if (className != Object.prototype.toString.call(b)) { return false; }
+    if (className !== Object.prototype.toString.call(b)) { return false; }
     switch (className) {
       // Strings, numbers, dates, and booleans are compared by value.
       case '[object String]':
         // Primitives and their corresponding object wrappers are equivalent; thus, `"5"` is
         // equivalent to `new String("5")`.
-        return a == String(b);
+        return a === String(b);
       case '[object Number]':
         // `NaN`s are equivalent, but non-reflexive. An `egal` comparison is performed for
         // other numeric values.
-        return a != +a ? b != +b : (a === 0 ? 1 / a == 1 / b : a == +b);
+        return a !== +a ? b !== +b : (a === 0 ? 1 / a === 1 / b : a === +b);
       case '[object Date]':
       case '[object Boolean]':
         // Coerce dates and booleans to numeric primitive values. Dates are compared by their
         // millisecond representations. Note that invalid dates with millisecond representations
         // of `NaN` are not equivalent.
-        return +a == +b;
+        return +a === +b;
       // RegExps are compared by their source patterns and flags.
       case '[object RegExp]':
-        return a.source == b.source &&
-          a.global == b.global &&
-          a.multiline == b.multiline &&
-          a.ignoreCase == b.ignoreCase;
+        return a.source === b.source &&
+          a.global === b.global &&
+          a.multiline === b.multiline &&
+          a.ignoreCase === b.ignoreCase;
     }
-    if (typeof a != 'object' || typeof b != 'object') { return false; }
+    if (typeof a !== 'object' || typeof b !== 'object') { return false; }
     // Assume equality for cyclic structures. The algorithm for detecting cyclic
     // structures is adapted from ES 5.1 section 15.12.3, abstract operation `JO`.
     var length = aStack.length;
     while (length--) {
       // Linear search. Performance is inversely proportional to the number of
       // unique nested structures.
-      if (aStack[length] == a) { return bStack[length] == b; }
+      if (aStack[length] === a) { return bStack[length] === b; }
     }
     // Add the first object to the stack of traversed objects.
     aStack.push(a);
     bStack.push(b);
     var size = 0;
     // Recursively compare objects and arrays.
-    if (className == '[object Array]') {
+    if (className === '[object Array]') {
       // Compare array lengths to determine if a deep comparison is necessary.
       size = a.length;
-      result = size == b.length;
+      result = size === b.length;
       if (result) {
         // Deep compare the contents, ignoring non-numeric properties.
         while (size--) {
@@ -2412,7 +2411,7 @@ getJasmineRequireObj().toBeFalsy = function() {
     return {
       compare: function(actual) {
         return {
-          pass: !!!actual
+          pass: !actual
         };
       }
     };
@@ -2646,7 +2645,7 @@ getJasmineRequireObj().toThrow = function(j$) {
           threw = false,
           thrown;
 
-        if (typeof actual != 'function') {
+        if (typeof actual !== 'function') {
           throw new Error('Actual is not a Function');
         }
 
@@ -2662,7 +2661,7 @@ getJasmineRequireObj().toThrow = function(j$) {
           return result;
         }
 
-        if (arguments.length == 1) {
+        if (arguments.length === 1) {
           result.pass = true;
           result.message = function() { return 'Expected function not to throw, but it threw ' + j$.pp(thrown) + '.'; };
 
@@ -2693,7 +2692,7 @@ getJasmineRequireObj().toThrowError = function(j$) {
           fail = {pass: false},
           thrown;
 
-        if (typeof actual != 'function') {
+        if (typeof actual !== 'function') {
           throw new Error('Actual is not a Function');
         }
 
@@ -2740,7 +2739,7 @@ getJasmineRequireObj().toThrowError = function(j$) {
       var expected = null,
           errorType = null;
 
-      if (arguments.length == 2) {
+      if (arguments.length === 2) {
         expected = arguments[1];
         if (isAnErrorType(expected)) {
           errorType = expected;
@@ -2763,8 +2762,8 @@ getJasmineRequireObj().toThrowError = function(j$) {
       }
 
       function messageMatch(message) {
-        if (typeof expected == 'string') {
-          return expected == message;
+        if (typeof expected === 'string') {
+          return expected === message;
         } else {
           return expected.test(message);
         }
@@ -2806,7 +2805,7 @@ getJasmineRequireObj().toThrowError = function(j$) {
     }
 
     function isStringOrRegExp(potential) {
-      return potential instanceof RegExp || (typeof potential == 'string');
+      return potential instanceof RegExp || (typeof potential === 'string');
     }
 
     function isAnErrorType(type) {

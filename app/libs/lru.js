@@ -92,7 +92,7 @@ LRUCache.prototype.shift = function() {
 LRUCache.prototype.get = function(key, returnEntry) {
     // First, find our cache entry
     var entry = this._keymap[key];
-    if (entry === undefined) return; // Not cached. Sorry.
+    if (entry == undefined) return; // Not cached. Sorry.
     // As <key> was found in the cache, register it as being requested recently
     if (entry === this.tail) {
         // Already the most recenlty used entry, so no need to update the list
@@ -168,7 +168,7 @@ LRUCache.prototype.remove = function(key) {
         entry.older.newer = undefined;
         // link the newer entry to head
         this.tail = entry.older;
-    } else {// if(entry.older === undefined && entry.newer === undefined) {
+    } else {// if(entry.older == undefined && entry.newer == undefined) {
         this.head = this.tail = undefined;
     }
 
@@ -229,8 +229,8 @@ LRUCache.prototype.forEach = function(fun, context, desc) {
 LRUCache.prototype.toJSON = function() {
     var s = [], entry = this.head, key, value;
     while (entry) {
-        key = (typeof entry.key.toJSON != 'undefined') ?  entry.key.toJSON() : entry.key;
-        value = (typeof entry.value.toJSON != 'undefined') ?  entry.value.toJSON() : entry.value;
+        key = (typeof entry.key.toJSON !== 'undefined') ?  entry.key.toJSON() : entry.key;
+        value = (typeof entry.value.toJSON !== 'undefined') ?  entry.value.toJSON() : entry.value;
         s.push({key: key, value: value});
         entry = entry.newer;
     }

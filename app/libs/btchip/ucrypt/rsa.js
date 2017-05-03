@@ -52,12 +52,12 @@ limitations under the License.
          * @see JSUCrypt.signature#init
          */    
         JSUCrypt.signature.RSA.prototype.init = function(key, mode) {
-            if (mode == JSUCrypt.signature.MODE_SIGN) {
+            if (mode === JSUCrypt.signature.MODE_SIGN) {
                 if ( (! key instanceof JSUCrypt.key.RSAPrivateKey) && 
                      (! key instanceof JSUCrypt.key.CRTPrivateKey) ){
                     throw new JSUCrypt.JSUCryptException("Invalid 'key' parameter");
                 }
-            } else if (mode == JSUCrypt.signature.MODE_VERIFY) {
+            } else if (mode === JSUCrypt.signature.MODE_VERIFY) {
                 if ( ! key instanceof JSUCrypt.key.RSAPublicKey) {
                     throw new JSUCrypt.JSUCryptException("Invalid 'key' parameter");
                 }
@@ -124,19 +124,19 @@ limitations under the License.
             }
             expected.append(h);
             //check length
-            if (expected.length != oidlen + h.length) {
+            if (expected.length !== oidlen + h.length) {
                 return false;
             }
             //check OID
             for ( i = 0; i< oidlen; i++) {
-                if (expected[i] != oid[i]) {
+                if (expected[i] !== oid[i]) {
                     return false;
                 }                
             }
             expected = expected.slice(oidlen);
             //check h
             for ( i = 0; i< h.length; i++) {
-                if (expected[i] != h[i]) {
+                if (expected[i] !== h[i]) {
                     return false;
                 }
             }
@@ -168,12 +168,12 @@ limitations under the License.
          * @see JSUCrypt.cipher#init
          */
         JSUCrypt.cipher.RSA.prototype.init = function(key, mode) {
-            if (mode == JSUCrypt.cipher.MODE_DECRYPT) {
+            if (mode === JSUCrypt.cipher.MODE_DECRYPT) {
                 if ( (! key instanceof JSUCrypt.key.RSAPrivateKey) && 
                      (! key instanceof JSUCrypt.key.CRTPrivateKey) ){
                     throw new JSUCrypt.JSUCryptException("Invalid 'key' parameter");
                 }
-            } else if (mode == JSUCrypt.cipher.MODE_ENCRYPT) {
+            } else if (mode === JSUCrypt.cipher.MODE_ENCRYPT) {
                 if ( ! key instanceof JSUCrypt.key.RSAPublicKey) {
                     throw new JSUCrypt.JSUCryptException("Invalid 'key' parameter");
                 }

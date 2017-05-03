@@ -52,7 +52,7 @@ var ByteString = Class.create({
 		if (arguments.length < 1) {
 			throw "Argument missing";
 		}		
-		if (typeof index != "number") {
+		if (typeof index !== "number") {
 			throw "Invalid index";
 		}		
 		if ((index < 0) || (index >= this.value.length)) {
@@ -72,14 +72,14 @@ var ByteString = Class.create({
 		if (arguments.length < 1) {
 			throw "Argument missing";
 		}
-		if (typeof offset != "number") {
+		if (typeof offset !== "number") {
 			throw "Invalid offset";
 		}
 		//if ((offset < 0) || (offset >= this.value.length)) {
 		if (offset < 0) {
 			throw "Invalid offset";
 		}
-		if (typeof count == "number") {
+		if (typeof count === "number") {
 			if (count < 0) {
 				throw "Invalid count";
 			}
@@ -126,7 +126,7 @@ var ByteString = Class.create({
 		if (!(target instanceof ByteString)) {
 			throw "Invalid argument";
 		}
-		return (this.value == target.value);
+		return (this.value === target.value);
 	},
 	
 	
@@ -138,7 +138,7 @@ var ByteString = Class.create({
 	toString: function(encoding) {
 		var targetEncoding = this.encoding;
 		if (arguments.length >= 1) {
-			if (typeof encoding != "number") {
+			if (typeof encoding !== "number") {
 				throw "Invalid encoding";
 			}
 			switch(encoding) {
@@ -165,7 +165,7 @@ var ByteString = Class.create({
 	toStringIE: function(encoding) {
 		var targetEncoding = this.encoding;
 		if (arguments.length >= 1) {
-			if (typeof encoding != "number") {
+			if (typeof encoding !== "number") {
 				throw "Invalid encoding";
 			}
 			switch(encoding) {

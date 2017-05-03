@@ -45,11 +45,11 @@ JSUCrypt.signature.ECDSA  ||  (function (undefined) {
      * @see JSUCrypt.signature#init
      */    
     JSUCrypt.signature.ECDSA.prototype.init = function(key, mode) {
-        if (mode == JSUCrypt.signature.MODE_SIGN) {
+        if (mode === JSUCrypt.signature.MODE_SIGN) {
             if ( ! key instanceof JSUCrypt.key.EcFpPrivateKey) {
                 throw new JSUCrypt.JSUCryptException("Invalid 'key' parameter");
             }
-        } else if (mode == JSUCrypt.signature.MODE_VERIFY) {
+        } else if (mode === JSUCrypt.signature.MODE_VERIFY) {
             if ( ! key instanceof JSUCrypt.key.EcFpPublicKey) {
                 throw new JSUCrypt.JSUCryptException("Invalid 'key' parameter");
             }
@@ -251,10 +251,10 @@ JSUCrypt.signature.ECDSA  ||  (function (undefined) {
         r = new BigInteger(JSUCrypt.utils.byteArrayToHexStr(r),16);
         //check format
         var offset =  4+ (sig[3]&0xFF);
-        if ((sig[0] != 0x30)                         ||
-            (sig[1] != (4+sig[3]+sig[offset+1]))     ||
-            (sig[2] != 0x02)                         ||
-            (sig[offset] != 0x02)) {
+        if ((sig[0] !== 0x30)                         ||
+            (sig[1] !== (4+sig[3]+sig[offset+1]))     ||
+            (sig[2] !== 0x02)                         ||
+            (sig[offset] !== 0x02)) {
             return false;
         }
         //precheck r/s
@@ -272,8 +272,7 @@ JSUCrypt.signature.ECDSA  ||  (function (undefined) {
         var u2Q = this._key.W.toProjective().multiply(u2);
 
         var xy  = u2Q.add(u1G).toAffine();
-        var verified =  xy.x.mod(order).equals(r);
-        return verified;
+        return xy.x.mod(order).equals(r);
     };
 
 }());

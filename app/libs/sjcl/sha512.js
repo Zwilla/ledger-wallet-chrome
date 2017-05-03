@@ -86,7 +86,7 @@ sjcl.hash.sha512.prototype = {
     b = sjcl.bitArray.concat(b, [sjcl.bitArray.partial(1,1)]);
 
     // Round out the buffer to a multiple of 32 words, less the 4 length words.
-    for (i = b.length + 4; i & 31; i++) {
+    for (i = b.length + 4; i && 31; i++) {
       b.push(0);
     }
 

@@ -27,7 +27,7 @@ function btcstr2bignum(btc)
     var i = btc.indexOf('.');
     var value = new BigInteger(btc.replace(/\./, ''));
     var diff = 9 - (btc.length - i);
-    if (i == -1)
+    if (i === -1)
     {
         var mul = "100000000";
     }
@@ -83,5 +83,5 @@ function tx_fetch(url, onSuccess, onError, postdata)
 
 function hasTouch()
 {
-    return (typeof Touch == 'object');
+    return (typeof Touch === 'object');
 };

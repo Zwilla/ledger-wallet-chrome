@@ -51,7 +51,7 @@ Convert.stringToHex = function(src) {
 Convert.hexToBin = function(src) {
    var result = "";
    var digits = "0123456789ABCDEF";
-   if ((src.length % 2) != 0) {
+   if ((src.length % 2) !== 0) {
  	throw "Invalid string";
    }
    src = src.toUpperCase();

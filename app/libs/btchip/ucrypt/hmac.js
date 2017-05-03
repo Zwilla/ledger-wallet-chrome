@@ -56,8 +56,8 @@ limitations under the License.
      * @param {number}               mode  Sign or Verify
      */
     JSUCrypt.signature.HMAC.prototype.init = function(key, mode) {
-        if ((mode != JSUCrypt.signature.MODE_SIGN) && 
-            (mode != JSUCrypt.signature.MODE_VERIFY)){
+        if ((mode !== JSUCrypt.signature.MODE_SIGN) &&
+            (mode !== JSUCrypt.signature.MODE_VERIFY)){
             throw new JSUCrypt.JSUCryptException("Invalid 'mode' parameter");
         }        
        
@@ -72,7 +72,7 @@ limitations under the License.
      */
     JSUCrypt.signature.HMAC.prototype.reset  = function() {
         this._hasher.reset();
-        if (this._key != undefined) {
+        if (this._key !== undefined) {
             if (this._key.rawKey.length > this._hasher.blockSize) { 
                 this._internalKey = this._hasher.finalize(this._key.rawKey);
                 this._hasher.reset();
@@ -128,11 +128,11 @@ limitations under the License.
         var s = this.sign(data);
         this.reset();
         sig = JSUCrypt.utils.anyToByteArray(sig);
-        if (s.length != sig.length) {
+        if (s.length !== sig.length) {
             return false;
         }
         for (var i = 0; i<s.length; i++) {
-            if (s[i] != sig[i]) {
+            if (s[i] !== sig[i]) {
                 return false;
             }
         }

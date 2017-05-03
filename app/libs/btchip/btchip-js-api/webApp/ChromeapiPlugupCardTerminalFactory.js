@@ -16,7 +16,8 @@ limitations under the License.
 *************************************************************************
 */
 
-var ChromeapiPlugupCardTerminalFactory = Class.extend(CardTerminalFactory, {
+var extend = require("../../../jquery-2.1.1.min.js").extend;
+var ChromeapiPlugupCardTerminalFactory = extend(CardTerminalFactory, {
 	/** @lends ChromeapiPlugupCardTerminalFactory.prototype */
 	
 	/**

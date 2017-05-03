@@ -84,11 +84,11 @@ jasmineRequire.HtmlReporter = function(j$) {
     };
 
     this.suiteDone = function(result) {
-      if (result.status == 'failed') {
+      if (result.status === 'failed') {
         failedSuites.push(result);
       }
 
-      if (currentParent == topResults) {
+      if (currentParent === topResults) {
         return;
       }
 
@@ -105,7 +105,7 @@ jasmineRequire.HtmlReporter = function(j$) {
         console.error('Spec \'' + result.fullName + '\' has no expectations.');
       }
 
-      if (result.status != 'disabled') {
+      if (result.status !== 'disabled') {
         specsExecuted++;
       }
 
@@ -116,7 +116,7 @@ jasmineRequire.HtmlReporter = function(j$) {
         }
       ));
 
-      if (result.status == 'failed') {
+      if (result.status === 'failed') {
         failureCount++;
 
         var failure =
@@ -137,7 +137,7 @@ jasmineRequire.HtmlReporter = function(j$) {
         failures.push(failure);
       }
 
-      if (result.status == 'pending') {
+      if (result.status === 'pending') {
         pendingSpecCount++;
       }
     };
@@ -201,7 +201,7 @@ jasmineRequire.HtmlReporter = function(j$) {
         var specListNode;
         for (var i = 0; i < resultsTree.children.length; i++) {
           var resultNode = resultsTree.children[i];
-          if (resultNode.type == 'suite') {
+          if (resultNode.type === 'suite') {
             var suiteListNode = createDom('ul', {className: 'suite', id: 'suite-' + resultNode.result.id},
               createDom('li', {className: 'suite-detail'},
                 createDom('a', {href: specHref(resultNode.result)}, resultNode.result.description)
@@ -211,8 +211,8 @@ jasmineRequire.HtmlReporter = function(j$) {
             summaryList(resultNode, suiteListNode);
             domParent.appendChild(suiteListNode);
           }
-          if (resultNode.type == 'spec') {
-            if (domParent.getAttribute('class') != 'specs') {
+          if (resultNode.type === 'spec') {
+            if (domParent.getAttribute('class') !== 'specs') {
               specListNode = createDom('ul', {className: 'specs'});
               domParent.appendChild(specListNode);
             }
@@ -289,7 +289,7 @@ jasmineRequire.HtmlReporter = function(j$) {
       }
 
       for (var attr in attrs) {
-        if (attr == 'className') {
+        if (attr === 'className') {
           el[attr] = attrs[attr];
         } else {
           el.setAttribute(attr, attrs[attr]);
@@ -300,7 +300,7 @@ jasmineRequire.HtmlReporter = function(j$) {
     }
 
     function pluralize(singular, count) {
-      var word = (count == 1 ? singular : singular + 's');
+      var word = (count === 1 ? singular : singular + 's');
 
       return '' + count + ' ' + word;
     }

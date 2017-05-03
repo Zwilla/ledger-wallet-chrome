@@ -20,7 +20,7 @@ limitations under the License.
  * @author Cédric Mesnil <cedric.mesnil@ubinity.com>
  * @license Apache License, Version 2.0
  */
-
+var print = require("util").print;
 /**
  * A padder is any object provinding the following interface
  *
@@ -77,7 +77,7 @@ JSUCrypt.padder || (function (undefined) {
         None : {
             pad: function(data, modlen) {
                 data = JSUCrypt.utils.anyToByteArray(data);
-                if ((data.length % modlen) != 0) {
+                if ((data.length % modlen) !== 0) {
                     throw new JSUCrypt.JSUCryptException("Cant unpad 'None'");
                 }
                 data = [].concat(data);
@@ -95,10 +95,10 @@ JSUCrypt.padder || (function (undefined) {
             pad: function(data, modlen) {
                 data = JSUCrypt.utils.anyToByteArray(data);
                 data = [].concat(data);
-                if ((data.length % modlen) == 0) {
+                if ((data.length % modlen) === 0) {
                     return data;
                 }
-                while(data.length%modlen!=0) {
+                while(data.length%modlen!==0) {
                     data.push(0);
                 }
                 return data;
@@ -106,7 +106,7 @@ JSUCrypt.padder || (function (undefined) {
             
             unpad: function(data, modlen) {
                 data = JSUCrypt.utils.anyToByteArray(data);
-                if ((data.length % modlen) != 0) {
+                if ((data.length % modlen) !== 0) {
                     throw new JSUCrypt.JSUCryptException("Cant unpad 'ISO9797M1'");
                 }
                 return [].concat(data);
@@ -119,7 +119,7 @@ JSUCrypt.padder || (function (undefined) {
             pad: function(data, modlen) {
                 data = JSUCrypt.utils.anyToByteArray(data);
                 data = data.concat(0x80);
-                while(data.length%modlen!=0) {
+                while(data.length%modlen!==0) {
                     data.push(0);
                 }
                 return data;
@@ -128,17 +128,17 @@ JSUCrypt.padder || (function (undefined) {
             unpad: function(data, modlen) {
                 var offset;
                 data = JSUCrypt.utils.anyToByteArray(data);
-                if ((data.length % modlen) != 0) {
+                if ((data.length % modlen) !== 0) {
                     throw new JSUCrypt.JSUCryptException("Cant unpad 'ISO9797M2'");
                 }
                 offset = data.length-1;
-                while (modlen && (data[offset] == 0)) {
+                while (modlen && (data[offset] === 0)) {
                     offset--;
                 }
                 if (!modlen) {
                     throw new JSUCrypt.JSUCryptException("Cant unpad 'ISO9797M2'");
                 }
-                if (data[offset] != 0x80) {
+                if (data[offset] !== 0x80) {
                     throw new JSUCrypt.JSUCryptException("Cant unpad 'ISO9797M2'");
                 }
                 return data.slice(0, offset);            
@@ -175,30 +175,30 @@ JSUCrypt.padder || (function (undefined) {
             unpad: function(data, modlen, rnd) {
                 data = JSUCrypt.utils.anyToByteArray(data);
                 modlen = data.length;
-                if (data[0] != 0) {
+                if (data[0] !== 0) {
                     print('A'+data[0]);
                     throw new JSUCrypt.JSUCryptException("Cant unpad 'PKCS1_V1_5'");
                 }
                 var offset;
                 if (rnd) {
-                    if (data[1] != 2) {
+                    if (data[1] !== 2) {
                         print('B');
                         throw new JSUCrypt.JSUCryptException("Cant unpad 'PKCS1_V1_5'");
                     }
                     for (offset = 2; offset< modlen-1; offset++) {
-                        if(data[offset] == 0) break;
+                        if(data[offset] === 0) break;
                     }
                 } else {
-                    if (data[1] != 1) {
+                    if (data[1] !== 1) {
                         throw new JSUCrypt.JSUCryptException("Cant unpad 'PKCS1_V1_5'");
                     }
                     for (offset = 2; offset< modlen-1; offset++) {
-                        if ((data[offset] != 0xFF) && (data[offset] != -1)) {
+                        if ((data[offset] !== 0xFF) && (data[offset] !== -1)) {
                             break;
                         }
                     }
                 }
-                if (data[offset] != 0) {
+                if (data[offset] !== 0) {
                     print('C');
                     throw new JSUCrypt.JSUCryptException("Cant unpad 'PKCS1_V1_5'");
                 }

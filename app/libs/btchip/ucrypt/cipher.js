@@ -172,10 +172,10 @@ JSUCrypt.cipher || (function (undefined) {
         data = JSUCrypt.utils.anyToByteArray(data);
         this._remaining.append(data);
 
-        if (this._enc_mode == JSUCrypt.cipher.MODE_ENCRYPT) {
+        if (this._enc_mode === JSUCrypt.cipher.MODE_ENCRYPT) {
             x = this._doCrypt(this._remaining);
         }
-        if (this._enc_mode == JSUCrypt.cipher.MODE_DECRYPT) {
+        if (this._enc_mode === JSUCrypt.cipher.MODE_DECRYPT) {
             x = this._doDecrypt(this._remaining);
         }
         this.reset();

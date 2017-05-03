@@ -9,6 +9,7 @@ To prepare your build environment, follow these steps:
 * Install [nodejs](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager)
 * Install application dependencies
     * `npm install -g gulp`
+    * `npm install -g npm`
     * `npm install`
 
 Once the environment is setup, you should see the help page of the build system by typing `gulp --help`

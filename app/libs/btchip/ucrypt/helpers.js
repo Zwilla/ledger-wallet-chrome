@@ -54,7 +54,7 @@ JSUCrypt.utils ||  (function (undefined) {
      * @param {string} hex string
      */
    JSUCrypt.utils.hexStrToByteArray = function(str) {
-        if (str.length & 1 ) {
+        if (str.length && 1 ) {
             str = "0"+str;
         }
         var b=[];
@@ -77,7 +77,7 @@ JSUCrypt.utils ||  (function (undefined) {
         var str = "";
         for (var i = 0; i<len; i++) {
             var x = (arr[i]&0x00FF).toString(16);
-            if (x.length&1) {
+            if (x.length&&1) {
                 str  = str+"0"+x;
             } else {
                 str  = str+x;
@@ -95,13 +95,13 @@ JSUCrypt.utils ||  (function (undefined) {
         if (any instanceof BigInteger) {
             return any;
         }
-        if (typeof any =="string") {
+        if (typeof any ==="string") {
             return new BigInteger(any,16);
         }
         if (any instanceof Array) {
             return new BigInteger(JSUCrypt.utils.byteArrayToHexStr(any),16);
         }
-        if (typeof any=="number") {
+        if (typeof any==="number") {
             return new BigInteger(any.toStringf(16));
         }
         throw new JSUCrypt.JSUCryptException("Invalid parameter type:"+any);
@@ -114,16 +114,16 @@ JSUCrypt.utils ||  (function (undefined) {
      */
     JSUCrypt.utils.anyToByteArray = function(any) {    
         
-        if (any == undefined) {
+        if (any === undefined) {
             return [];
         }
-        if (typeof any =="string") {
+        if (typeof any ==="string") {
             return JSUCrypt.utils.hexStrToByteArray(any);
         }
         if (any instanceof Array) {
             return any;
         }
-        if (typeof any=="number") {
+        if (typeof any==="number") {
             return [any&0xFF];
         }
         throw new JSUCrypt.JSUCryptException("Invalid paramerter type:"+any);
@@ -137,7 +137,7 @@ JSUCrypt.utils ||  (function (undefined) {
      * @param {number} expected length
      */
     JSUCrypt.utils.normalizeByteArrayUL = function(ba,len) {
-        if (len == undefined) {
+        if (len === undefined) {
             len = ba.length;
         }
         var a = [];
@@ -145,11 +145,11 @@ JSUCrypt.utils ||  (function (undefined) {
             a[i] = ba[i]&0xFF;
         }
         if (a.length<len) {
-            while (a.length != len) {
+            while (a.length !== len) {
                 a.unshift(0);
             }
         } else if  (a.length > len) {
-            while ((a.length != len) && (a[0] == 0)) {
+            while ((a.length !== len) && (a[0] === 0)) {
                 a.shift();
             }
         }
@@ -165,16 +165,16 @@ JSUCrypt.utils ||  (function (undefined) {
 
 
     /**
-     * @private
+     * @public
      */
     JSUCrypt.utils.UINT64  = function (h,l) {
-        if (h == undefined) h = 0;
-        if (l == undefined) l = 0;
+        if (h === undefined) h = 0;
+        if (l === undefined) l = 0;
         return {h:h, l:l};
     };
 
     /**
-     * @private
+     * @public
      */
     JSUCrypt.utils.CLONE64  = function (x) {
         return {h:x.h, l:x.l};

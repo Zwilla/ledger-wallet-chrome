@@ -14,7 +14,7 @@
     var root, previous_async;
 
     root = this;
-    if (root != null) {
+    if (root !== null) {
       previous_async = root.async;
     }
 
@@ -678,7 +678,7 @@
     };
 
     async.queue = function (worker, concurrency) {
-        if (concurrency === undefined) {
+        if (concurrency == undefined) {
             concurrency = 1;
         }
         function _insert(q, data, pos, callback) {

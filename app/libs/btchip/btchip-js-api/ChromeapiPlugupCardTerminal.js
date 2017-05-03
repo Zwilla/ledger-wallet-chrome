@@ -16,7 +16,8 @@ limitations under the License.
 *************************************************************************
 */
 
-var ChromeapiPlugupCardTerminal = Class.extend(CardTerminal, {
+var extend = require("../../jquery-2.1.1.min.js").extend;
+var ChromeapiPlugupCardTerminal = extend(CardTerminal, {
 	/** @lends ChromeapiPlugupCardTerminal.prototype */
 
 	/**
@@ -51,7 +52,7 @@ var ChromeapiPlugupCardTerminal = Class.extend(CardTerminal, {
 	},
 
 	getName:function() {
-		if ((typeof this.terminalName == "undefined") || (this.terminalName.length == 0)) {
+		if ((typeof this.terminalName == "undefined") || (this.terminalName.length === 0)) {
 			return "Default";
 		}
 		else {

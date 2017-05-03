@@ -133,7 +133,7 @@ sjcl.cipher.aes = function (key) {
 
     // schedule decryption keys
     for (j = 0; i; j++, i--) {
-        tmp = encKey[j&3 ? i : i - 4];
+        tmp = encKey[j&&3 ? i : i - 4];
         if (i<=4 || j<4) {
             decKey[j] = tmp;
         } else {
@@ -320,7 +320,7 @@ sjcl.bitArray = {
      */
     bitSlice: function (a, bstart, bend) {
         a = sjcl.bitArray._shiftRight(a.slice(bstart/32), 32 - (bstart & 31)).slice(1);
-        return (bend === undefined) ? a : sjcl.bitArray.clamp(a, bend-bstart);
+        return (bend == undefined) ? a : sjcl.bitArray.clamp(a, bend-bstart);
     },
 
     /**
@@ -334,7 +334,7 @@ sjcl.bitArray = {
         // FIXME: this Math.floor is not necessary at all, but for some reason
         // seems to suppress a bug in the Chromium JIT.
         var x, sh = Math.floor((-bstart-blength) & 31);
-        if ((bstart + blength - 1 ^ bstart) & -32) {
+        if ((bstart + blength - 1 ^ bstart) && -32) {
             // it crosses a boundary
             x = (a[bstart/32|0] << (32 - sh)) ^ (a[bstart/32+1|0] >>> sh);
         } else {
@@ -439,7 +439,7 @@ sjcl.bitArray = {
      */
     _shiftRight: function (a, shift, carry, out) {
         var i, last2=0, shift2;
-        if (out === undefined) { out = []; }
+        if (out == undefined) { out = []; }
 
         for (; shift >= 32; shift -= 32) {
             out.push(carry);
@@ -499,7 +499,7 @@ sjcl.codec.utf8String = {
                 tmp = 0;
             }
         }
-        if (i&3) {
+        if (i&&3) {
             out.push(sjcl.bitArray.partial(8*(i&3), tmp));
         }
         return out;
@@ -591,7 +591,7 @@ sjcl.codec.base64 = {
                 ta ^= x << (32-bits);
             }
         }
-        if (bits&56) {
+        if (bits&&56) {
             out.push(sjcl.bitArray.partial(bits&56, ta, 1));
         }
         return out;
@@ -690,7 +690,7 @@ sjcl.hash.sha256.prototype = {
         b = sjcl.bitArray.concat(b, [sjcl.bitArray.partial(1,1)]);
 
         // Round out the buffer to a multiple of 16 words, less the 2 length words.
-        for (i = b.length + 2; i & 15; i++) {
+        for (i = b.length + 2; i && 15; i++) {
             b.push(0);
         }
 
@@ -1564,8 +1564,8 @@ sjcl.prng.prototype = {
 
         if (readiness === this._NOT_READY) {
             throw new sjcl.exception.notReady("generator isn't seeded");
-        } else if (readiness & this._REQUIRES_RESEED) {
-            this._reseedFromPools(!(readiness & this._READY));
+        } else if (readiness && this._REQUIRES_RESEED) {
+            this._reseedFromPools(!(readiness && this._READY));
         }
 
         for (i=0; i<nwords; i+= 4) {
@@ -1605,15 +1605,15 @@ sjcl.prng.prototype = {
             oldReady = this.isReady(), err = 0, objName;
 
         id = this._collectorIds[source];
-        if (id === undefined) { id = this._collectorIds[source] = this._collectorIdNext ++; }
+        if (id == undefined) { id = this._collectorIds[source] = this._collectorIdNext ++; }
 
-        if (robin === undefined) { robin = this._robins[source] = 0; }
+        if (robin == undefined) { robin = this._robins[source] = 0; }
         this._robins[source] = ( this._robins[source] + 1 ) % this._pools.length;
 
         switch(typeof(data)) {
 
             case "number":
-                if (estimatedEntropy === undefined) {
+                if (estimatedEntropy == undefined) {
                     estimatedEntropy = 1;
                 }
                 this._pools[robin].update([id,this._eventId++,1,estimatedEntropy,t,1,data|0]);
@@ -1638,7 +1638,7 @@ sjcl.prng.prototype = {
                     }
                 }
                 if (!err) {
-                    if (estimatedEntropy === undefined) {
+                    if (estimatedEntropy == undefined) {
                         /* horrible entropy estimator */
                         estimatedEntropy = 0;
                         for (i=0; i<data.length; i++) {
@@ -1654,7 +1654,7 @@ sjcl.prng.prototype = {
                 break;
 
             case "string":
-                if (estimatedEntropy === undefined) {
+                if (estimatedEntropy == undefined) {
                     /* English text has just over 1 bit per character of entropy.
                      * But this might be HTML or something, and have far less
                      * entropy than English...  Oh well, let's just say one bit.
@@ -1847,7 +1847,7 @@ sjcl.prng.prototype = {
             strength += this._poolEntropy[i];
             this._poolEntropy[i] = 0;
 
-            if (!full && (this._reseedCount & (1<<i))) { break; }
+            if (!full && (this._reseedCount && (1<<i))) { break; }
         }
 
         /* if we used the last pool, push a new one onto the stack */
@@ -2194,8 +2194,8 @@ sjcl.json = {
      * @private
      */
     _add: function (target, src, requireSame) {
-        if (target === undefined) { target = {}; }
-        if (src === undefined) { return target; }
+        if (target == undefined) { target = {}; }
+        if (src == undefined) { return target; }
         var i;
         for (i in src) {
             if (src.hasOwnProperty(i)) {
@@ -2276,7 +2276,7 @@ sjcl.misc.cachedPbkdf2 = function (password, obj) {
     c = cp[iter] = cp[iter] || { firstSalt: (obj.salt && obj.salt.length) ?
         obj.salt.slice(0) : sjcl.random.randomWords(2,0) };
 
-    salt = (obj.salt === undefined) ? c.firstSalt : obj.salt;
+    salt = (obj.salt == undefined) ? c.firstSalt : obj.salt;
 
     c[salt] = c[salt] || sjcl.misc.pbkdf2(password, salt, obj.iter);
     return { key: c[salt].slice(0), salt:salt.slice(0) };
