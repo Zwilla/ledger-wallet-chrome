@@ -148,7 +148,7 @@ ChromeapiPlugupCard = extend(Card, {
                                     else {
                                         toReceive = received.byteAt(1);
                                         if (toReceive === 0) {
-                                            toReceive === 256;
+                                            toReceive === 256; /* or toReceive = 256 ?*/
                                         }
                                         toReceive += 2;
                                     }
